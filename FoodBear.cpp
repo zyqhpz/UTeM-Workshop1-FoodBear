@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include "Customer.h"
+
 using namespace std;
 
 int main()
@@ -14,10 +16,20 @@ int main()
 
     cin >> a;
 
+    Customer cust = Customer("Hello1", "hello123");
+
+    string id = "Hello1";
+    string pass = "hello123";
+
     if (a == 1) {
 
         system("cls");
         cout << "1!\n";
+    }
+    else {
+        if (cust.login()) {
+            cout << "Login succesfull";
+        }
     }
 }
 
