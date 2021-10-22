@@ -125,6 +125,20 @@ void display(MYSQL* conn) {
     }
 }
 
+void gData(Customer cust) {
+    string userid = cust.getID();
+    string pass = cust.getPassword();
+
+    int qstate = mysql_query(conn, "SELECT * FROM customer");
+
+    res = mysql_store_result(conn);
+    int count = mysql_num_fields(res);
+
+    if (count > 0) {
+
+    }
+}
+
 int main()
 {
     system("Connection To DB");
@@ -139,7 +153,7 @@ int main()
 
     cin >> a;
 
-    Customer cust = Customer("Hello1", "hello123");
+    Customer cust = Customer("customer01", "cust123");
 
     //stringstream ss;
 
@@ -177,10 +191,18 @@ int main()
                 res = mysql_store_result(conn);
                 int count = mysql_num_fields(res);
                 cout << count << endl;
+                cust.fetchData(res, count);
+                cout << "\tid" << "\tusername" << "\tpassword" << "\tname" << "\tphone" << "\taddress" << endl;
                 while (row = mysql_fetch_row(res)) {
                     for (int i = 0; i < count; i++) {
                         cout << "\t" << row[i];
                     }
+                    cout << (int)row[0] << endl;
+                    cout << (string)row[1] << endl;
+                    cout << (string)row[2] << endl;
+                    cout << (string)row[3] << endl;
+                    cout << (string)row[4] << endl;
+                    cout << (string)row[5] << endl;
                     cout << endl;
                 }
             }
@@ -202,11 +224,54 @@ int main()
         cout << "Password: ";
         cin >> pass;
 
-        Log::login(user, pass);
+        //Log::login(user, pass);
+
+        //Customer::login(user, pass);
     }
+
+    else if (a == 3) {
+        string slt = "SELECT * FROM customer";
+        const char* q = slt.c_str();
+        int qstate = mysql_query(conn, q);
+
+        cout << "Selected" << endl;
+
+        if (!qstate) {
+            res = mysql_store_result(conn);
+            int count = mysql_num_fields(res);
+            cout << res << endl;
+            cout << count << endl;
+            cust.fetchData(res, count);
+            cout << "fetched" << endl;
+
+            string user, pass;
+            cout << "----Login----" << endl;
+            cout << "Username: ";
+            cin >> user;
+            cout << "Password: ";
+            cin >> pass;
+
+            if (cust.login(user, pass)) {
+            }
+        }
+        else {
+            cout << "failed to fetch";
+        }
+    }
+
     else {
-        if (cust.login()) {
-            cout << "Login succesfull";
+        string user, pass;
+        cout << "----Login----" << endl;
+        cout << "Username: ";
+        cin >> user;
+        cout << "Password: ";
+        cin >> pass;
+
+        if (cust.login(user, pass)) {
+            cout << "Login succesfull" << endl;
+        }
+        else {
+            cout << "Login failed" << endl;
         }
     }
 }
