@@ -70,6 +70,34 @@ public:
     }
 };
 
+class Log {
+private:
+    string username, password;
+
+public:
+    static bool login(string username, string password) {
+        /*this->username = username;
+        this->password = password;*/
+
+        string t = "customer";
+
+        string s = "SELECT * FROM " + t;
+
+        const char* q = s.c_str();
+
+        int query = mysql_query(conn, q);
+
+        if (!query) {
+            cout << "login succeed" << endl;
+            cout << username << endl;
+        }
+        
+        else {
+            cout << "login error" << endl;
+        }
+    }
+};
+
 void display(MYSQL* conn) {
 
     conn = mysql_real_connect(conn, "localhost", "root", "", "foodbear", 3306, NULL, 0);
@@ -165,6 +193,16 @@ int main()
         }
 
         //system("pause");
+    }
+    else if (a == 2) {
+        string user, pass;
+        cout << "----Login----" << endl;
+        cout << "Username: ";
+        cin >> user;
+        cout << "Password: ";
+        cin >> pass;
+
+        Log::login(user, pass);
     }
     else {
         if (cust.login()) {
