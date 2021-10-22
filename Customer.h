@@ -21,22 +21,18 @@ struct Details {
 
 class Customer {
 private:
-	int custNum, custPhone;
-	string custName, custUsername, custPass, custID, custAddress;
+	int custNum;
+	string custName, custUsername, custPass, custID, custAddress, custPhone;
 	Details data[100];
 
 public:
 	Customer(string, string);
 	~Customer();
-	//bool login(string, string);
-	//bool login();
 
 	bool login(string, string);
 
-
-
 	void fetchData(MYSQL_RES*, int);
-	void getData(MYSQL_ROW, int);
+	string getName();
 	string getID();
 	string getPassword();
 };

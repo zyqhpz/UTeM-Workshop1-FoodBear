@@ -70,75 +70,6 @@ public:
     }
 };
 
-class Log {
-private:
-    string username, password;
-
-public:
-    static bool login(string username, string password) {
-        /*this->username = username;
-        this->password = password;*/
-
-        string t = "customer";
-
-        string s = "SELECT * FROM " + t;
-
-        const char* q = s.c_str();
-
-        int query = mysql_query(conn, q);
-
-        if (!query) {
-            cout << "login succeed" << endl;
-            cout << username << endl;
-        }
-        
-        else {
-            cout << "login error" << endl;
-        }
-    }
-};
-
-void display(MYSQL* conn) {
-
-    conn = mysql_real_connect(conn, "localhost", "root", "", "foodbear", 3306, NULL, 0);
-
-    string slt = "SELECT * FROM customer";
-    const char* q = slt.c_str();
-
-    int qstate = mysql_query(conn, "SELECT * FROM custom");
-
-    cout << "Selected" << endl;
-
-    if (qstate == 0) {
-        res = mysql_store_result(conn);
-        int count = mysql_num_fields(res);
-        cout << count << endl;
-        while (row = mysql_fetch_row(res)) {
-            for (int i = 0; i < count; i++) {
-                cout << "\t" << row[i];
-            }
-            cout << endl;
-        }
-    }
-    else {
-        cout << "failed to fetch";
-    }
-}
-
-void gData(Customer cust) {
-    string userid = cust.getID();
-    string pass = cust.getPassword();
-
-    int qstate = mysql_query(conn, "SELECT * FROM customer");
-
-    res = mysql_store_result(conn);
-    int count = mysql_num_fields(res);
-
-    if (count > 0) {
-
-    }
-}
-
 int main()
 {
     system("Connection To DB");
@@ -146,7 +77,6 @@ int main()
     db_response::ConnectionFunction();
     mainHeader();
 
-    cout << "Hello World!\nasdsasdadasdadasdasdadasd\nsdadfadfadadasdasdasdasdsa\n";
     cout << "Welcome to FoodBear Delivery\nNow all on fingertips\n";
 
     int a;
@@ -230,17 +160,14 @@ int main()
     }
 
     else if (a == 3) {
+        mainHeader();
         string slt = "SELECT * FROM customer";
         const char* q = slt.c_str();
         int qstate = mysql_query(conn, q);
 
-        cout << "Selected" << endl;
-
         if (!qstate) {
             res = mysql_store_result(conn);
             int count = mysql_num_fields(res);
-            cout << res << endl;
-            cout << count << endl;
             cust.fetchData(res, count);
             cout << "fetched" << endl;
 
@@ -252,7 +179,9 @@ int main()
             cin >> pass;
 
             if (cust.login(user, pass)) {
+            cout << "Welcome " << cust.getName() << endl;
             }
+
         }
         else {
             cout << "failed to fetch";
