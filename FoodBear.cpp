@@ -4,6 +4,8 @@
 
 #include <sstream>
 
+#include <conio.h>
+
 #include <mysql.h>
 
 #include "Customer.h"
@@ -69,6 +71,59 @@ public:
         }
     }
 };
+
+// Enumerator
+enum IN {
+
+    // 13 is ASCII for carriage
+    // return
+    IN_BACK = 8,
+    IN_RET = 13
+
+};
+
+// Function that accepts the password
+std::string takePasswdFromUser(
+    char sp = '*')
+{
+    // Stores the password
+    string passwd = "";
+    char ch_ipt;
+
+    // Until condition is true
+    while (true) {
+
+        ch_ipt = _getch();
+
+        // if the ch_ipt
+        if (ch_ipt == IN::IN_RET) {
+            cout << endl;
+            return passwd;
+        }
+        else if (ch_ipt == IN::IN_BACK
+            && passwd.length() != 0) {
+            passwd.pop_back();
+
+            // Cout statement is very
+            // important as it will erase
+            // previously printed character
+            cout << "\b \b";
+
+            continue;
+        }
+
+        // Without using this, program
+        // will crash as \b can't be
+        // print in beginning of line
+        else if (ch_ipt == IN::IN_BACK
+            && passwd.length() == 0) {
+            continue;
+        }
+
+        passwd.push_back(ch_ipt);
+        cout << sp;
+    }
+}
 
 int main()
 {
@@ -176,7 +231,11 @@ int main()
             cout << "Username: ";
             cin >> user;
             cout << "Password: ";
-            cin >> pass;
+            //cin >> pass;
+
+            pass = takePasswdFromUser();
+
+            cout << pass << endl;
 
             if (cust.login(user, pass)) {
             cout << "Welcome " << cust.getName() << endl;
