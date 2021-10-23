@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 
+#include <sstream>
+
 #include <mysql.h>
 
 using namespace std;
@@ -30,6 +32,8 @@ public:
 	~Customer();
 
 	bool login(string, string);
+
+	void registerCustomer(MYSQL*);
 
 	void fetchData(MYSQL_RES*, int);
 	string getName();

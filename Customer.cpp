@@ -27,6 +27,40 @@ bool Customer::login(string user, string pass)
 	return false;
 }
 
+void Customer::registerCustomer(MYSQL* conn) {
+	string username, password, name, noPhone;
+	cout << "\n---Registration For Customer---\n";
+	cout << "Enter Username: ";
+	cin >> username;
+	cout << "Enter Password: ";
+	cin >> password;
+	cout << "Enter Your Name: ";
+	//cin >> name;
+	cin.ignore();
+	getline(cin, name);
+	cout << "Enter Phone Number: ";
+	cin >> noPhone;
+
+	stringstream ss;
+
+	ss << "INSERT INTO customer (username, password, name, phone) VALUES ('"+ username +"', '"+ password +"', '"+ name +"', '"+ noPhone +"')";
+
+	string slt = "SELECT * FROM customer";
+
+	string query = ss.str();
+	const char* q = query.c_str();
+	int qstate = mysql_query(conn, q);
+
+	if (!qstate) {
+		cout << "\nRecord Inserted!\n";
+		system("pause");
+	}
+	else {
+		cout << "\nRecord Failed To Insert\n";
+		system("pause");
+	}
+}
+
 void Customer::fetchData(MYSQL_RES* res, int count) {
 	MYSQL_ROW row;
 	int i = 0;
@@ -36,7 +70,12 @@ void Customer::fetchData(MYSQL_RES* res, int count) {
 		data[i].password = (string)row[2];
 		data[i].name = (string)row[3];
 		data[i].phone = (string)row[4];
-		data[i].address = (string)row[5];
+		if (row[5] == NULL) {
+			data[i].address = "0";
+		}
+		else {
+			data[i].address = (string)row[5];
+		}
 
 	/*	cout << (int)row[0] << endl;
 		cout << (string)row[1] << endl;

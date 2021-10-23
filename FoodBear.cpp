@@ -147,7 +147,6 @@ int main()
 
     Customer cust = Customer("customer01", "cust123");
 
-
     do {
         displayMainMenu();
         cin >> chooseMain;
@@ -161,6 +160,9 @@ int main()
                 cin >> chooseLogin;
 
                 if (chooseLogin == 1) {
+                   
+                }
+                else if (chooseLogin == 2) {
                     mainHeader();
                     string slt = "SELECT * FROM customer";
                     const char* q = slt.c_str();
@@ -177,7 +179,6 @@ int main()
                         cout << "Username: ";
                         cin >> user;
                         cout << "Password: ";
-                        //cin >> pass;
 
                         pass = takePasswdFromUser();
 
@@ -187,13 +188,14 @@ int main()
                             cout << "Welcome " << cust.getName() << endl;
                             system("pause");
                         }
+                        else {
+                            cout << "Failed login" << endl;
+                            system("pause");
+                        }
                     }
                     else {
                         cout << "failed to fetch";
                     }
-                }
-                else if (chooseLogin == 2) {
-
                 }
                 else if (chooseLogin == 3) {
 
@@ -203,7 +205,27 @@ int main()
             } while (chooseLogin != 0);
         } 
         else if (chooseMain == 2) {
-            cout << "Register\n";
+            do {
+                mainHeader();
+
+                cout << "Enter 1-Vendor, 2-Customer, 3-Rider, 0-Back to Main Menu\n";
+                cout << ">> ";
+                cin >> chooseRegister;
+
+                if (chooseRegister == 1) {
+
+                }
+                else if (chooseRegister == 2) {
+                    mainHeader();
+                    cust.registerCustomer(conn);
+                }
+                else if (chooseRegister == 3) {
+
+                }
+                else if (chooseRegister == 0) {
+
+                }
+            } while (chooseRegister != 0);
         }
         else if (chooseMain == 0) {
             cout << "Exiting..\n";
