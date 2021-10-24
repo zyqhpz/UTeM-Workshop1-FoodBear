@@ -2,7 +2,7 @@
 
 Vendor::Vendor()
 {
-	this->vendorUsername = "";
+	//this->vendorUsername = "";
 }
 
 Vendor::~Vendor()
@@ -48,7 +48,7 @@ void Vendor::registerVendor(MYSQL* conn) {
 	int qstate = mysql_query(conn, q);
 
 	if (!qstate) {
-		cout << "\nRegistration Success!\n";
+		cout << "\nRegistration Successful!\n";
 		system("pause");
 	}
 	else {

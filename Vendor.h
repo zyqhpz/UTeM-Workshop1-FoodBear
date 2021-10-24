@@ -23,7 +23,7 @@ struct VendorDetails {
 
 class Vendor {
 private:
-	int custNum;
+	//int custNum;
 	string vendorName, vendorUsername, vendorPass, vendorID, vendorAddress, vendorPhone;
 	VendorDetails data[100];
 

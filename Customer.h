@@ -12,7 +12,7 @@ using namespace std;
 
 #pragma once
 
-struct Details {
+struct CustomerDetails {
 	int id;
 	string username;
 	string password;
@@ -23,11 +23,12 @@ struct Details {
 
 class Customer {
 private:
-	int custNum;
+	//int custNum
 	string custName, custUsername, custPass, custID, custAddress, custPhone;
-	Details data[100];
+	CustomerDetails data[100];
 
 public:
+	Customer();
 	Customer(string, string);
 	~Customer();
 

@@ -15,6 +15,32 @@
 
 using namespace std;
 
+class db_connection {
+public:
+    static MYSQL* ConnectionFunction() {
+        MYSQL* conn;
+        conn = mysql_init(0);
+        if (conn) {
+            cout << "Connected" << endl;
+            system("cls");
+        }
+        else {
+            cout << "DB failed" << mysql_errno(conn) << endl;
+        }
+
+        conn = mysql_real_connect(conn, "localhost", "root", "", "foodbear", 3306, NULL, 0);
+
+        if (conn) {
+            cout << "Connected to MySQL" << conn << endl;
+            //system("pause");
+        }
+        else {
+            cout << "Failed" << mysql_errno(conn) << endl;
+        }
+    return conn;
+    }
+};
+
 // Enumerator
 enum IN {
 

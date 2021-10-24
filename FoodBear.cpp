@@ -12,6 +12,8 @@
 
 #include "Customer.h"
 #include "Vendor.h"
+#include "Rider.h"
+#include "Admin.h"
 
 #include "utils.h"
 
@@ -53,73 +55,6 @@ inline void mainHeader(std::string additional = "") {
     }
 }
 
-class db_response {
-public:
-    static void ConnectionFunction() {
-        conn = mysql_init(0);
-        if (conn) {
-            cout << "Connected" << endl;
-            system("cls");
-        }
-        else {
-            cout << "DB failed" << mysql_errno(conn) << endl;
-        }
-
-        conn = mysql_real_connect(conn, "localhost", "root", "", "foodbear", 3306, NULL, 0);
-
-        if (conn) {
-            cout << "Connected to MySQL" << conn << endl;
-            //system("pause");
-        }
-        else {
-            cout << "Failed" << mysql_errno(conn) << endl;
-        }
-    }
-};
-
-// Function that accepts the password
-std::string takePasswdFromUser(
-    char sp = '*')
-{
-    // Stores the password
-    string passwd = "";
-    char ch_ipt;
-
-    // Until condition is true
-    while (true) {
-
-        ch_ipt = _getch();
-
-        // if the ch_ipt
-        if (ch_ipt == IN::IN_RET) {
-            cout << endl;
-            return passwd;
-        }
-        else if (ch_ipt == IN::IN_BACK
-            && passwd.length() != 0) {
-            passwd.pop_back();
-
-            // Cout statement is very
-            // important as it will erase
-            // previously printed character
-            cout << "\b \b";
-
-            continue;
-        }
-
-        // Without using this, program
-        // will crash as \b can't be
-        // print in beginning of line
-        else if (ch_ipt == IN::IN_BACK
-            && passwd.length() == 0) {
-            continue;
-        }
-
-        passwd.push_back(ch_ipt);
-        cout << sp;
-    }
-}
-
 void displayMainMenu() {
     mainHeader();
 
@@ -133,13 +68,7 @@ int main()
 {
     system("Connection To DB");
 
-    db_response::ConnectionFunction();
-
-
-    sqlite3* db;
-    char* zErrMsg = 0;
-    int rc;
-    int c = 0;
+    conn = db_connection::ConnectionFunction();
 
     int chooseMain;
     int chooseLogin;
@@ -149,8 +78,8 @@ int main()
     int* t = &totalCustomer;
     int totalVendor = 0;
 
-    Customer cust = Customer("customer01", "cust123");
-    Vendor vendor = Vendor(); 
+    Customer cust;
+    Vendor vendor;
 
     do {
         displayMainMenu();
@@ -206,10 +135,6 @@ int main()
                     const char* q = sql.c_str();
                     int qstate = mysql_query(conn, q);
 
-                    /*if (!queryS) {
-                        cout << queryS << endl;
-                    }*/
-
                     if (!qstate) {
                         res = mysql_store_result(conn);
                         int count = mysql_num_fields(res);
@@ -222,7 +147,7 @@ int main()
                         cin >> user;
                         cout << "Password: ";
 
-                        pass = takePasswdFromUser();
+                        pass = inputPassword();
 
                         cout << pass << endl;
 
@@ -250,6 +175,7 @@ int main()
             do {
                 mainHeader();
 
+                cout << "--Registration--\n";
                 cout << "Enter 1-Vendor, 2-Customer, 3-Rider, 0-Back to Main Menu\n";
                 cout << ">> ";
                 cin >> chooseRegister;

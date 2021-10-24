@@ -1,5 +1,10 @@
 #include "Customer.h"
 
+
+Customer::Customer()
+{
+}
+
 Customer::Customer(string custUsername, string custPass)
 {
 	this->custUsername = custUsername;
@@ -52,11 +57,11 @@ void Customer::registerCustomer(MYSQL* conn) {
 	int qstate = mysql_query(conn, q);
 
 	if (!qstate) {
-		cout << "\nRecord Inserted!\n";
+		cout << "\nRegistration Successful!\n";
 		system("pause");
 	}
 	else {
-		cout << "\nRecord Failed To Insert\n";
+		cout << "\nRegistration Failed!\n";
 		system("pause");
 	}
 }
