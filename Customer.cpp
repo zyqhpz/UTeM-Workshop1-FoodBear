@@ -12,7 +12,7 @@ Customer::~Customer()
 
 bool Customer::login(string user, string pass)
 {
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < 6; i++) {
 		if (user == data[i].username && pass == data[i].password) {
 			cout << "login succeed" << endl;
 			this->custID = data[i].id;
@@ -61,9 +61,10 @@ void Customer::registerCustomer(MYSQL* conn) {
 	}
 }
 
-void Customer::fetchData(MYSQL_RES* res, int count) {
+int Customer::fetchData(MYSQL_RES* res, int count) {
 	MYSQL_ROW row;
 	int i = 0;
+	int total = 0;
 	while (row = mysql_fetch_row(res)) {
 		data[i].id = stoi(row[0]); // string to int
 		data[i].username = (string)row[1];
@@ -85,13 +86,15 @@ void Customer::fetchData(MYSQL_RES* res, int count) {
 		cout << (string)row[5] << endl;
 		cout << endl;*/
 		i++;
+		total++;
 	}
 	cout << "\tid" << "\tusername" << "\tpassword" << "\tname" << "\t\tphone" << "\t\taddress" << endl;
 	cout << "---------------------------------------------------------------------------------------------------------------" << endl;
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < total; i++) {
 		cout << "\t" << data[i].id << "\t" << data[i].username << "\t" << data[i].password << "\t\t" << data[i].name << "\t" << data[i].phone << "\t" << data[i].address << endl;
 	}
 	cout << endl;
+	return total;
 }
 
 string Customer::getName() {

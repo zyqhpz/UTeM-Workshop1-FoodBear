@@ -152,6 +152,7 @@
     <ClInclude Include="Admin.h" />
     <ClInclude Include="Customer.h" />
     <ClInclude Include="Rider.h" />
+    <ClInclude Include="utils.h" />
     <ClInclude Include="Vendor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

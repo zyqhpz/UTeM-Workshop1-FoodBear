@@ -35,7 +35,7 @@ public:
 
 	void registerCustomer(MYSQL*);
 
-	void fetchData(MYSQL_RES*, int);
+	int fetchData(MYSQL_RES*, int);
 	string getName();
 	string getID();
 	string getPassword();

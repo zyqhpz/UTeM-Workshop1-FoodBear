@@ -8,7 +8,12 @@
 
 #include <mysql.h>
 
+#include <winsqlite/winsqlite3.h>
+
 #include "Customer.h"
+#include "Vendor.h"
+
+#include "utils.h"
 
 using namespace std;
 
@@ -72,16 +77,6 @@ public:
     }
 };
 
-// Enumerator
-enum IN {
-
-    // 13 is ASCII for carriage
-    // return
-    IN_BACK = 8,
-    IN_RET = 13
-
-};
-
 // Function that accepts the password
 std::string takePasswdFromUser(
     char sp = '*')
@@ -141,11 +136,21 @@ int main()
     db_response::ConnectionFunction();
 
 
+    sqlite3* db;
+    char* zErrMsg = 0;
+    int rc;
+    int c = 0;
+
     int chooseMain;
     int chooseLogin;
     int chooseRegister;
 
+    int totalCustomer = 0;
+    int* t = &totalCustomer;
+    int totalVendor = 0;
+
     Customer cust = Customer("customer01", "cust123");
+    Vendor vendor = Vendor(); 
 
     do {
         displayMainMenu();
@@ -160,22 +165,59 @@ int main()
                 cin >> chooseLogin;
 
                 if (chooseLogin == 1) {
-                   
-                }
-                else if (chooseLogin == 2) {
                     mainHeader();
-                    string slt = "SELECT * FROM customer";
-                    const char* q = slt.c_str();
+                    string sql = "SELECT * FROM vendor";
+                    string r = "SELECT COUNT(*) FROM vendor";
+                    const char* q = sql.c_str();
                     int qstate = mysql_query(conn, q);
 
                     if (!qstate) {
                         res = mysql_store_result(conn);
                         int count = mysql_num_fields(res);
-                        cust.fetchData(res, count);
+                        totalVendor = vendor.fetchData(res, count);
                         cout << "fetched" << endl;
 
                         string user, pass;
-                        cout << "----Login----" << endl;
+                        cout << "\n----Login----\n";
+                        cout << "Username: ";
+                        cin >> user;
+                        cout << "Password: ";
+
+                        pass = inputPassword();
+
+                        cout << pass << endl;
+
+                        if (vendor.login(user, pass)) {
+                            cout << "Welcome " << cust.getName() << endl;
+                            system("pause");
+                        }
+                        else {
+                            cout << "Failed login" << endl;
+                            system("pause");
+                        }
+                    }
+                    else {
+                        cout << "failed to fetch";
+                    }
+                }
+                else if (chooseLogin == 2) {
+                    mainHeader();
+                    string sql = "SELECT * FROM customer";
+                    const char* q = sql.c_str();
+                    int qstate = mysql_query(conn, q);
+
+                    /*if (!queryS) {
+                        cout << queryS << endl;
+                    }*/
+
+                    if (!qstate) {
+                        res = mysql_store_result(conn);
+                        int count = mysql_num_fields(res);
+                        totalCustomer = cust.fetchData(res, count);
+                        cout << "fetched " << totalCustomer << endl;
+
+                        string user, pass;
+                        cout << "\n----Login----\n";
                         cout << "Username: ";
                         cin >> user;
                         cout << "Password: ";
@@ -213,7 +255,8 @@ int main()
                 cin >> chooseRegister;
 
                 if (chooseRegister == 1) {
-
+                    mainHeader();
+                    vendor.registerVendor(conn);
                 }
                 else if (chooseRegister == 2) {
                     mainHeader();
