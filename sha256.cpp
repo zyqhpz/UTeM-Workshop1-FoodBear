@@ -167,3 +167,5 @@ std::string sha256(std::string input)
         sprintf(buf+i*2, "%02x", digest[i]);
     return std::string(buf);
 }
+// sprintf was deprecated, search online to change instead of disable warning
+// https://social.msdn.microsoft.com/Forums/vstudio/en-US/cc2488bf-9100-46a6-a2e0-968e5d5707fc/how-do-i-disable-deprecation-in-vc-express-edition?forum=vcgeneral

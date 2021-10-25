@@ -66,7 +66,7 @@ void Customer::registerCustomer(MYSQL* conn) {
 	}
 }
 
-int Customer::fetchData(MYSQL_RES* res, int count) {
+int Customer::fetchData(MYSQL_RES* res) {
 	MYSQL_ROW row;
 	int i = 0;
 	int total = 0;

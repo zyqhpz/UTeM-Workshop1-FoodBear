@@ -31,7 +31,7 @@ public:
 	Vendor();
 	~Vendor();
 
-	bool login(string, string);
+	bool login(string, string, int);
 
 	void registerVendor(MYSQL*);
 

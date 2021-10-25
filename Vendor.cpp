@@ -9,9 +9,9 @@ Vendor::~Vendor()
 {
 }
 
-bool Vendor::login(string user, string pass)
+bool Vendor::login(string user, string pass, int totalVendor)
 {
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < totalVendor; i++) {
 		if (user == data[i].username && pass == data[i].password) {
 			cout << "login succeed" << endl;
 			this->vendorID = data[i].id;

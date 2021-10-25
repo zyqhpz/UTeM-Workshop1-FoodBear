@@ -21,10 +21,27 @@
 
 using namespace std;
 
+// Global variable
+MYSQL* conn;
+
+MYSQL_ROW row;
+MYSQL_RES* res;
+
+// Total rows for each table
+int totalCustomer;
+int totalRider;
+int totalVendor;
+int totalAdmin = 0;
+
+// class object declaration
+Customer cust;
+Vendor vendor;
+Rider rider;
+Admin admin;
+
 class db_connection {
 public:
     static MYSQL* ConnectionFunction() {
-        MYSQL* conn;
         conn = mysql_init(0);
         if (conn) {
             cout << "Connected" << endl;
@@ -128,22 +145,46 @@ string inputPassword(char sp = '*') {
     }
 }
 
-bool loginUser(int logType, MYSQL* conn) {
+void fetchAllData() {
+    string sqlVendor = "SELECT * FROM vendor";
+    string sqlCust = "SELECT * FROM customer";
+    string sqlRider = "SELECT * FROM rider";
+
+    const char* qVendor = sqlVendor.c_str();
+    const char* qCust = sqlCust.c_str();
+    const char* qRider = sqlRider.c_str();
+
+    int qSVendor = mysql_query(conn, qVendor);
+    if (!qSVendor) {
+        res = mysql_store_result(conn);
+        int count = mysql_num_fields(res);
+        totalVendor = vendor.fetchData(res, count);
+    }
+
+    int qSCust = mysql_query(conn, qCust);
+    if (!qSCust) {
+        res = mysql_store_result(conn);
+        totalCustomer = cust.fetchData(res);
+        cout << totalCustomer << endl;
+        //system("pause");
+    }
+
+    int qSRider = mysql_query(conn, qRider);
+    if (!qSRider) {
+        res = mysql_store_result(conn);
+        totalRider = rider.fetchData(res);
+        cout << totalRider << endl;
+        //system("pause");
+    }
+
+    else {
+        cout << "Failed to fetch\n";
+        system("pause");
+    }
+}
+
+bool loginUser(int logType) {
     mainHeader();
-
-    MYSQL_ROW row;
-    MYSQL_RES* res;
-
-    string sql = "SELECT * FROM rider";
-    const char* q = sql.c_str();
-    int qstate = mysql_query(conn, q);
-
-    int totalRider, totalCustomer, total;
-    Customer cust;
-    Vendor vendor;
-    Rider rider;
-
-    bool log;
 
     string user, pass;
     cout << "\n----Login----\n";
@@ -155,33 +196,27 @@ bool loginUser(int logType, MYSQL* conn) {
 
     cout << pass << endl;
 
-    if (logType == 1) { // Customer
+    /*
+    if (logType == 3) { // Customer
        // totalRider = rider.fetchData(res, count);
         log = cust.login(user, pass, totalRider);
+    }*/
+
+    if (logType == 1 && vendor.login(user, pass, totalVendor)) {
+       // cout << "Welcome " << rider.getName() << endl;
+        return true;
     }
 
-    if (!qstate) {
-        res = mysql_store_result(conn);
-        int count = mysql_num_fields(res);
-        totalRider = rider.fetchData(res, count);
-        cout << "fetched " << totalRider << endl;
-
-
-
-
-       
-
-        if (rider.login(user, pass, totalRider)) {
-            cout << "Welcome " << rider.getName() << endl;
-            system("pause");
-        }
-        else {
-            cout << "Failed login" << endl;
-            system("pause");
-        }
+    if (logType == 2 && cust.login(user, pass, totalCustomer)) {
+       // cout << "Welcome " << rider.getName() << endl;
+        return true;
     }
-    else {
-        cout << "failed to fetch";
+
+    if (logType == 3 && rider.login(user, pass, totalRider)) {
+       // cout << "Welcome " << rider.getName() << endl;
+        return true;
     }
+
+    return false;
 }
 #endif

@@ -56,7 +56,7 @@ void Rider::registerRider(MYSQL* conn) {
 	}
 }
 
-int Rider::fetchData(MYSQL_RES* res, int count) {
+int Rider::fetchData(MYSQL_RES* res) {
 	MYSQL_ROW row;
 	int i = 0;
 	int total = 0;

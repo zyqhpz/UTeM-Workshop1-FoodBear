@@ -19,12 +19,6 @@
 
 using namespace std;
 
-// Global variable
-MYSQL* conn;
-
-MYSQL_ROW row;
-MYSQL_RES* res;
-
 void displayMainMenu() {
     mainHeader();
 
@@ -38,21 +32,12 @@ int main()
 {
     system("Connection To DB");
 
-    conn = db_connection::ConnectionFunction();
+    db_connection::ConnectionFunction();
+    fetchAllData();
 
     int chooseMain;
     int chooseLogin;
     int chooseRegister;
-
-    int totalCustomer = 0;
-    int totalRider = 0;
-    int* t = &totalCustomer;
-    int totalVendor = 0;
-
-    Customer cust;
-    Vendor vendor;
-    Rider rider;
-    Admin admin;
 
     do {
         displayMainMenu();
@@ -68,109 +53,33 @@ int main()
                 cin >> chooseLogin;
 
                 if (chooseLogin == 1) {
-                    mainHeader();
-                    string sql = "SELECT * FROM vendor";
-                    string r = "SELECT COUNT(*) FROM vendor";
-                    const char* q = sql.c_str();
-                    int qstate = mysql_query(conn, q);
-
-                    if (!qstate) {
-                        res = mysql_store_result(conn);
-                        int count = mysql_num_fields(res);
-                        totalVendor = vendor.fetchData(res, count);
-                        cout << "fetched" << endl;
-
-                        string user, pass;
-                        cout << "\n----Login----\n";
-                        cout << "Username: ";
-                        cin >> user;
-                        cout << "Password: ";
-
-                        pass = inputPassword();
-
-                        cout << pass << endl;
-
-                        if (vendor.login(user, pass)) {
-                            cout << "Welcome " << vendor.getName() << endl;
-                            system("pause");
-                        }
-                        else {
-                            cout << "Failed login" << endl;
-                            system("pause");
-                        }
+                    if (loginUser(chooseLogin)) {
+                        cout << "Welcome " << vendor.getName() << endl;
+                        system("pause");
                     }
                     else {
-                        cout << "failed to fetch";
+                        cout << "failed login\n";
+                        system("pause");
                     }
                 }
                 else if (chooseLogin == 2) {
-                    mainHeader();
-                    string sql = "SELECT * FROM customer";
-                    const char* q = sql.c_str();
-                    int qstate = mysql_query(conn, q);
-
-                    if (!qstate) {
-                        res = mysql_store_result(conn);
-                        int count = mysql_num_fields(res);
-                        totalCustomer = cust.fetchData(res, count);
-                        cout << "fetched " << totalCustomer << endl;
-
-                        string user, pass;
-                        cout << "\n----Login----\n";
-                        cout << "Username: ";
-                        cin >> user;
-                        cout << "Password: ";
-
-                        pass = inputPassword();
-
-                        cout << pass << endl;
-
-                        if (cust.login(user, pass, totalCustomer)) {
-                            cout << "Welcome " << cust.getName() << endl;
-                            system("pause");
-                        }
-                        else {
-                            cout << "Failed login" << endl;
-                            system("pause");
-                        }
+                    if (loginUser(chooseLogin)) {
+                        cout << "Welcome " << cust.getName() << endl;
+                        system("pause");
                     }
                     else {
-                        cout << "failed to fetch";
+                        cout << "failed login\n";
+                        system("pause");
                     }
                 }
                 else if (chooseLogin == 3) {
-                    mainHeader();
-                    string sql = "SELECT * FROM rider";
-                    const char* q = sql.c_str();
-                    int qstate = mysql_query(conn, q);
-
-                    if (!qstate) {
-                        res = mysql_store_result(conn);
-                        int count = mysql_num_fields(res);
-                        totalRider = rider.fetchData(res, count);
-                        cout << "fetched " << totalRider << " data " << endl;
-
-                        string user, pass;
-                        cout << "\n----Login----\n";
-                        cout << "Username: ";
-                        cin >> user;
-                        cout << "Password: ";
-
-                        pass = inputPassword();
-
-                        cout << pass << endl;
-
-                        if (rider.login(user, pass, totalRider)) {
-                            cout << "Welcome " << rider.getName() << endl;
-                            system("pause");
-                        }
-                        else {
-                            cout << "Failed login" << endl;
-                            system("pause");
-                        }
+                    if (loginUser(chooseLogin)) {
+                        cout << "Welcome " << rider.getName() << endl;
+                        system("pause");
                     }
                     else {
-                        cout << "failed to fetch";
+                        cout << "failed login\n";
+                        system("pause");
                     }
                 }
                 else if (chooseLogin == 0) {
