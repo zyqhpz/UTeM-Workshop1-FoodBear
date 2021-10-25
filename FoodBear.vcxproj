@@ -145,13 +145,17 @@
     <ClCompile Include="Admin.cpp" />
     <ClCompile Include="Customer.cpp" />
     <ClCompile Include="FoodBear.cpp" />
+    <ClCompile Include="md5.cpp" />
     <ClCompile Include="Rider.cpp" />
+    <ClCompile Include="sha256.cpp" />
     <ClCompile Include="Vendor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Admin.h" />
     <ClInclude Include="Customer.h" />
+    <ClInclude Include="md5.h" />
     <ClInclude Include="Rider.h" />
+    <ClInclude Include="sha256.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="Vendor.h" />
   </ItemGroup>

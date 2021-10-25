@@ -25,36 +25,6 @@ MYSQL* conn;
 MYSQL_ROW row;
 MYSQL_RES* res;
 
-inline void mainHeader(std::string additional = "") {
-    system("cls");
-
-
-   /* HANDLE screen = GetStdHandle(STD_OUTPUT_HANDLE);
-
-    COORD max_size = GetLargestConsoleWindowSize(screen);
-
-    char s[] = "Hello world!";
-
-    COORD pos;
-    pos.X = (max_size.X - sizeof(s)) / 2;
-    pos.Y = max_size.Y / 2;
-    SetConsoleCursorPosition(screen, pos);
-
-    LPDWORD written{};
-    WriteConsole(screen, s, sizeof(s), written, 0);*/
-
-    cout << setw(25);
-    cout << "###########################################################" << endl;
-    cout << "##                                                       ##" << endl;
-    cout << "##   FoodBear Online Food Ordering and Delivery System   ##" << endl;
-    cout << "##                                                       ##" << endl;
-    cout << "###########################################################" << endl << endl;
-
-    if (additional != "") {
-        cout << additional << endl;
-    }
-}
-
 void displayMainMenu() {
     mainHeader();
 
@@ -75,14 +45,18 @@ int main()
     int chooseRegister;
 
     int totalCustomer = 0;
+    int totalRider = 0;
     int* t = &totalCustomer;
     int totalVendor = 0;
 
     Customer cust;
     Vendor vendor;
+    Rider rider;
+    Admin admin;
 
     do {
         displayMainMenu();
+        cout << "\n>> ";
         cin >> chooseMain;
 
         if (chooseMain == 1) {
@@ -117,7 +91,7 @@ int main()
                         cout << pass << endl;
 
                         if (vendor.login(user, pass)) {
-                            cout << "Welcome " << cust.getName() << endl;
+                            cout << "Welcome " << vendor.getName() << endl;
                             system("pause");
                         }
                         else {
@@ -151,7 +125,7 @@ int main()
 
                         cout << pass << endl;
 
-                        if (cust.login(user, pass)) {
+                        if (cust.login(user, pass, totalCustomer)) {
                             cout << "Welcome " << cust.getName() << endl;
                             system("pause");
                         }
@@ -165,7 +139,39 @@ int main()
                     }
                 }
                 else if (chooseLogin == 3) {
+                    mainHeader();
+                    string sql = "SELECT * FROM rider";
+                    const char* q = sql.c_str();
+                    int qstate = mysql_query(conn, q);
 
+                    if (!qstate) {
+                        res = mysql_store_result(conn);
+                        int count = mysql_num_fields(res);
+                        totalRider = rider.fetchData(res, count);
+                        cout << "fetched " << totalRider << " data " << endl;
+
+                        string user, pass;
+                        cout << "\n----Login----\n";
+                        cout << "Username: ";
+                        cin >> user;
+                        cout << "Password: ";
+
+                        pass = inputPassword();
+
+                        cout << pass << endl;
+
+                        if (rider.login(user, pass, totalRider)) {
+                            cout << "Welcome " << rider.getName() << endl;
+                            system("pause");
+                        }
+                        else {
+                            cout << "Failed login" << endl;
+                            system("pause");
+                        }
+                    }
+                    else {
+                        cout << "failed to fetch";
+                    }
                 }
                 else if (chooseLogin == 0) {
                 }
@@ -189,7 +195,9 @@ int main()
                     cust.registerCustomer(conn);
                 }
                 else if (chooseRegister == 3) {
-
+                    mainHeader();
+                    rider.registerRider(conn);
+                    break;
                 }
                 else if (chooseRegister == 0) {
 

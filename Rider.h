@@ -22,14 +22,14 @@ struct RiderDetails {
 
 class Rider {
 private:
-	string adminName, adminUsername, adminPass, adminID, adminPhone;
+	string riderName, riderUsername, riderPass, riderID, riderPhone;
 	RiderDetails data[100];
 
 public:
 	Rider();
 	~Rider();
 
-	bool login(string, string);
+	bool login(string, string, int);
 
 	void registerRider(MYSQL*);
 

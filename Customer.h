@@ -32,7 +32,7 @@ public:
 	Customer(string, string);
 	~Customer();
 
-	bool login(string, string);
+	bool login(string, string, int);
 
 	void registerCustomer(MYSQL*);
 

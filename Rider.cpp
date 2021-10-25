@@ -9,15 +9,16 @@ Rider::~Rider()
 }
 
 
-bool Rider::login(string user, string pass)
+bool Rider::login(string user, string pass, int totalRider)
 {
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < totalRider; i++) {
 		if (user == data[i].username && pass == data[i].password) {
 			cout << "login succeed" << endl;
-			this->adminID = data[i].id;
-			this->adminUsername = data[i].username;
-			this->adminPass = data[i].password;
-			this->adminName = data[i].name;
+			this->riderID = data[i].id;
+			this->riderUsername = data[i].username;
+			this->riderPass = data[i].password;
+			this->riderName = data[i].name;
+			this->riderPhone = data[i].phone;
 			return true;
 		}
 	}
@@ -26,7 +27,7 @@ bool Rider::login(string user, string pass)
 
 void Rider::registerRider(MYSQL* conn) {
 	string username, password, name, noPhone;
-	cout << "\n---Registration For Customer---\n";
+	cout << "\n---Registration For Rider---\n";
 	cout << "Enter Username: ";
 	cin >> username;
 	cout << "Enter Password: ";
@@ -34,7 +35,7 @@ void Rider::registerRider(MYSQL* conn) {
 	cout << "Enter Your Name: ";
 	cin.ignore();
 	getline(cin, name);
-	cout << "Enter Your Name: ";
+	cout << "Enter Phone Number: ";
 	cin >> noPhone;
 
 	stringstream ss;
@@ -64,29 +65,30 @@ int Rider::fetchData(MYSQL_RES* res, int count) {
 		data[i].username = (string)row[1];
 		data[i].password = (string)row[2];
 		data[i].name = (string)row[3];
+		data[i].phone = (string)row[4];
 
 		i++;
 		total++;
 	}
-	cout << "\tid" << "\tusername" << "\tpassword" << "\tname" << endl;
+	cout << "\tid" << "\tusername" << "\tpassword" << "\tname" << "\t\tPhone" << endl;
 	cout << "---------------------------------------------------------------------------------------------------------------" << endl;
 	for (int i = 0; i < total; i++) {
-		cout << "\t" << data[i].id << "\t" << data[i].username << "\t" << data[i].password << "\t\t" << data[i].name << "\t" << endl;
+		cout << "\t" << data[i].id << "\t" << data[i].username << "\t\t" << data[i].password << "\t\t" << data[i].name << "\t" << data[i].phone << endl;
 	}
 	cout << endl;
 	return total;
 }
 
 string Rider::getName() {
-	return this->adminName;
+	return this->riderName;
 }
 
 string Rider::getID()
 {
-	return this->adminID;
+	return this->riderID;
 }
 
 string Rider::getPassword()
 {
-	return this->adminPass;
+	return this->riderPass;
 }

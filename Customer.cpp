@@ -15,9 +15,9 @@ Customer::~Customer()
 {
 }
 
-bool Customer::login(string user, string pass)
+bool Customer::login(string user, string pass, int totalCustomer)
 {
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < totalCustomer; i++) {
 		if (user == data[i].username && pass == data[i].password) {
 			cout << "login succeed" << endl;
 			this->custID = data[i].id;
