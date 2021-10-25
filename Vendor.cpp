@@ -11,6 +11,7 @@ Vendor::~Vendor()
 
 bool Vendor::login(string user, string pass, int totalVendor)
 {
+	pass = sha256(pass);
 	for (int i = 0; i < totalVendor; i++) {
 		if (user == data[i].username && pass == data[i].password) {
 			cout << "login succeed" << endl;
@@ -33,6 +34,7 @@ void Vendor::registerVendor(MYSQL* conn) {
 	cin >> username;
 	cout << "Enter Password: ";
 	cin >> password;
+	password = sha256(password);
 	cout << "Enter Vendor Name: ";
 	cin.ignore();
 	getline(cin, name);
@@ -68,7 +70,7 @@ int Vendor::fetchData(MYSQL_RES* res, int count) {
 		data[i].name = (string)row[3];
 		data[i].phone = (string)row[4];
 		if (row[5] == NULL) {
-			data[i].address = "0";
+			data[i].address = "Not Set";
 		}
 		else {
 			data[i].address = (string)row[5];

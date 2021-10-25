@@ -39,6 +39,7 @@ void Customer::registerCustomer(MYSQL* conn) {
 	cin >> username;
 	cout << "Enter Password: ";
 	cin >> password;
+	password = sha256(password);
 	cout << "Enter Your Name: ";
 	//cin >> name;
 	cin.ignore();

@@ -8,9 +8,9 @@ Rider::~Rider()
 {
 }
 
-
 bool Rider::login(string user, string pass, int totalRider)
 {
+	pass = sha256(pass);
 	for (int i = 0; i < totalRider; i++) {
 		if (user == data[i].username && pass == data[i].password) {
 			cout << "login succeed" << endl;
@@ -32,6 +32,7 @@ void Rider::registerRider(MYSQL* conn) {
 	cin >> username;
 	cout << "Enter Password: ";
 	cin >> password;
+	password = sha256(password);
 	cout << "Enter Your Name: ";
 	cin.ignore();
 	getline(cin, name);
@@ -84,7 +85,6 @@ void Rider::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 	int operation;
 
 	string pass, username, name, phone;
-	//string id = (string)this->custID;
 
 	do {
 		mainHeader();
