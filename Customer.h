@@ -9,6 +9,7 @@
 #include <mysql.h>
 
 #include <functional>
+#include "sha256.h"
 
 using namespace std;
 
@@ -40,12 +41,12 @@ public:
 	void registerCustomer(MYSQL*);
 
 	int fetchData(MYSQL_RES*);
+	void viewProfile(function<void()>, MYSQL*);
+
 	string getName();
 	int getID();
 	string getPassword();
 
-	void viewProfile(function<void()>, MYSQL*);
-	void editProfile();
 };
 
 #endif

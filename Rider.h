@@ -8,6 +8,9 @@
 
 #include <mysql.h>
 
+#include <functional>
+#include "sha256.h"
+
 using namespace std;
 
 #pragma once
@@ -22,7 +25,8 @@ struct RiderDetails {
 
 class Rider {
 private:
-	string riderName, riderUsername, riderPass, riderID, riderPhone;
+	int riderID;
+	string riderName, riderUsername, riderPass, riderPhone;
 	RiderDetails data[100];
 
 public:
@@ -32,10 +36,11 @@ public:
 	bool login(string, string, int);
 
 	void registerRider(MYSQL*);
-
 	int fetchData(MYSQL_RES*);
+	void viewProfile(function<void()>, MYSQL*);
+
 	string getName();
-	string getID();
+	int getID();
 	string getPassword();
 };
 

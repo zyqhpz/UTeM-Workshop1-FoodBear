@@ -1,7 +1,5 @@
 #include "Customer.h"
 
-#include "sha256.h"
-
 Customer::Customer()
 {
 }
@@ -79,7 +77,7 @@ int Customer::fetchData(MYSQL_RES* res) {
 		data[i].name = (string)row[3];
 		data[i].phone = (string)row[4];
 		if (row[5] == NULL) {
-			data[i].address = "0";
+			data[i].address = "Not Set";
 		}
 		else {
 			data[i].address = (string)row[5];
@@ -104,50 +102,18 @@ int Customer::fetchData(MYSQL_RES* res) {
 	return total;
 }
 
-// Function to view profile of user
-void Customer::editProfile() {
-
-	cout << "\tid" << "\tusername" << "\tpassword" << "\tname" << "\t\tphone" << "\t\taddress" << endl;
-	cout << "---------------------------------------------------------------------------------------------------------------" << endl;
-		
-	cout << "\t" << this->custID << "\t" << this->custUsername << "\t" << this->custPass << "\t\t" << this->custName << "\t" << this->custPhone << "\t" << this->custAddress << endl;
-	
-	cout << endl;
-
-	// operation to edit profile
-	int operation;
-
-	do {
-		cout << "---View User Profile---\n";
-		cout << "\nEnter 1-Edit, 0-Back to Home\n";
-		cout << ">> ";
-		cin >> operation;
-
-		if (operation == 1) {
-			editProfile();
-		}
-		else if (operation == 0) {
-			break;
-		}
-		else {
-			cout << "Invalid input\n";
-			system("pause");
-		}
-	} while (operation != 0);
-}
-
-// Function to edit user profile
+// Function to view and user profile
 void Customer::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 	int operation;
 
-	string pass;
+	string pass, username, name, phone, address;
 	//string id = (string)this->custID;
 
 	do {
 		mainHeader();
-		cout << "\tid" << "\tusername" << "\tpassword" << "\tname" << "\t\tphone" << "\t\taddress" << endl;
+		cout << "\tusername" << "\tname" << "\t\tphone" << "\t\taddress" << endl;
 		cout << "---------------------------------------------------------------------------------------------------------------" << endl;
-		cout << "\t" << this->custID << "\t" << this->custUsername << "\t" << this->custPass << "\t\t" << this->custName << "\t" << this->custPhone << "\t" << this->custAddress << endl;
+		cout << "\t" << this->custUsername << "\t" << this->custName << "\t" << this->custPhone << "\t" << this->custAddress << endl;
 		cout << endl;
 
 		cout << "\n---Edit User Profile---\n";
@@ -155,11 +121,18 @@ void Customer::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 		cout << ">> ";
 		cin >> operation;
 
-		if (operation == 1) {
-			cout << "Edit\n";
-			system("pause");
+		stringstream update;
+
+		if (operation == 1) { // Username
+			mainHeader();
+			cout << "Enter new username: ";
+			cin >> username;
+
+			this->custUsername = username;
+
+			update << "UPDATE customer SET username = '" + username + "' WHERE id = " + to_string(this->custID);
 		}
-		else if (operation == 2) {
+		else if (operation == 2) { // Password
 			mainHeader();
 			cout << "Enter new password: ";
 			cin >> pass;
@@ -167,28 +140,56 @@ void Customer::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 			pass = sha256(pass);
 
 			this->custPass = pass;
-			stringstream updatePass;
 
-			updatePass << "UPDATE customer SET password = '" + pass + "' WHERE id = " + to_string(this->custID);
+			update << "UPDATE customer SET password = '" + pass + "' WHERE id = " + to_string(this->custID);
+		}
+		else if (operation == 3) { // Name
+			mainHeader();
+			cout << "Enter new name: ";
+			cin.ignore();
+			getline(cin, name);
 
-			string query = updatePass.str();
-			const char* q = query.c_str();
-			int qstate = mysql_query(conn, q);
+			this->custName = name;
 
-			if (!qstate) {
-				cout << "\nUpdate Successful!\n";
-				system("pause");
-			}
-			else {
-				cout << "\nRegistration Failed!\n";
-				system("pause");
-			}
+			update << "UPDATE customer SET name = '" + name + "' WHERE id = " + to_string(this->custID);
+		}
+		else if (operation == 4) { // Phone
+			mainHeader();
+			cout << "Update phone number: ";
+			cin >> phone;
+
+			this->custPhone = phone;
+
+			update << "UPDATE customer SET phone = '" + phone + "' WHERE id = " + to_string(this->custID);
+		}
+		else if (operation == 5) { // Address
+			mainHeader();
+			cout << "Update address: ";
+			cin.ignore();
+			getline(cin, address);
+
+			this->custAddress = address;
+
+			update << "UPDATE customer SET address = '" + address + "' WHERE id = " + to_string(this->custID);
 		}
 		else if (operation == 0) {
 			break;
 		}
 		else {
 			cout << "Invalid input\n";
+			system("pause");
+		}
+
+		string query = update.str();
+		const char* q = query.c_str();
+		int qstate = mysql_query(conn, q);
+
+		if (!qstate) {
+			cout << "\nUpdate Successful!\n";
+			break;
+		}
+		else {
+			cout << "\nUpdate Failed!\n";
 			system("pause");
 		}
 	} while (operation != -1);

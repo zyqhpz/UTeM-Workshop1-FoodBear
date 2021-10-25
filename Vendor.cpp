@@ -93,11 +93,104 @@ int Vendor::fetchData(MYSQL_RES* res, int count) {
 	return total;
 }
 
+// Function to view and user profile
+void Vendor::viewProfile(function<void()> mainHeader, MYSQL* conn) {
+	int operation;
+
+	string pass, username, name, phone, address;
+	//string id = (string)this->custID;
+
+	do {
+		mainHeader();
+		cout << "\tusername" << "\tname" << "\t\tphone" << "\t\taddress" << endl;
+		cout << "---------------------------------------------------------------------------------------------------------------" << endl;
+		cout << "\t" << this->vendorUsername << "\t" << this->vendorName << "\t" << this->vendorPhone << "\t" << this->vendorAddress << endl;
+		cout << endl;
+
+		cout << "\n---Edit User Profile---\n";
+		cout << "\nEnter number to edit respective data:\n 1-Username\n 2-Password\n 3-Name\n 4-Phone\n 5-Address\n 0-Back to Home\n";
+		cout << ">> ";
+		cin >> operation;
+
+		stringstream update;
+
+		if (operation == 1) { // Username
+			mainHeader();
+			cout << "Enter new username: ";
+			cin >> username;
+
+			this->vendorUsername = username;
+
+			update << "UPDATE customer SET username = '" + username + "' WHERE id = " + to_string(this->vendorID);
+		}
+		else if (operation == 2) { // Password
+			mainHeader();
+			cout << "Enter new password: ";
+			cin >> pass;
+
+			pass = sha256(pass);
+
+			this->vendorPass = pass;
+
+			update << "UPDATE customer SET password = '" + pass + "' WHERE id = " + to_string(this->vendorID);
+		}
+		else if (operation == 3) { // Name
+			mainHeader();
+			cout << "Enter new name: ";
+			cin.ignore();
+			getline(cin, name);
+
+			this->vendorName = name;
+
+			update << "UPDATE customer SET name = '" + name + "' WHERE id = " + to_string(this->vendorID);
+		}
+		else if (operation == 4) { // Phone
+			mainHeader();
+			cout << "Update phone number: ";
+			cin >> phone;
+
+			this->vendorPhone = phone;
+
+			update << "UPDATE customer SET phone = '" + phone + "' WHERE id = " + to_string(this->vendorID);
+		}
+		else if (operation == 5) { // Address
+			mainHeader();
+			cout << "Update address: ";
+			cin.ignore();
+			getline(cin, address);
+
+			this->vendorAddress = address;
+
+			update << "UPDATE customer SET address = '" + address + "' WHERE id = " + to_string(this->vendorID);
+		}
+		else if (operation == 0) {
+			break;
+		}
+		else {
+			cout << "Invalid input\n";
+			system("pause");
+		}
+
+		string query = update.str();
+		const char* q = query.c_str();
+		int qstate = mysql_query(conn, q);
+
+		if (!qstate) {
+			cout << "\nUpdate Successful!\n";
+			break;
+		}
+		else {
+			cout << "\nUpdate Failed!\n";
+			system("pause");
+		}
+	} while (operation != -1);
+}
+
 string Vendor::getName() {
 	return this->vendorName;
 }
 
-string Vendor::getID()
+int Vendor::getID()
 {
 	return this->vendorID;
 }

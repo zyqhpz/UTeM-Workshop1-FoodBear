@@ -16,6 +16,7 @@
 #include "Admin.h"
 
 #include "utils.h"
+#include "FoodBear.h"
 
 using namespace std;
 
@@ -56,8 +57,22 @@ int main()
 
                 if (chooseLogin == 1) {
                     if (loginUser(chooseLogin)) { // Vendor
-                        cout << "Welcome " << vendor.getName() << endl;
-                        system("pause");
+                        do {
+                            mainHeader();
+                            cout << "\n---Welcome " << vendor.getName() << "---\n" << endl;
+
+                            cout << "---Operation---\n";
+                            cout << "Enter 1-View products, 2-View sales report, 3-View all order, 4-View profile 0-Logout\n";
+                            cout << ">> ";
+                            cin >> operation;
+
+                            if (operation == 4) {
+                                vendor.viewProfile(mainHeader, conn);
+                            }
+                            else if (operation == 0) {
+                                break;
+                            }
+                        } while (operation != 0);
                     }
                     else {
                         cout << "failed login\n";
@@ -71,7 +86,7 @@ int main()
                             cout << "\n---Welcome " << cust.getName() << "---\n" << endl;
 
                             cout << "---Operation---\n";
-                            cout << "Enter 1-Start food order, 2-View cart, 3-View past order, 4-View profile 0-Logout\n";
+                            cout << "Enter 1-Start food order, 2-View cart, 3-View previous order, 4-View profile, 0-Logout\n";
                             cout << ">> ";
                             cin >> operation;
 
@@ -81,8 +96,6 @@ int main()
                             else if (operation == 0) {
                                 break;
                             }
-
-                            system("pause");
                         } while (operation != 0);
                     }
                     else {
@@ -92,8 +105,22 @@ int main()
                 }
                 else if (chooseLogin == 3) { // Rider
                     if (loginUser(chooseLogin)) {
-                        cout << "Welcome " << rider.getName() << endl;
-                        system("pause");
+                        do {
+                            mainHeader();
+                            cout << "\n---Welcome " << rider.getName() << "---\n" << endl;
+
+                            cout << "---Operation---\n";
+                            cout << "Enter 1-Start food delivery, 2-View past delivery, 3-View earning report, 4-View profile, 0-Logout\n";
+                            cout << ">> ";
+                            cin >> operation;
+
+                            if (operation == 4) {
+                                rider.viewProfile(mainHeader, conn);
+                            }
+                            else if (operation == 0) {
+                                break;
+                            }
+                        } while (operation != 0);
                     }
                     else {
                         cout << "failed login\n";

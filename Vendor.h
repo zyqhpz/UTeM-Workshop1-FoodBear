@@ -8,6 +8,9 @@
 
 #include <mysql.h>
 
+#include <functional>
+#include "sha256.h"
+
 using namespace std;
 
 #pragma once
@@ -24,7 +27,9 @@ struct VendorDetails {
 class Vendor {
 private:
 	//int custNum;
-	string vendorName, vendorUsername, vendorPass, vendorID, vendorAddress, vendorPhone;
+	//string vendorID;
+	int vendorID;
+	string vendorName, vendorUsername, vendorPass, vendorAddress, vendorPhone;
 	VendorDetails data[100];
 
 public:
@@ -36,8 +41,10 @@ public:
 	void registerVendor(MYSQL*);
 
 	int fetchData(MYSQL_RES*, int);
+	void viewProfile(function<void()>, MYSQL*);
+
 	string getName();
-	string getID();
+	int getID();
 	string getPassword();
 };
 
