@@ -16,7 +16,6 @@
 #include "Admin.h"
 
 #include "utils.h"
-#include "FoodBear.h"
 
 using namespace std;
 
