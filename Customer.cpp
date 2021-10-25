@@ -1,5 +1,6 @@
 #include "Customer.h"
 
+#include "sha256.h"
 
 Customer::Customer()
 {
@@ -17,6 +18,7 @@ Customer::~Customer()
 
 bool Customer::login(string user, string pass, int totalCustomer)
 {
+	pass = sha256(pass);
 	for (int i = 0; i < totalCustomer; i++) {
 		if (user == data[i].username && pass == data[i].password) {
 			cout << "login succeed" << endl;
@@ -102,11 +104,101 @@ int Customer::fetchData(MYSQL_RES* res) {
 	return total;
 }
 
+// Function to view profile of user
+void Customer::editProfile() {
+
+	cout << "\tid" << "\tusername" << "\tpassword" << "\tname" << "\t\tphone" << "\t\taddress" << endl;
+	cout << "---------------------------------------------------------------------------------------------------------------" << endl;
+		
+	cout << "\t" << this->custID << "\t" << this->custUsername << "\t" << this->custPass << "\t\t" << this->custName << "\t" << this->custPhone << "\t" << this->custAddress << endl;
+	
+	cout << endl;
+
+	// operation to edit profile
+	int operation;
+
+	do {
+		cout << "---View User Profile---\n";
+		cout << "\nEnter 1-Edit, 0-Back to Home\n";
+		cout << ">> ";
+		cin >> operation;
+
+		if (operation == 1) {
+			editProfile();
+		}
+		else if (operation == 0) {
+			break;
+		}
+		else {
+			cout << "Invalid input\n";
+			system("pause");
+		}
+	} while (operation != 0);
+}
+
+// Function to edit user profile
+void Customer::viewProfile(function<void()> mainHeader, MYSQL* conn) {
+	int operation;
+
+	string pass;
+	//string id = (string)this->custID;
+
+	do {
+		mainHeader();
+		cout << "\tid" << "\tusername" << "\tpassword" << "\tname" << "\t\tphone" << "\t\taddress" << endl;
+		cout << "---------------------------------------------------------------------------------------------------------------" << endl;
+		cout << "\t" << this->custID << "\t" << this->custUsername << "\t" << this->custPass << "\t\t" << this->custName << "\t" << this->custPhone << "\t" << this->custAddress << endl;
+		cout << endl;
+
+		cout << "\n---Edit User Profile---\n";
+		cout << "\nEnter number to edit respective data:\n 1-Username\n 2-Password\n 3-Name\n 4-Phone\n 5-Address\n 0-Back to Home\n";
+		cout << ">> ";
+		cin >> operation;
+
+		if (operation == 1) {
+			cout << "Edit\n";
+			system("pause");
+		}
+		else if (operation == 2) {
+			mainHeader();
+			cout << "Enter new password: ";
+			cin >> pass;
+
+			pass = sha256(pass);
+
+			this->custPass = pass;
+			stringstream updatePass;
+
+			updatePass << "UPDATE customer SET password = '" + pass + "' WHERE id = " + to_string(this->custID);
+
+			string query = updatePass.str();
+			const char* q = query.c_str();
+			int qstate = mysql_query(conn, q);
+
+			if (!qstate) {
+				cout << "\nUpdate Successful!\n";
+				system("pause");
+			}
+			else {
+				cout << "\nRegistration Failed!\n";
+				system("pause");
+			}
+		}
+		else if (operation == 0) {
+			break;
+		}
+		else {
+			cout << "Invalid input\n";
+			system("pause");
+		}
+	} while (operation != -1);
+}
+
 string Customer::getName() {
 	return this->custName;
 }
 
-string Customer::getID()
+int Customer::getID()
 {
 	return this->custID;
 }

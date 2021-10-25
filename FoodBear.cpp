@@ -39,6 +39,8 @@ int main()
     int chooseLogin;
     int chooseRegister;
 
+    int operation;
+
     do {
         displayMainMenu();
         cout << "\n>> ";
@@ -53,7 +55,7 @@ int main()
                 cin >> chooseLogin;
 
                 if (chooseLogin == 1) {
-                    if (loginUser(chooseLogin)) {
+                    if (loginUser(chooseLogin)) { // Vendor
                         cout << "Welcome " << vendor.getName() << endl;
                         system("pause");
                     }
@@ -62,17 +64,33 @@ int main()
                         system("pause");
                     }
                 }
-                else if (chooseLogin == 2) {
+                else if (chooseLogin == 2) { // Customer
                     if (loginUser(chooseLogin)) {
-                        cout << "Welcome " << cust.getName() << endl;
-                        system("pause");
+                        do {
+                            mainHeader();
+                            cout << "\n---Welcome " << cust.getName() << "---\n" << endl;
+
+                            cout << "---Operation---\n";
+                            cout << "Enter 1-Start food order, 2-View cart, 3-View past order, 4-View profile 0-Logout\n";
+                            cout << ">> ";
+                            cin >> operation;
+
+                            if (operation == 4) {
+                                cust.viewProfile(mainHeader, conn);
+                            }
+                            else if (operation == 0) {
+                                break;
+                            }
+
+                            system("pause");
+                        } while (operation != 0);
                     }
                     else {
                         cout << "failed login\n";
                         system("pause");
                     }
                 }
-                else if (chooseLogin == 3) {
+                else if (chooseLogin == 3) { // Rider
                     if (loginUser(chooseLogin)) {
                         cout << "Welcome " << rider.getName() << endl;
                         system("pause");

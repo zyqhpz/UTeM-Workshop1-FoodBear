@@ -8,6 +8,8 @@
 
 #include <mysql.h>
 
+#include <functional>
+
 using namespace std;
 
 #pragma once
@@ -24,7 +26,8 @@ struct CustomerDetails {
 class Customer {
 private:
 	//int custNum
-	string custName, custUsername, custPass, custID, custAddress, custPhone;
+	int custID; // before this in string
+	string custName, custUsername, custPass, custAddress, custPhone;
 	CustomerDetails data[100];
 
 public:
@@ -38,8 +41,11 @@ public:
 
 	int fetchData(MYSQL_RES*);
 	string getName();
-	string getID();
+	int getID();
 	string getPassword();
+
+	void viewProfile(function<void()>, MYSQL*);
+	void editProfile();
 };
 
 #endif

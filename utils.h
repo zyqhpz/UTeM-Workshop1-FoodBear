@@ -65,7 +65,8 @@ public:
 };
 
 // function to display main header for every page
-inline void mainHeader(std::string additional = "") {
+//inline void mainHeader(std::string additional = "") {
+inline void mainHeader() {
     system("cls");
 
 
@@ -90,9 +91,9 @@ inline void mainHeader(std::string additional = "") {
     cout << "##                                                       ##" << endl;
     cout << "###########################################################" << endl << endl;
 
-    if (additional != "") {
+ /*   if (additional != "") {
         cout << additional << endl;
-    }
+    }*/
 }
 
 
