@@ -89,7 +89,11 @@ int main()
                             cout << ">> ";
                             cin >> operation;
 
-                            if (operation == 4) {
+                            if (operation == 1) {
+                                viewVendorList();
+                                system("pause");
+                            }
+                            else if (operation == 4) {
                                 cust.viewProfile(mainHeader, conn);
                             }
                             else if (operation == 0) {
@@ -113,7 +117,9 @@ int main()
                             cout << ">> ";
                             cin >> operation;
 
-                            if (operation == 4) {
+                            if (operation == 1) {
+                            }
+                            else if (operation == 4) {
                                 rider.viewProfile(mainHeader, conn);
                             }
                             else if (operation == 0) {

@@ -220,4 +220,9 @@ bool loginUser(int logType) {
 
     return false;
 }
+
+void viewVendorList() {
+    mainHeader();
+    vendor.viewVendor();
+}
 #endif

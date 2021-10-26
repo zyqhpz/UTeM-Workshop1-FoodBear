@@ -43,6 +43,8 @@ public:
 	int fetchData(MYSQL_RES*, int);
 	void viewProfile(function<void()>, MYSQL*);
 
+	void viewVendor();
+
 	string getName();
 	int getID();
 	string getPassword();

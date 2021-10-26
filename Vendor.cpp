@@ -188,6 +188,15 @@ void Vendor::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 	} while (operation != -1);
 }
 
+void Vendor::viewVendor() {
+	cout << "\n\tname" << "\t\tphone" << "\t\taddress" << endl;
+	cout << "---------------------------------------------------------------------------------------------------------------" << endl;
+	for (int i = 0; i < 2; i++) {
+		cout << "\t" << data[i].name << "\t" << data[i].phone << "\t" << data[i].address << endl;
+	}
+	cout << endl;
+}
+
 string Vendor::getName() {
 	return this->vendorName;
 }
