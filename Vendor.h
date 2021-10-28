@@ -11,6 +11,8 @@
 #include <functional>
 #include "sha256.h"
 
+#include <iomanip> // for decimal places
+
 using namespace std;
 
 #pragma once

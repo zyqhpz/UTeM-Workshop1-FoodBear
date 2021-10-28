@@ -180,15 +180,18 @@ void fetchAllData() {
     if (!qSRider) {
         res = mysql_store_result(conn);
         totalRider = rider.fetchData(res);
-        cout << totalRider << endl;
+        cout << totalRider << " success" << endl;
         //system("pause");
     }
 
     int qSProduct = mysql_query(conn, qProduct);
     if (!qSProduct) {
+        cout << "1\n";
         res = mysql_store_result(conn);
+        cout << "2\n";
         totalProduct = vendor.fetchProduct(res);
-        cout << totalRider << endl;
+        cout << "3\n";
+        cout << totalProduct << endl;
         //system("pause");
     }
 
@@ -246,6 +249,7 @@ void viewAddProduct() {
 void viewVendorList() {
     mainHeader();
     vendor.viewVendor(totalVendor);
+    vendor.viewProduct(1, totalProduct);
 }
 
 void viewProductList(int vendorID) {

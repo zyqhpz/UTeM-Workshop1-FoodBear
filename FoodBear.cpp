@@ -70,6 +70,7 @@ int main()
                                 //vendor.viewProduct(vendor.)
                                 //vendor.addProduct();
                                 viewAddProduct();
+                                system("pause");
                             }
 
                             else if (operation == 4) {

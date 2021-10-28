@@ -206,8 +206,7 @@ int Vendor::fetchProduct(MYSQL_RES* res) {
 		product[i].name = (string)row[1];
 		product[i].price = stod(row[2]);
 		product[i].vendor_id = stoi(row[3]);
-		product[i].category_id = stoi(row[4]);
-		if (row[5] == NULL) {
+		if (row[4] == NULL) {
 			product[i].category_id = 0; // fix this later
 		}
 		else {
@@ -216,15 +215,15 @@ int Vendor::fetchProduct(MYSQL_RES* res) {
 		i++;
 		total++;
 	}
+	return total;
 }
 
-
 void Vendor::viewProduct(int vendorID, int totalProduct) {
-	cout << "\n\tId" << "\tProduct Name" << "\t\tPrice" << endl;
+	cout << "\n\tId" << "\tProduct Name" << "\t\tPrice (RM)" << endl;
 	cout << "-----------------------------------------------------------------\n";
 	for (int i = 0; i < totalProduct; i++) {
 		if (product[i].vendor_id == vendorID)
-			cout << "\t" << product[i].id << "\t" << product[i].name << "\t\t" << product[i].price << endl;
+			cout << "\t" << product[i].id << "\t" << product[i].name << "\t\t" << setprecision(2) << product[i].price << endl;
 	}
 	cout << endl;
 }
