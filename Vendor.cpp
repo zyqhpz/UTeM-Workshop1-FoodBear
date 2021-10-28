@@ -189,41 +189,10 @@ void Vendor::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 }
 
 void Vendor::viewVendor(int totalVendor) {
-	cout << "\n\tname" << "\t\tphone" << "\t\taddress" << endl;
+	cout << "\n\tID" << "\n\tname" << "\t\tphone" << "\t\taddress" << endl;
 	cout << "---------------------------------------------------------------------------------------------------------------" << endl;
 	for (int i = 0; i < totalVendor; i++) {
-		cout << "\t" << data[i].name << "\t" << data[i].phone << "\t" << data[i].address << endl;
-	}
-	cout << endl;
-}
-
-int Vendor::fetchProduct(MYSQL_RES* res) {
-	MYSQL_ROW row;
-	int i = 0;
-	int total = 0;
-	while (row = mysql_fetch_row(res)) {
-		product[i].id = stoi(row[0]); // string to int
-		product[i].name = (string)row[1];
-		product[i].price = stod(row[2]);
-		product[i].vendor_id = stoi(row[3]);
-		if (row[4] == NULL) {
-			product[i].category_id = 0; // fix this later
-		}
-		else {
-			product[i].category_id = 1;
-		}
-		i++;
-		total++;
-	}
-	return total;
-}
-
-void Vendor::viewProduct(int vendorID, int totalProduct) {
-	cout << "\n\tId" << "\tProduct Name" << "\t\tPrice (RM)" << endl;
-	cout << "-----------------------------------------------------------------\n";
-	for (int i = 0; i < totalProduct; i++) {
-		if (product[i].vendor_id == vendorID)
-			cout << "\t" << product[i].id << "\t" << product[i].name << "\t\t" << setprecision(2) << product[i].price << endl;
+		cout << "\t" << data[i].id << "\t" << data[i].name << "\t" << data[i].phone << "\t" << data[i].address << endl;
 	}
 	cout << endl;
 }
@@ -259,6 +228,36 @@ void Vendor::addProduct(MYSQL* conn, int vendorID) {
 	}
 }
 
+int Vendor::fetchProduct(MYSQL_RES* res) {
+	MYSQL_ROW row;
+	int i = 0;
+	int total = 0;
+	while (row = mysql_fetch_row(res)) {
+		product[i].id = stoi(row[0]); // string to int
+		product[i].name = (string)row[1];
+		product[i].price = stod(row[2]);
+		product[i].vendor_id = stoi(row[3]);
+		if (row[4] == NULL) {
+			product[i].category_id = 0; // fix this later
+		}
+		else {
+			product[i].category_id = 1;
+		}
+		i++;
+		total++;
+	}
+	return total;
+}
+
+void Vendor::viewProduct(int vendorID, int totalProduct) {
+	cout << "\n\tId" << "\tProduct Name" << "\t\tPrice (RM)" << endl;
+	cout << "-----------------------------------------------------------------\n";
+	for (int i = 0; i < totalProduct; i++) {
+		if (product[i].vendor_id == vendorID)
+			cout << "\t" << product[i].id << "\t" << product[i].name << "\t\t" << setprecision(2) << product[i].price << endl;
+	}
+	cout << endl;
+}
 
 // void makeOrder()
 

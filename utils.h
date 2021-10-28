@@ -247,9 +247,17 @@ void viewAddProduct() {
 
 // Customer operation
 void viewVendorList() {
-    mainHeader();
-    vendor.viewVendor(totalVendor);
-    vendor.viewProduct(1, totalProduct);
+    int operation;
+    do {
+        mainHeader();
+        cout << "\n----Vendor List----\n";
+        vendor.viewVendor(totalVendor);
+        cout << "\n--Operation--\n\t1-Enter ID to choose restaurant\n\t2-View all products\n";
+        cout << ">> ";
+        cin >> operation;
+        vendor.viewProduct(operation, totalProduct);
+        system("pause");
+    } while (operation != 0);
 }
 
 void viewProductList(int vendorID) {
