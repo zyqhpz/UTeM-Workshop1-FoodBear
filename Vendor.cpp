@@ -188,13 +188,94 @@ void Vendor::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 	} while (operation != -1);
 }
 
-void Vendor::viewVendor() {
+void Vendor::viewVendor(int totalVendor) {
 	cout << "\n\tname" << "\t\tphone" << "\t\taddress" << endl;
 	cout << "---------------------------------------------------------------------------------------------------------------" << endl;
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < totalVendor; i++) {
 		cout << "\t" << data[i].name << "\t" << data[i].phone << "\t" << data[i].address << endl;
 	}
 	cout << endl;
+}
+
+void Vendor::fetchProduct(MYSQL_RES* res, int) {
+	MYSQL_ROW row;
+	int i = 0;
+	int total = 0;
+	while (row = mysql_fetch_row(res)) {
+		data[i].id = stoi(row[0]); // string to int
+		data[i].name = (string)row[1];
+		data[i].password = (string)row[2];
+		data[i].name = (string)row[3];
+		data[i].phone = (string)row[4];
+		if (row[5] == NULL) {
+			data[i].address = "Not Set";
+		}
+		else {
+			data[i].address = (string)row[5];
+		}
+
+		/*	cout << (int)row[0] << endl;
+			cout << (string)row[1] << endl;
+			cout << (string)row[2] << endl;
+			cout << (string)row[3] << endl;
+			cout << (string)row[4] << endl;
+			cout << (string)row[5] << endl;
+			cout << endl;*/
+		i++;
+		total++;
+	}
+}
+
+
+void Vendor::viewProduct(int vendorID) {
+	cout << "\n\tId" << "\tProduct Name" << "\t\tPrice" << endl;
+	cout << "-----------------------------------------------------------------\n";
+	for (int i = 0; i < 4; i++) {
+		if (product[i].vendor_id == vendorID)
+			cout << "\t" << product[i].id << "\t" << product[i].name << "\t\t" << product[i].price << endl;
+	}
+	cout << endl;
+}
+
+void Vendor::addProduct(MYSQL* conn, int vendorID) {
+	string id, name;
+	double price;
+
+	cout << "\n---Add Product---\n";
+	cout << "Enter product ID: ";
+	cin >> id; // Check data in table, ada similar with other vendor tak. Or predefined. V01F01 -> Vendor 01, Food 01
+	cout << "Enter product name: ";
+	cin.ignore();
+	getline(cin, name);
+	cin >> name;
+	cout << "Enter product price: ";
+	cin >> price;
+
+	stringstream ss;
+
+	ss << "INSERT INTO product (id, name, price, vendor_id) VALUES ('" + id + "', '" + name + "', '" + price + "', '" + vendorID + "')";
+
+	string query = ss.str();
+	const char* q = query.c_str();
+	int qstate = mysql_query(conn, q);
+
+	if (!qstate) {
+		cout << "\nProduct has been added!\n";
+		system("pause");
+	}
+	else {
+		cout << "\nProduct cannot be added. Please try again.\n"; // output error? why cant insert?
+		system("pause");
+	}
+}
+
+
+// void makeOrder()
+
+void Vendor::selectProduct() {
+	cout << "Enter ID\t";
+	// select to start ordering or not,
+	// later enter product id option will be shown
 }
 
 string Vendor::getName() {

@@ -51,7 +51,15 @@ public:
 	int fetchData(MYSQL_RES*, int);
 	void viewProfile(function<void()>, MYSQL*);
 
-	void viewVendor();
+	void viewVendor(int);
+
+	void fetchProduct(MYSQL_RES*, int);
+	void viewProduct(int);
+
+	void addProduct(MYSQL*, int);
+
+
+	void selectProduct();
 
 	string getName();
 	int getID();

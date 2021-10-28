@@ -31,7 +31,7 @@ MYSQL_RES* res;
 int totalCustomer;
 int totalRider;
 int totalVendor;
-int totalAdmin = 0;
+int totalAdmin;
 
 // class object declaration
 Customer cust;
@@ -151,6 +151,8 @@ void fetchAllData() {
     string sqlCust = "SELECT * FROM customer";
     string sqlRider = "SELECT * FROM rider";
 
+    string sqlProduct = "SELECT * FROM product";
+
     const char* qVendor = sqlVendor.c_str();
     const char* qCust = sqlCust.c_str();
     const char* qRider = sqlRider.c_str();
@@ -223,6 +225,11 @@ bool loginUser(int logType) {
 
 void viewVendorList() {
     mainHeader();
-    vendor.viewVendor();
+    vendor.viewVendor(totalVendor);
+}
+
+void viewProductList(int vendorID) {
+    mainHeader();
+    vendor.viewProduct(vendorID);
 }
 #endif
