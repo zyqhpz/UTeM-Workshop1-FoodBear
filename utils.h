@@ -33,6 +33,8 @@ int totalRider;
 int totalVendor;
 int totalAdmin;
 
+int totalProduct; // later make query to count all product from a vendor.
+
 // class object declaration
 Customer cust;
 Vendor vendor;
@@ -157,6 +159,8 @@ void fetchAllData() {
     const char* qCust = sqlCust.c_str();
     const char* qRider = sqlRider.c_str();
 
+    const char* qProduct = sqlProduct.c_str();
+
     int qSVendor = mysql_query(conn, qVendor);
     if (!qSVendor) {
         res = mysql_store_result(conn);
@@ -176,6 +180,14 @@ void fetchAllData() {
     if (!qSRider) {
         res = mysql_store_result(conn);
         totalRider = rider.fetchData(res);
+        cout << totalRider << endl;
+        //system("pause");
+    }
+
+    int qSProduct = mysql_query(conn, qProduct);
+    if (!qSProduct) {
+        res = mysql_store_result(conn);
+        totalProduct = vendor.fetchProduct(res);
         cout << totalRider << endl;
         //system("pause");
     }
@@ -223,6 +235,14 @@ bool loginUser(int logType) {
     return false;
 }
 
+// Vendor operation
+
+void viewAddProduct() {
+    mainHeader();
+    vendor.addProduct(conn, vendor.getID());
+}
+
+// Customer operation
 void viewVendorList() {
     mainHeader();
     vendor.viewVendor(totalVendor);
@@ -230,6 +250,6 @@ void viewVendorList() {
 
 void viewProductList(int vendorID) {
     mainHeader();
-    vendor.viewProduct(vendorID);
+    vendor.viewProduct(vendorID, totalProduct);
 }
 #endif

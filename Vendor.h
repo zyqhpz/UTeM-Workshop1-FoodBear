@@ -29,6 +29,7 @@ struct VendorProducts {
 	string name;
 	double price;
 	int vendor_id;
+	int category_id;
 };
 
 class Vendor {
@@ -53,8 +54,8 @@ public:
 
 	void viewVendor(int);
 
-	void fetchProduct(MYSQL_RES*, int);
-	void viewProduct(int);
+	int fetchProduct(MYSQL_RES*);
+	void viewProduct(int, int);
 
 	void addProduct(MYSQL*, int);
 

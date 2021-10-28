@@ -197,40 +197,32 @@ void Vendor::viewVendor(int totalVendor) {
 	cout << endl;
 }
 
-void Vendor::fetchProduct(MYSQL_RES* res, int) {
+int Vendor::fetchProduct(MYSQL_RES* res) {
 	MYSQL_ROW row;
 	int i = 0;
 	int total = 0;
 	while (row = mysql_fetch_row(res)) {
-		data[i].id = stoi(row[0]); // string to int
-		data[i].name = (string)row[1];
-		data[i].password = (string)row[2];
-		data[i].name = (string)row[3];
-		data[i].phone = (string)row[4];
+		product[i].id = stoi(row[0]); // string to int
+		product[i].name = (string)row[1];
+		product[i].price = stod(row[2]);
+		product[i].vendor_id = stoi(row[3]);
+		product[i].category_id = stoi(row[4]);
 		if (row[5] == NULL) {
-			data[i].address = "Not Set";
+			product[i].category_id = 0; // fix this later
 		}
 		else {
-			data[i].address = (string)row[5];
+			product[i].category_id = 1;
 		}
-
-		/*	cout << (int)row[0] << endl;
-			cout << (string)row[1] << endl;
-			cout << (string)row[2] << endl;
-			cout << (string)row[3] << endl;
-			cout << (string)row[4] << endl;
-			cout << (string)row[5] << endl;
-			cout << endl;*/
 		i++;
 		total++;
 	}
 }
 
 
-void Vendor::viewProduct(int vendorID) {
+void Vendor::viewProduct(int vendorID, int totalProduct) {
 	cout << "\n\tId" << "\tProduct Name" << "\t\tPrice" << endl;
 	cout << "-----------------------------------------------------------------\n";
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < totalProduct; i++) {
 		if (product[i].vendor_id == vendorID)
 			cout << "\t" << product[i].id << "\t" << product[i].name << "\t\t" << product[i].price << endl;
 	}
@@ -247,13 +239,12 @@ void Vendor::addProduct(MYSQL* conn, int vendorID) {
 	cout << "Enter product name: ";
 	cin.ignore();
 	getline(cin, name);
-	cin >> name;
 	cout << "Enter product price: ";
 	cin >> price;
 
 	stringstream ss;
 
-	ss << "INSERT INTO product (id, name, price, vendor_id) VALUES ('" + id + "', '" + name + "', '" + price + "', '" + vendorID + "')";
+	ss << "INSERT INTO product (id, name, price, vendor_id) VALUES ('" + id + "', '" + name + "', " + to_string(price) + ", " + to_string(vendorID) + ")";
 
 	string query = ss.str();
 	const char* q = query.c_str();

@@ -61,11 +61,18 @@ int main()
                             cout << "\n---Welcome " << vendor.getName() << "---\n" << endl;
 
                             cout << "---Operation---\n";
-                            cout << "Enter 1-View products, 2-View sales report, 3-View all order, 4-View profile 0-Logout\n";
+                            //cout << "Enter 1-View products, 2-View sales report, 3-View all order, 4-View profile 0-Logout\n";
+                            cout << "Enter 1-add products, 2-View sales report, 3-View all order, 4-View profile 0-Logout\n";
                             cout << ">> ";
                             cin >> operation;
 
-                            if (operation == 4) {
+                            if (operation == 1) {
+                                //vendor.viewProduct(vendor.)
+                                //vendor.addProduct();
+                                viewAddProduct();
+                            }
+
+                            else if (operation == 4) {
                                 vendor.viewProfile(mainHeader, conn);
                             }
                             else if (operation == 0) {
