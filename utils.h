@@ -242,6 +242,7 @@ bool loginUser(int logType) {
 
 void viewAddProduct() {
     mainHeader();
+    vendor.viewProduct(vendor.getID(), totalProduct);
     vendor.addProduct(conn, vendor.getID());
 }
 
