@@ -10,6 +10,7 @@ Admin::~Admin()
 
 bool Admin::login(string user, string pass)
 {
+	boost::to_lower(user);
 	for (int i = 0; i < 6; i++) {
 		if (user == data[i].username && pass == data[i].password) {
 			cout << "login succeed" << endl;

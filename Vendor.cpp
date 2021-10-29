@@ -11,6 +11,7 @@ Vendor::~Vendor()
 
 bool Vendor::login(string user, string pass, int totalVendor)
 {
+	boost::to_lower(user);
 	pass = sha256(pass);
 	for (int i = 0; i < totalVendor; i++) {
 		if (user == data[i].username && pass == data[i].password) {
@@ -32,6 +33,7 @@ void Vendor::registerVendor(MYSQL* conn) {
 	cout << "\n---Registration For Vendor---\n";
 	cout << "Enter Username: ";
 	cin >> username;
+	boost::to_lower(username);
 	cout << "Enter Password: ";
 	cin >> password;
 	password = sha256(password);

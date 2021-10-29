@@ -38,6 +38,7 @@ void Customer::registerCustomer(MYSQL* conn) {
 	cout << "\n---Registration For Customer---\n";
 	cout << "Enter Username: ";
 	cin >> username;
+	boost::to_lower(username);
 	cout << "Enter Password: ";
 	cin >> password;
 	password = sha256(password);

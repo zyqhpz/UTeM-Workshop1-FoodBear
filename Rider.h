@@ -11,6 +11,8 @@
 #include <functional>
 #include "sha256.h"
 
+#include <boost/algorithm/string.hpp>
+
 using namespace std;
 
 #pragma once

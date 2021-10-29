@@ -8,6 +8,8 @@
 
 #include <mysql.h>
 
+#include <boost/algorithm/string.hpp>
+
 using namespace std;
 
 #pragma once

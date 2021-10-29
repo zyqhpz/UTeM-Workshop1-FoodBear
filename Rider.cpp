@@ -10,6 +10,7 @@ Rider::~Rider()
 
 bool Rider::login(string user, string pass, int totalRider)
 {
+	boost::to_lower(user);
 	pass = sha256(pass);
 	for (int i = 0; i < totalRider; i++) {
 		if (user == data[i].username && pass == data[i].password) {
@@ -30,6 +31,7 @@ void Rider::registerRider(MYSQL* conn) {
 	cout << "\n---Registration For Rider---\n";
 	cout << "Enter Username: ";
 	cin >> username;
+	boost::to_lower(username);
 	cout << "Enter Password: ";
 	cin >> password;
 	password = sha256(password);
