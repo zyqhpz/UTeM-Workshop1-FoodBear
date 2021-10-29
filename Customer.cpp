@@ -16,6 +16,7 @@ Customer::~Customer()
 
 bool Customer::login(string user, string pass, int totalCustomer)
 {
+	boost::to_lower(user);
 	pass = sha256(pass);
 	for (int i = 0; i < totalCustomer; i++) {
 		if (user == data[i].username && pass == data[i].password) {

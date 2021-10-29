@@ -50,7 +50,7 @@ int main()
             do {
                 mainHeader();
                 cout << "---Login---\n";
-                cout << "Enter 1-Vendor, 2-Customer, 3-Rider, 0-Back to Main Menu\n";
+                cout << "Enter\n\t1-Vendor\n\t2-Customer\n\t3-Rider\n\t0-Back to Main Menu\n";
                 cout << ">> ";
                 cin >> chooseLogin;
 

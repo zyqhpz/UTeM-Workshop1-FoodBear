@@ -11,7 +11,9 @@
 #include <functional>
 #include "sha256.h"
 
-#include <iomanip> // for decimal places
+#include <iomanip> // for decimal places // setW
+
+#include <boost/algorithm/string.hpp> // toLower string
 
 using namespace std;
 
