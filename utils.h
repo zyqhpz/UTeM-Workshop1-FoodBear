@@ -242,7 +242,7 @@ bool loginUser(int logType) {
 
 void viewAddProduct() {
     mainHeader();
-    vendor.viewProduct(vendor.getID(), totalProduct);
+    vendor.viewProduct(vendor.getID(), totalProduct, totalVendor);
     vendor.addProduct(conn, vendor.getID());
 }
 
@@ -256,13 +256,13 @@ void viewVendorList() {
         cout << "\n--Operation--\n\t1-Enter ID to choose restaurant\n\t2-View all products\n";
         cout << ">> ";
         cin >> operation;
-        vendor.viewProduct(operation, totalProduct);
+        vendor.viewProduct(operation, totalProduct, totalVendor);
         system("pause");
     } while (operation != 0);
 }
 
 void viewProductList(int vendorID) {
     mainHeader();
-    vendor.viewProduct(vendorID, totalProduct);
+    vendor.viewProduct(vendorID, totalProduct, totalVendor);
 }
 #endif

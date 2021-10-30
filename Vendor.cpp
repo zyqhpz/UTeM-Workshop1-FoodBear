@@ -251,12 +251,28 @@ int Vendor::fetchProduct(MYSQL_RES* res) {
 	return total;
 }
 
-void Vendor::viewProduct(int vendorID, int totalProduct) {
-	cout << "\n\tId" << "\tProduct Name" << "\t\tPrice (RM)" << endl;
-	cout << "-----------------------------------------------------------------\n";
-	for (int i = 0; i < totalProduct; i++) {
-		if (product[i].vendor_id == vendorID)
-			cout << "\t" << product[i].id << "\t" << product[i].name << "\t\t" << setprecision(2) << product[i].price << endl;
+void Vendor::viewProduct(int vendorID, int totalProduct, int totalVendor) {
+	bool exist = TRUE;
+	for (int i = 0; i < totalVendor; i++) {
+		if (vendorID != data[i].id) { // check id entered by user is exist in system or not
+			//cout << "\tNo vendor selected\n";
+			exist = FALSE;
+		}
+		else {
+			exist = TRUE;
+			break;
+		}
+	}
+	if (exist) {
+		cout << "\n\tId" << "\tProduct Name" << "\t\tPrice (RM)" << endl;
+		cout << "-----------------------------------------------------------------\n";
+		for (int i = 0; i < totalProduct; i++) {
+			if (product[i].vendor_id == vendorID)
+				cout << "\t" << product[i].id << "\t" << product[i].name << "\t\t" << setprecision(2) << product[i].price << endl;
+		}
+	}
+	else {
+		cout << "\n\tNo vendor selected. Try again.\n";
 	}
 	cout << endl;
 }

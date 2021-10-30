@@ -93,7 +93,7 @@ int main()
                             cout << "\n---Welcome " << cust.getName() << "---\n" << endl;
 
                             cout << "---Operation---\n";
-                            cout << "Enter 1-Start food order, 2-View cart, 3-View previous order, 4-View profile, 0-Logout\n";
+                            cout << "Enter\n\t1-Start food order\n\t2-View cart\n\t3-View previous order\n\t4-View profile\n\t0-Logout\n";
                             cout << ">> ";
                             cin >> operation;
 
@@ -149,7 +149,7 @@ int main()
                 mainHeader();
 
                 cout << "--Registration--\n";
-                cout << "Enter 1-Vendor, 2-Customer, 3-Rider, 0-Back to Main Menu\n";
+                cout << "Enter: \n\t1-Vendor\n\t2-Customer\n\t3-Rider\n\t0-Back to Main Menu\n";
                 cout << ">> ";
                 cin >> chooseRegister;
 

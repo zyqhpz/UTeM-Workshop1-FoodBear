@@ -59,7 +59,7 @@ public:
 	void viewVendor(int);
 
 	int fetchProduct(MYSQL_RES*);
-	void viewProduct(int, int);
+	void viewProduct(int, int, int);
 
 	void addProduct(MYSQL*, int);
 
