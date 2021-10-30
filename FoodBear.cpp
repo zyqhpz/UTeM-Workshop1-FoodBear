@@ -17,6 +17,10 @@
 
 #include "utils.h"
 
+#include "ftxui/dom/elements.hpp"
+#include "ftxui/screen/screen.hpp"
+#include "ftxui/component/component.hpp"
+
 using namespace std;
 
 void displayMainMenu() {
@@ -34,6 +38,14 @@ int main()
 
     db_connection::ConnectionFunction();
     fetchAllData();
+
+    std::string str = "Hello";
+    std::wstring str2(str.length(), L' '); // Make room for characters
+
+    // Copy string to wstring.
+    std::copy(str.begin(), str.end(), str2.begin());
+
+    //text(str2);
 
     int chooseMain;
     int chooseLogin;

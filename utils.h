@@ -17,9 +17,14 @@
 #include "Rider.h"
 #include "Admin.h"
 
+#include <ftxui/dom/elements.hpp>
+#include <ftxui/screen/screen.hpp>
+
 #pragma once
 
 using namespace std;
+
+using namespace ftxui;
 
 // Global variable
 MYSQL* conn;
