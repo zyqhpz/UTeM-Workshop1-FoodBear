@@ -44,6 +44,8 @@ private:
 	string vendorName, vendorUsername, vendorPass, vendorAddress, vendorPhone;
 	VendorDetails data[100];
 	VendorProducts product[100];
+	vector<VendorProducts> food;
+	vector<VendorProducts> beverage;
 
 public:
 	Vendor();
@@ -63,6 +65,7 @@ public:
 
 	void addProduct(MYSQL*, int);
 
+	void getCategory(int);
 
 	void selectProduct();
 

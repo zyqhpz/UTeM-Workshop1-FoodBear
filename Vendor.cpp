@@ -230,6 +230,7 @@ void Vendor::addProduct(MYSQL* conn, int vendorID) {
 	}
 }
 
+
 int Vendor::fetchProduct(MYSQL_RES* res) {
 	MYSQL_ROW row;
 	int i = 0;
@@ -243,7 +244,7 @@ int Vendor::fetchProduct(MYSQL_RES* res) {
 			product[i].category_id = 0; // fix this later
 		}
 		else {
-			product[i].category_id = 1;
+			product[i].category_id = stoi(row[4]);
 		}
 		i++;
 		total++;
@@ -251,7 +252,37 @@ int Vendor::fetchProduct(MYSQL_RES* res) {
 	return total;
 }
 
+void Vendor::getCategory(int totalProduct) {
+	for (int i = 0; i < totalProduct; i++) {
+
+	}
+}
+
 void Vendor::viewProduct(int vendorID, int totalProduct, int totalVendor) {
+	for (int i = 0; i < totalProduct; i++) {
+		if (product[i].category_id == 1) {
+			food.push_back({ product[i].id, product[i].name, product[i].price, product[i].vendor_id, product[i].category_id });
+		}
+		else if (product[i].category_id == 2) {
+			beverage.push_back({ product[i].id, product[i].name, product[i].price, product[i].vendor_id, product[i].category_id });
+		}
+	}
+	cout << "\n-----Food-----\n";
+	cout << "\n\tId" << "\tProduct Name" << "\t\tPrice (RM)" << endl;
+	for (int i = 0; i < food.size(); i++) {
+		cout << "-----------------------------------------------------------------\n";
+		if (food[i].vendor_id == vendorID)
+			cout << "\t" << food[i].id << "\t" << food[i].name << "\t\t" << setprecision(2) << food[i].price << endl;
+	}
+
+	cout << "\n-----Beverage-----\n";
+	cout << "\n\tId" << "\tProduct Name" << "\t\tPrice (RM)" << endl;
+	for (int i = 0; i < beverage.size(); i++) {
+		cout << "-----------------------------------------------------------------\n";
+		if (beverage[i].vendor_id == vendorID)
+			cout << "\t" << beverage[i].id << "\t" << beverage[i].name << "\t\t" << setprecision(2) << beverage[i].price << endl;
+	}
+
 	bool exist = TRUE;
 	for (int i = 0; i < totalVendor; i++) {
 		if (vendorID != data[i].id) { // check id entered by user is exist in system or not
