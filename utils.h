@@ -247,27 +247,57 @@ bool loginUser(int logType) {
 
 void viewAddProduct() {
     mainHeader();
-    vendor.viewProduct(vendor.getID(), totalProduct, totalVendor);
+    //vendor.viewProduct(vendor.getID(), totalProduct, totalVendor);
     vendor.addProduct(conn, vendor.getID());
 }
 
 // Customer operation
+void selectProduct();
+
 void viewVendorList() {
+    int exist = 0;
     int operation;
     do {
         mainHeader();
         cout << "\n----Vendor List----\n";
         vendor.viewVendor(totalVendor);
-        cout << "\n--Operation--\n\t1-Enter ID to choose restaurant\n\t2-View all products\n";
+        cout << "\n--Operation--\n\t1-Enter vendor ID to choose\n\t2-View all products\n\t0-Back to Main Menu\n";
         cout << ">> ";
         cin >> operation;
-        vendor.viewProduct(operation, totalProduct, totalVendor);
+        vendor.viewProduct(operation, totalProduct, totalVendor, exist);
+            if (exist == 1)
+                selectProduct();
         system("pause");
     } while (operation != 0);
 }
 
+void selectProduct() {
+    int selection;
+    do {
+        // 1. select id to add to cart -> enter quantity -> display eg. "2x Nasi Lemak has been added to cart." 
+        // 2. display add more item? OR cancel order -> customer choose YES or NO
+        // 3. if yes -> back to no 1. else no -> display all added products name and quantity -> "confirm order?" -> YES (goto receipt page) or NO (cancel order -> home) 
+
+        cout << "\n1-Start ordering\n0-Back to Main Menu\n";
+        cout << ">> ";
+        cin >> selection;
+
+        if (selection == 1) {
+            // start select product id
+            cout << "start order\n";
+        }
+        else if (selection == 0) {
+            break;
+        }
+        else {
+            cout << "\nInvalid selection. Try again.\n";
+        }
+
+    } while (selection != 0);
+}
+
 void viewProductList(int vendorID) {
     mainHeader();
-    vendor.viewProduct(vendorID, totalProduct, totalVendor);
+    //vendor.viewProduct(vendorID, totalProduct, totalVendor);
 }
 #endif

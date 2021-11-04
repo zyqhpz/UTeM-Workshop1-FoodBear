@@ -105,7 +105,7 @@ int main()
                             cout << "\n---Welcome " << cust.getName() << "---\n" << endl;
 
                             cout << "---Operation---\n";
-                            cout << "Enter\n\t1-Start food order\n\t2-View cart\n\t3-View previous order\n\t4-View profile\n\t0-Logout\n";
+                            cout << "Enter\n\t1-View foods\n\t2-View cart\n\t3-View previous order\n\t4-View profile\n\t0-Logout\n";
                             cout << ">> ";
                             cin >> operation;
 

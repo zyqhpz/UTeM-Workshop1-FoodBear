@@ -258,7 +258,28 @@ void Vendor::getCategory(int totalProduct) {
 	}
 }
 
-void Vendor::viewProduct(int vendorID, int totalProduct, int totalVendor) {
+void Vendor::viewProduct(int vendorID, int totalProduct, int totalVendor, int& e) {
+	TextTable tf('-', '|', '+');
+	TextTable tb('-', '|', '+');
+
+	food.clear();
+	beverage.clear();
+
+	bool exist = TRUE;
+	e = 1;
+	for (int i = 0; i < totalVendor; i++) {
+		if (vendorID != data[i].id) { // check id entered by user is exist in system or not
+			//cout << "\tNo vendor selected\n";
+			exist = FALSE;
+			e = 0;
+		}
+		else {
+			exist = TRUE;
+			e = 1;
+			break;
+		}
+	}
+
 	for (int i = 0; i < totalProduct; i++) {
 		if (product[i].category_id == 1) {
 			food.push_back({ product[i].id, product[i].name, product[i].price, product[i].vendor_id, product[i].category_id });
@@ -267,40 +288,54 @@ void Vendor::viewProduct(int vendorID, int totalProduct, int totalVendor) {
 			beverage.push_back({ product[i].id, product[i].name, product[i].price, product[i].vendor_id, product[i].category_id });
 		}
 	}
-	cout << "\n-----Food-----\n";
-	cout << "\n\tId" << "\tProduct Name" << "\t\tPrice (RM)" << endl;
+	//cout << "\n-----Food-----\n";
+	tf.add("ID");
+	tf.add("Product Name");
+	tf.add("Price (RM)");
+	tf.endOfRow();
+	//cout << "\n\tId" << "\tProduct Name" << "\t\tPrice (RM)" << endl;
 	for (int i = 0; i < food.size(); i++) {
-		cout << "-----------------------------------------------------------------\n";
-		if (food[i].vendor_id == vendorID)
-			cout << "\t" << food[i].id << "\t" << food[i].name << "\t\t" << setprecision(2) << food[i].price << endl;
+		//cout << "-----------------------------------------------------------------\n";
+		if (food[i].vendor_id == vendorID) {
+			stringstream ss;
+			ss << fixed << setprecision(2) << food[i].price;
+			tf.add(to_string(food[i].id));
+			tf.add(food[i].name);
+			tf.add(ss.str());
+			tf.endOfRow();
+		}
+			//cout << "\t" << food[i].id << "\t" << food[i].name << "\t\t" << setprecision(2) << food[i].price << endl;
 	}
+	tf.setAlignment(8, TextTable::Alignment::LEFT);
 
-	cout << "\n-----Beverage-----\n";
-	cout << "\n\tId" << "\tProduct Name" << "\t\tPrice (RM)" << endl;
+	//cout << "\n-----Beverage-----\n";
+	tb.add("ID");
+	tb.add("Product Name");
+	tb.add("Price (RM)");
+	tb.endOfRow();
+
 	for (int i = 0; i < beverage.size(); i++) {
-		cout << "-----------------------------------------------------------------\n";
-		if (beverage[i].vendor_id == vendorID)
-			cout << "\t" << beverage[i].id << "\t" << beverage[i].name << "\t\t" << setprecision(2) << beverage[i].price << endl;
+		//cout << "-----------------------------------------------------------------\n";
+		if (beverage[i].vendor_id == vendorID) {
+			stringstream ss;
+			ss << fixed << setprecision(2) << beverage[i].price;
+			tb.add(to_string(beverage[i].id));
+			tb.add(beverage[i].name);
+			tb.add(ss.str());
+			tb.endOfRow();
+			//cout << left << setw(10) << beverage[i].id << left << setw(30) << beverage[i].name << left << setw(10) << beverage[i].price << endl;
+			//cout << "\t" << beverage[i].id << "\t" << beverage[i].name << setw(20) << beverage[i].price << endl;
+		}
 	}
 
-	bool exist = TRUE;
-	for (int i = 0; i < totalVendor; i++) {
-		if (vendorID != data[i].id) { // check id entered by user is exist in system or not
-			//cout << "\tNo vendor selected\n";
-			exist = FALSE;
-		}
-		else {
-			exist = TRUE;
-			break;
-		}
-	}
+	tb.setAlignment(8, TextTable::Alignment::LEFT);
+	//cout << t;
+
 	if (exist) {
-		cout << "\n\tId" << "\tProduct Name" << "\t\tPrice (RM)" << endl;
-		cout << "-----------------------------------------------------------------\n";
-		for (int i = 0; i < totalProduct; i++) {
-			if (product[i].vendor_id == vendorID)
-				cout << "\t" << product[i].id << "\t" << product[i].name << "\t\t" << setprecision(2) << product[i].price << endl;
-		}
+		cout << "\n----Foods----\n";
+		cout << tf;
+		cout << "\n----Beverages---\n";
+		cout << tb;
 	}
 	else {
 		cout << "\n\tNo vendor selected. Try again.\n";

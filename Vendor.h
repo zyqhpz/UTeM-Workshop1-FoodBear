@@ -15,6 +15,8 @@
 
 #include <boost/algorithm/string.hpp> // toLower string
 
+#include "TextTable.h"
+
 using namespace std;
 
 #pragma once
@@ -61,7 +63,7 @@ public:
 	void viewVendor(int);
 
 	int fetchProduct(MYSQL_RES*);
-	void viewProduct(int, int, int);
+	void viewProduct(int, int, int, int&);
 
 	void addProduct(MYSQL*, int);
 
