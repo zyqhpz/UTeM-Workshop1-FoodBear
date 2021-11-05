@@ -13,6 +13,10 @@
 
 #include <boost/algorithm/string.hpp> // toLower string
 
+#include <iomanip>
+#include <vector>
+#include "Vendor.h"
+
 using namespace std;
 
 #pragma once
@@ -33,6 +37,8 @@ private:
 	string custName, custUsername, custPass, custAddress, custPhone;
 	CustomerDetails data[100];
 
+	vector<vector<string>> order; // 2d vector array to store order details.
+
 public:
 	Customer();
 	Customer(string, string);
@@ -44,6 +50,8 @@ public:
 
 	int fetchData(MYSQL_RES*);
 	void viewProfile(function<void()>, MYSQL*);
+
+	void selectProduct(Vendor, int, int);
 
 	string getName();
 	int getID();

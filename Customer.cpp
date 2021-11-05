@@ -198,6 +198,25 @@ void Customer::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 	} while (operation != -1);
 }
 
+void Customer::selectProduct(Vendor vendor, int id, int quantity) {
+	string name;
+	//order.push_back({ id + 1, quantity + 1});
+
+	name = vendor.getFoodName(id);
+
+	order.push_back({ name,  to_string(quantity) });
+
+	cout << endl;
+
+	for (int i = 0; i < order.size(); i++) {
+
+		//cout << "Name: " << order[i][0] << " Quantity: " << order[i][1] << endl;
+		cout << order[i][0] << " ---Quantity: " << order[i][1] << endl;
+	}
+
+	//order.clear();
+}
+
 string Customer::getName() {
 	return this->custName;
 }

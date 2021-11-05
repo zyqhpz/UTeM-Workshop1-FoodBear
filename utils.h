@@ -252,7 +252,7 @@ void viewAddProduct() {
 }
 
 // Customer operation
-void selectProduct();
+void startOrder();
 
 void viewVendorList() {
     int exist = 0;
@@ -266,13 +266,15 @@ void viewVendorList() {
         cin >> operation;
         vendor.viewProduct(operation, totalProduct, totalVendor, exist);
             if (exist == 1)
-                selectProduct();
+                startOrder();
         system("pause");
     } while (operation != 0);
 }
 
-void selectProduct() {
+void startOrder() {
     int selection;
+    int foodID;
+    int quantity;
     do {
         // 1. select id to add to cart -> enter quantity -> display eg. "2x Nasi Lemak has been added to cart." 
         // 2. display add more item? OR cancel order -> customer choose YES or NO
@@ -285,6 +287,14 @@ void selectProduct() {
         if (selection == 1) {
             // start select product id
             cout << "start order\n";
+            do {
+                cout << "\nEnter food id >> ";
+                cin >> foodID;
+                
+                cout << "Enter quantity >> ";
+                cin >> quantity;
+                cust.selectProduct(vendor, foodID, quantity);
+            } while (foodID != 0);
         }
         else if (selection == 0) {
             break;

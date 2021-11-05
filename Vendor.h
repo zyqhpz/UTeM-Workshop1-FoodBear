@@ -69,7 +69,7 @@ public:
 
 	void getCategory(int);
 
-	void selectProduct();
+	string getFoodName(int);
 
 	string getName();
 	int getID();

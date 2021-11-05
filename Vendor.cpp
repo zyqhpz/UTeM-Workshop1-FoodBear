@@ -345,10 +345,16 @@ void Vendor::viewProduct(int vendorID, int totalProduct, int totalVendor, int& e
 
 // void makeOrder()
 
-void Vendor::selectProduct() {
-	cout << "Enter ID\t";
+string Vendor::getFoodName(int id) {
+	// cout << "Enter ID\t";
 	// select to start ordering or not,
 	// later enter product id option will be shown
+
+	for (int i = 0; i < 10; i++) {
+		if (product[i].id == id) {
+			return product[i].name;
+		}
+	}
 }
 
 string Vendor::getName() {
