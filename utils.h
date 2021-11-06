@@ -261,7 +261,8 @@ void viewVendorList() {
         mainHeader();
         cout << "\n----Vendor List----\n";
         vendor.viewVendor(totalVendor);
-        cout << "\n--Operation--\n\t1-Enter vendor ID to choose\n\t2-View all products\n\t0-Back to Main Menu\n";
+        // cout << "\n--Operation--\n\t1-Enter vendor ID to choose\n\t2-View all products\n\t0-Back to Main Menu\n";
+        cout << "\n--Operation--\n\t--Enter vendor ID to start ordering\n\t0-Back to Main Menu\n";
         cout << ">> ";
         cin >> operation;
         vendor.viewProduct(operation, totalProduct, totalVendor, exist);
@@ -272,38 +273,63 @@ void viewVendorList() {
 }
 
 void startOrder() {
-    int selection;
+    char selection;
     int foodID;
     int quantity;
-    do {
+    char proceed;
+    //do {
         // 1. select id to add to cart -> enter quantity -> display eg. "2x Nasi Lemak has been added to cart." 
         // 2. display add more item? OR cancel order -> customer choose YES or NO
         // 3. if yes -> back to no 1. else no -> display all added products name and quantity -> "confirm order?" -> YES (goto receipt page) or NO (cancel order -> home) 
 
-        cout << "\n1-Start ordering\n0-Back to Main Menu\n";
-        cout << ">> ";
+        // cout << "\n1-Start ordering\n0-Back to Main Menu\n";
+        //cout << "\n1-Enter product id\n0-Cancel\n";
+       // cout << ">> ";
+        cout << "Start ordering (Y/N) >> ";
         cin >> selection;
 
-        if (selection == 1) {
+        if (selection == 'Y' || selection == 'y') {
             // start select product id
-            cout << "start order\n";
+            //cout << "start order\n";
+            //cout << "\n1-Enter product id\n0-Cancel\n";
             do {
-                cout << "\nEnter food id >> ";
+                cout << "\nEnter food id (Enter 0 to Cancel) >> ";
                 cin >> foodID;
+
+                if (foodID == 0) {
+                    break;
+                }
                 
                 cout << "Enter quantity >> ";
                 cin >> quantity;
                 cust.selectProduct(vendor, foodID, quantity);
-            } while (foodID != 0);
+
+                do {
+                    cout << "\nHave additional order? (Y/N) >> ";
+                    cin >> proceed;
+                    if (proceed == 'y' || proceed == 'Y') {
+                        break;
+                    }
+                    else if (proceed == 'n' || proceed == 'N') {
+                        cout << "\nthis is payment page\n";
+                        system("pause");
+                        break;
+                        //break; // go to payment page
+                    }
+                    else
+                        cout << "Error input";
+                } while (proceed != 'n' || proceed != 'N' && proceed != 'Y' || proceed != 'Y');
+            } while (foodID != 0); // check only food id >= 0 entered accepted, else -> product not found
         }
-        else if (selection == 0) {
+        /*
+        else if (selection == 'n' || selection == 'N') {
             break;
         }
         else {
             cout << "\nInvalid selection. Try again.\n";
-        }
+        }*/
 
-    } while (selection != 0);
+    //} while (selection != 0);
 }
 
 void viewProductList(int vendorID) {
