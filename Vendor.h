@@ -71,6 +71,8 @@ public:
 
 	string getFoodName(int);
 
+	double getPrice(int id);
+
 	string getName();
 	int getID();
 	string getPassword();

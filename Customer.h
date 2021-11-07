@@ -53,6 +53,8 @@ public:
 
 	void selectProduct(Vendor, int, int);
 
+	vector<vector<string>> getOrder();
+
 	string getName();
 	int getID();
 	string getPassword();

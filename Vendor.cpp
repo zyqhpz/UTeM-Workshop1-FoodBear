@@ -357,6 +357,14 @@ string Vendor::getFoodName(int id) {
 	}
 }
 
+double Vendor::getPrice(int id) {
+	for (int i = 0; i < 10; i++) {
+		if (product[i].id == id) {
+			return product[i].price;
+		}
+	}
+}
+
 string Vendor::getName() {
 	return this->vendorName;
 }

@@ -253,6 +253,7 @@ void viewAddProduct() {
 
 // Customer operation
 void startOrder();
+void getReceipt();
 
 void viewVendorList() {
     int exist = 0;
@@ -311,7 +312,8 @@ void startOrder() {
                         break;
                     }
                     else if (proceed == 'n' || proceed == 'N') {
-                        cout << "\nthis is payment page\n";
+                        //cout << "\nthis is payment page\n";
+                        getReceipt();
                         system("pause");
                         break;
                         //break; // go to payment page
@@ -330,6 +332,16 @@ void startOrder() {
         }*/
 
     //} while (selection != 0);
+}
+
+void getReceipt() {
+    vector<vector<string>> order = cust.getOrder();
+
+    cout << "\n-----Receipt------\n";
+    cout << "\n\tProduct Name\t\tQuantity\n";
+    for (int i = 0; i < order.size(); i++) {
+        cout << "\t" << order[i][0] << "\t\t" << order[i][2] << endl;
+    }
 }
 
 void viewProductList(int vendorID) {
