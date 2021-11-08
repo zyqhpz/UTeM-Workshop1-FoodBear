@@ -16,6 +16,7 @@
 #include "Admin.h"
 
 #include "utils.h"
+#include "Menu.h"
 
 #include "ftxui/dom/elements.hpp"
 #include "ftxui/screen/screen.hpp"
@@ -55,6 +56,7 @@ int main()
 
     do {
         displayMainMenu();
+        select();
         cout << "\n>> ";
         cin >> chooseMain;
 

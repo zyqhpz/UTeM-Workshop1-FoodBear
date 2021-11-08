@@ -158,6 +158,7 @@
     <ClInclude Include="Admin.h" />
     <ClInclude Include="Customer.h" />
     <ClInclude Include="md5.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Rider.h" />
     <ClInclude Include="sha256.h" />
     <ClInclude Include="utils.h" />
