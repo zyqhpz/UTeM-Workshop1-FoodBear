@@ -22,6 +22,11 @@
 #include "ftxui/screen/screen.hpp"
 #include "ftxui/component/component.hpp"
 
+#include <jdbc/mysql_driver.h>
+#include <jdbc/mysql_connection.h>
+//#include <jdbc/cppconn/*.h>
+
+
 using namespace std;
 
 void displayMainMenu() {
