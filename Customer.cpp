@@ -205,15 +205,21 @@ void Customer::selectProduct(Vendor vendor, int id, int quantity) {
 	name = vendor.getFoodName(id);
 	double price = vendor.getPrice(id);
 	price = price * quantity;
+	price = floor((price * 100) + .5) / 100;
 
-	order.push_back({ name, to_string(price), to_string(quantity) });
+	stringstream streamPrice;
+	streamPrice << fixed << setprecision(2) << price;
+
+	cout << endl << price << endl;
+
+	order.push_back({ name, streamPrice.str() , to_string(quantity) });
 
 	cout << endl;
 
 	for (int i = 0; i < order.size(); i++) {
 
 		//cout << "Name: " << order[i][0] << " Quantity: " << order[i][1] << endl;
-		cout << order[i][0] << " ---Quantity: " << order[i][2] << "\tPrice: " << order[i][1] << endl;
+		cout << order[i][0] << " ---Quantity: " << order[i][2] << "\tPrice: RM " << order[i][1] << endl;
 	}
 
 	//order.clear();

@@ -61,7 +61,7 @@ int main()
 
     do {
         displayMainMenu();
-        select();
+        //select(); from menu.h
         cout << "\n>> ";
         cin >> chooseMain;
 

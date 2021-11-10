@@ -17,6 +17,8 @@
 #include <vector>
 #include "Vendor.h"
 
+#include <cmath> // round off number
+
 using namespace std;
 
 #pragma once

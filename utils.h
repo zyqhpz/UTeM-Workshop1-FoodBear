@@ -266,6 +266,8 @@ void viewVendorList() {
         cout << "\n--Operation--\n\t--Enter vendor ID to start ordering\n\t0-Back to Main Menu\n";
         cout << ">> ";
         cin >> operation;
+        if (operation == 0)
+            break;
         vendor.viewProduct(operation, totalProduct, totalVendor, exist);
             if (exist == 1)
                 startOrder();
