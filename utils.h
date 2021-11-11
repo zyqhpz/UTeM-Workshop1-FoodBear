@@ -269,10 +269,13 @@ void viewVendorList() {
         if (operation == 0)
             break;
         vendor.viewProduct(operation, totalProduct, totalVendor, exist);
-            if (exist == 1)
+            if (exist == 1) {
                 startOrder();
+                goto exit;
+            }
         system("pause");
     } while (operation != 0);
+exit:;
 }
 
 void startOrder() {
@@ -280,6 +283,7 @@ void startOrder() {
     int foodID;
     int quantity;
     char proceed;
+    double total = 0;
     //do {
         // 1. select id to add to cart -> enter quantity -> display eg. "2x Nasi Lemak has been added to cart." 
         // 2. display add more item? OR cancel order -> customer choose YES or NO
@@ -305,7 +309,8 @@ void startOrder() {
                 
                 cout << "Enter quantity >> ";
                 cin >> quantity;
-                cust.selectProduct(vendor, foodID, quantity);
+
+                cust.selectProduct(vendor, foodID, quantity, total);
 
                 do {
                     cout << "\nHave additional order? (Y/N) >> ";
@@ -316,6 +321,7 @@ void startOrder() {
                     else if (proceed == 'n' || proceed == 'N') {
                         //cout << "\nthis is payment page\n";
                         getReceipt();
+                        goto jump;
                         system("pause");
                         break;
                         //break; // go to payment page
@@ -325,6 +331,7 @@ void startOrder() {
                 } while (proceed != 'n' || proceed != 'N' && proceed != 'Y' || proceed != 'Y');
             } while (foodID != 0); // check only food id >= 0 entered accepted, else -> product not found
         }
+    jump:;
         /*
         else if (selection == 'n' || selection == 'N') {
             break;

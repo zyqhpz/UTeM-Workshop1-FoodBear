@@ -198,13 +198,15 @@ void Customer::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 	} while (operation != -1);
 }
 
-void Customer::selectProduct(Vendor vendor, int id, int quantity) {
+void Customer::selectProduct(Vendor vendor, int id, int quantity, double& total) {
 	string name;
 	//order.push_back({ id + 1, quantity + 1});
 
+	double t;
 	name = vendor.getFoodName(id);
 	double price = vendor.getPrice(id);
 	price = price * quantity;
+	total = total + price;
 	price = floor((price * 100) + .5) / 100;
 
 	stringstream streamPrice;
@@ -217,10 +219,11 @@ void Customer::selectProduct(Vendor vendor, int id, int quantity) {
 	cout << endl;
 
 	for (int i = 0; i < order.size(); i++) {
-
 		//cout << "Name: " << order[i][0] << " Quantity: " << order[i][1] << endl;
 		cout << order[i][0] << " ---Quantity: " << order[i][2] << "\tPrice: RM " << order[i][1] << endl;
 	}
+
+	cout << "\nTotal amount: RM " << fixed << setprecision(2) << total;
 
 	//order.clear();
 }

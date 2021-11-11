@@ -53,7 +53,7 @@ public:
 	int fetchData(MYSQL_RES*);
 	void viewProfile(function<void()>, MYSQL*);
 
-	void selectProduct(Vendor, int, int);
+	void selectProduct(Vendor, int, int, double&);
 
 	vector<vector<string>> getOrder();
 
