@@ -213,7 +213,7 @@ void Customer::selectProduct(Vendor vendor, int id, int quantity, double& total)
 	stringstream streamPrice;
 	streamPrice << fixed << setprecision(2) << price;
 
-	order.push_back({ name, streamPrice.str() , to_string(quantity) });
+	order.push_back({ name, streamPrice.str() , to_string(quantity), to_string(id) });
 
 	TextTable tableOrder('-', '|', '+');
 
@@ -268,25 +268,44 @@ void Customer::insertOrder(MYSQL* conn) {
 	}
 
 	stringstream ss;
+	stringstream ssOrder;
 
 	// ss << "INSERT INTO order_detail SET username = '" + username + "' WHERE id = " + to_string(this->custID);
 
 	// ss << "INSERT INTO customer (username, password, name, phone) VALUES ('" + username + "', '" + password + "', '" + name + "', '" + noPhone + "')";
 
-	ss << "INSERT INTO customer (customer_id, total_quantity, total_price, date) VALUES ('" + to_string(this->custID) + "', '" + to_string(totalQuantity) + "', '" + to_string(totalPrice) + "', '" + dt + "')";
+	ss << "INSERT INTO cust_order (customer_id, total_quantity, total_price, date) VALUES ('" + to_string(this->custID) + "', '" + to_string(totalQuantity) + "', '" + to_string(totalPrice) + "', '" + dt + "')";
 
-	string slt = "SELECT * FROM customer";
+	string slt = "SELECT id FROM cust_order";
 
 	string query = ss.str();
 	const char* q = query.c_str();
 	int qstate = mysql_query(conn, q);
 
+	int orderID;
+
 	if (!qstate) {
-		cout << "\nRegistration Successful!\n";
+
+		for (int i = 0; i < order.size(); i++) {
+			ssOrder << "INSERT INTO order_detail (cust_order_id, product_id, quantity) VALUES ('" + to_string(orderID) + "', '" + order[i][3] + "', '" + order[i][2]  + "')";
+		
+			string queryDetail = ssOrder.str();
+			const char* qD = queryDetail.c_str();
+			int qDstate = mysql_query(conn, qD);
+
+			if (!qDstate) {}
+
+			else {
+				cout << "\nOrder cannot be created!\n";
+				system("pause");
+				break;
+			}
+		}
+		cout << "\nOrder has been created successfully!\n";
 		system("pause");
 	}
 	else {
-		cout << "\nRegistration Failed!\n";
+		cout << "\nOrder cannot be created!\n";
 		system("pause");
 	}
 
