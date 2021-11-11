@@ -11,6 +11,9 @@
 #include <functional>
 #include "sha256.h"
 
+#include <jdbc/mysql_driver.h>
+#include <jdbc/mysql_connection.h>
+
 #include <iomanip> // for decimal places // setW
 
 #include <boost/algorithm/string.hpp> // toLower string
@@ -73,6 +76,8 @@ public:
 
 	double getPrice(int id);
 
+
+	string getVendorName();
 	string getName();
 	int getID();
 	string getPassword();

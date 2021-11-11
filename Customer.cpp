@@ -207,23 +207,49 @@ void Customer::selectProduct(Vendor vendor, int id, int quantity, double& total)
 	double price = vendor.getPrice(id);
 	price = price * quantity;
 	total = total + price;
+	total = floor((total * 100) + .5) / 100;
 	price = floor((price * 100) + .5) / 100;
 
 	stringstream streamPrice;
 	streamPrice << fixed << setprecision(2) << price;
 
-	cout << endl << price << endl;
-
 	order.push_back({ name, streamPrice.str() , to_string(quantity) });
+
+	TextTable tableOrder('-', '|', '+');
+
+	tableOrder.add("No.");
+	tableOrder.add("Product Name");
+	tableOrder.add("Quantity");
+	tableOrder.add("Total Price (RM)");
+	tableOrder.endOfRow();
 
 	cout << endl;
 
+	//for (int i = 0; i < order.size(); i++) {
+	//	//cout << "Name: " << order[i][0] << " Quantity: " << order[i][1] << endl;
+	//	cout << order[i][0] << " ---Quantity: " << order[i][2] << "\tPrice: RM " << order[i][1] << endl;
+	//}	
+	
 	for (int i = 0; i < order.size(); i++) {
-		//cout << "Name: " << order[i][0] << " Quantity: " << order[i][1] << endl;
-		cout << order[i][0] << " ---Quantity: " << order[i][2] << "\tPrice: RM " << order[i][1] << endl;
+		tableOrder.add(to_string(i+1));
+		tableOrder.add(order[i][0]);
+		tableOrder.add(order[i][2]);
+		tableOrder.add(order[i][1]);
+		tableOrder.endOfRow();
+		//cout << order[i][0] << " ---Quantity: " << order[i][2] << "\tPrice: RM " << order[i][1] << endl;
 	}
 
-	cout << "\nTotal amount: RM " << fixed << setprecision(2) << total;
+	/*tableOrder.add("Total amount: RM");
+	tableOrder.add(to_string(total));
+	tableOrder.endOfRow();*/
+
+	tableOrder.setAlignment(2, TextTable::Alignment::RIGHT);
+	tableOrder.setAlignment(3, TextTable::Alignment::RIGHT);
+
+	cout << "\n---Cart---\n";
+	cout << tableOrder;
+
+	cout << "\nTotal amount: RM " << fixed << setprecision(2) << total << endl;
 
 	//order.clear();
 }
@@ -231,7 +257,6 @@ void Customer::selectProduct(Vendor vendor, int id, int quantity, double& total)
 vector<vector<string>> Customer::getOrder() {
 	return this->order;
 }
-
 
 string Customer::getName() {
 	return this->custName;

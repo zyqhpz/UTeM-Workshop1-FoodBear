@@ -365,6 +365,11 @@ double Vendor::getPrice(int id) {
 	}
 }
 
+string Vendor::getVendorName()
+{
+	return string();
+}
+
 string Vendor::getName() {
 	return this->vendorName;
 }
