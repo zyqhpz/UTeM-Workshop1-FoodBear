@@ -255,7 +255,7 @@ void viewAddProduct() {
 
 // Customer operation
 void startOrder(int, int);
-void getReceipt();
+void getReceipt(int);
 
 void viewVendorList() {
     int exist = 0;
@@ -273,7 +273,7 @@ void viewVendorList() {
 
         // display vendor name here
         mainHeader();
-        cout << "\n------" << vendor.getName() << "------\n";
+        cout << "\n------" << vendor.getVendorName(operation) << "------\n";
         vendor.viewProduct(operation, totalProduct, totalVendor, exist);
             if (exist == 1) {
                 startOrder(operation, exist);
@@ -311,7 +311,7 @@ void startOrder(int venID, int exist) {
         //cout << "\n1-Enter product id\n0-Cancel\n";
         do {
             mainHeader();
-            cout << "\n------" << vendor.getName() << "------\n";
+            cout << "\n------" << vendor.getVendorName(venID) << "------\n";
             vendor.viewProduct(venID, totalProduct, totalVendor, exist);
 
             cout << "\nEnter food id (Enter 0 to Cancel) >> ";
@@ -334,7 +334,7 @@ void startOrder(int venID, int exist) {
                 }
                 else if (proceed == 'n' || proceed == 'N') {
                     //cout << "\nthis is payment page\n";
-                    getReceipt();
+                    getReceipt(total);
                     goto jump;
                     //break; // go to payment page
                 }
@@ -355,14 +355,52 @@ void startOrder(int venID, int exist) {
     //} while (selection != 0);
 }
 
-void getReceipt() { // confirmed order??
+void getReceipt(int total) { // confirmed order?? //kat sini jugak assign all the data to database
     vector<vector<string>> order = cust.getOrder();
 
-    cout << "\n-----Receipt------\n";
-    cout << "\n\tProduct Name\t\tQuantity\n";
+
+    TextTable tableOrder('-', '|', '+');
+
+    tableOrder.add("No.");
+    tableOrder.add("Product Name");
+    tableOrder.add("Quantity");
+    tableOrder.add("Total Price (RM)");
+    tableOrder.endOfRow();
+
     for (int i = 0; i < order.size(); i++) {
-        cout << "\t" << order[i][0] << "\t\t" << order[i][2] << endl;
+        tableOrder.add(to_string(i + 1));
+        tableOrder.add(order[i][0]);
+        tableOrder.add(order[i][2]);
+        tableOrder.add(order[i][1]);
+        tableOrder.endOfRow();
     }
+
+    tableOrder.add("");
+    tableOrder.add("Delivery charge");
+    tableOrder.add("");
+    tableOrder.add("4.00");
+    tableOrder.endOfRow();
+
+    tableOrder.add("");
+    tableOrder.add("Total");
+    tableOrder.add("");
+    tableOrder.add(to_string(total));
+    tableOrder.endOfRow();
+
+    tableOrder.setAlignment(2, TextTable::Alignment::RIGHT);
+    tableOrder.setAlignment(3, TextTable::Alignment::RIGHT);
+
+   // cout << tableOrder;
+
+   // cout << "\nTotal amount: RM " << fixed << setprecision(2) << total << endl;
+
+    cout << "\n-----Receipt------\n";
+    cout << tableOrder;
+
+    //cout << "\n\tProduct Name\t\tQuantity\n";
+    //for (int i = 0; i < order.size(); i++) {
+    //    cout << "\t" << order[i][0] << "\t\t" << order[i][2] << endl;
+    //}
 
     order.clear();
 }

@@ -77,7 +77,7 @@ public:
 	double getPrice(int id);
 
 
-	string getVendorName();
+	string getVendorName(int);
 	string getName();
 	int getID();
 	string getPassword();

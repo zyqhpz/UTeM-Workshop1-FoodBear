@@ -223,8 +223,6 @@ void Customer::selectProduct(Vendor vendor, int id, int quantity, double& total)
 	tableOrder.add("Total Price (RM)");
 	tableOrder.endOfRow();
 
-	cout << endl;
-
 	//for (int i = 0; i < order.size(); i++) {
 	//	//cout << "Name: " << order[i][0] << " Quantity: " << order[i][1] << endl;
 	//	cout << order[i][0] << " ---Quantity: " << order[i][2] << "\tPrice: RM " << order[i][1] << endl;
@@ -249,7 +247,7 @@ void Customer::selectProduct(Vendor vendor, int id, int quantity, double& total)
 	cout << "\n---Cart---\n";
 	cout << tableOrder;
 
-	cout << "\nTotal amount: RM " << fixed << setprecision(2) << total << endl;
+	cout << "\nSubtotal amount: RM " << fixed << setprecision(2) << total << endl;
 
 	//order.clear();
 }

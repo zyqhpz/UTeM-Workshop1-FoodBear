@@ -365,9 +365,14 @@ double Vendor::getPrice(int id) {
 	}
 }
 
-string Vendor::getVendorName()
+string Vendor::getVendorName(int vendorID)
 {
-	return string();
+	for (int i = 0; i < sizeof(data); i++) {
+		if (vendorID == data[i].id) { // check id entered by user is exist in system or not
+			//cout << "\tNo vendor selected\n";
+			return data[i].name;
+		}
+	}
 }
 
 string Vendor::getName() {
