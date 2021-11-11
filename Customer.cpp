@@ -252,6 +252,46 @@ void Customer::selectProduct(Vendor vendor, int id, int quantity, double& total)
 	//order.clear();
 }
 
+void Customer::insertOrder(MYSQL* conn) {
+	// 1. create cust_order table first
+	// 2. insert details to order_detail
+
+	int totalQuantity = 0;
+	double totalPrice;
+
+	time_t now = time(0);
+	char* dt = ctime(&now);
+
+	for (int i = 0; i < order.size(); i++) {
+		totalQuantity += stoi(order[i][2]);
+		totalPrice += stod(order[i][1]);
+	}
+
+	stringstream ss;
+
+	// ss << "INSERT INTO order_detail SET username = '" + username + "' WHERE id = " + to_string(this->custID);
+
+	// ss << "INSERT INTO customer (username, password, name, phone) VALUES ('" + username + "', '" + password + "', '" + name + "', '" + noPhone + "')";
+
+	ss << "INSERT INTO customer (customer_id, total_quantity, total_price, date) VALUES ('" + to_string(this->custID) + "', '" + to_string(totalQuantity) + "', '" + to_string(totalPrice) + "', '" + dt + "')";
+
+	string slt = "SELECT * FROM customer";
+
+	string query = ss.str();
+	const char* q = query.c_str();
+	int qstate = mysql_query(conn, q);
+
+	if (!qstate) {
+		cout << "\nRegistration Successful!\n";
+		system("pause");
+	}
+	else {
+		cout << "\nRegistration Failed!\n";
+		system("pause");
+	}
+
+}
+
 vector<vector<string>> Customer::getOrder() {
 	return this->order;
 }

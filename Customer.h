@@ -17,6 +17,9 @@
 #include <vector>
 #include "Vendor.h"
 
+#include <ctime>
+#include <time.h>
+
 #include "TextTable.h"
 
 #include <cmath> // round off number
@@ -56,6 +59,8 @@ public:
 	void viewProfile(function<void()>, MYSQL*);
 
 	void selectProduct(Vendor, int, int, double&);
+
+	void insertOrder(MYSQL*);
 
 	vector<vector<string>> getOrder();
 
