@@ -191,12 +191,30 @@ void Vendor::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 }
 
 void Vendor::viewVendor(int totalVendor) {
-	cout << "\n\tID" << "\tName" << setw(25) << "\t\tPhone No." << "\t\tLocation" << endl;
-	cout << "---------------------------------------------------------------------------------------------------------------" << endl;
+
+	TextTable vv;
+
+	vv.add("ID");
+	vv.add("Name");
+	vv.add("Phone No.");
+	vv.add("Address");
+	vv.endOfRow();
+
+	//cout << "\n\tID" << "\tName" << setw(25) << "\t\tPhone No." << "\t\tLocation" << endl;
+	//cout << "---------------------------------------------------------------------------------------------------------------" << endl;
 	for (int i = 0; i < totalVendor; i++) {
-		cout << "\t" << data[i].id << "\t" << data[i].name << setw(20) << data[i].phone << "\t" << data[i].address << endl;
+		vv.add(to_string(data[i].id));
+		vv.add(data[i].name);
+		vv.add(data[i].phone);
+		vv.add(data[i].address);
+		vv.endOfRow();
+		//cout << "\t" << data[i].id << "\t" << data[i].name << setw(20) << data[i].phone << "\t" << data[i].address << endl;
 	}
+
+	vv.setAlignment(3, TextTable::Alignment::LEFT);
+
 	cout << endl;
+	cout << vv;
 }
 
 void Vendor::addProduct(MYSQL* conn, int vendorID) {
