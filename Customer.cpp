@@ -280,16 +280,17 @@ void Customer::insertOrder(MYSQL* conn) {
 	string query = ss.str();
 	const char* q = query.c_str();
 	int qstate = mysql_query(conn, q);
+	//mysql_insert_id(conn);
 
-	int orderID;
+	int orderID = mysql_insert_id(conn);
 
 	if (!qstate) {
 
 		cout << "\nOrder has been created successfully!\n";
 		for (int i = 0; i < order.size(); i++) {
 			stringstream ssOrder;
-			ssOrder << "INSERT INTO order_detail (product_id, quantity) VALUES ('" + order[i][3] + "', '" + order[i][2]  + "')";
-			// ssOrder << "INSERT INTO order_detail (cust_order_id, product_id, quantity) VALUES ('" + to_string(orderID) + "', '" + order[i][3] + "', '" + order[i][2]  + "')";
+			//ssOrder << "INSERT INTO order_detail (product_id, quantity) VALUES ('" + order[i][3] + "', '" + order[i][2]  + "')";
+			ssOrder << "INSERT INTO order_detail (cust_order_id, product_id, quantity) VALUES ('" + to_string(orderID) + "', '" + order[i][3] + "', '" + order[i][2]  + "')";
 		
 			string queryDetail = ssOrder.str();
 			const char* qD = queryDetail.c_str();
