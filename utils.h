@@ -255,7 +255,7 @@ void viewAddProduct() {
 
 // Customer operation
 void startOrder(int, int);
-void getReceipt(int);
+void getReceipt(double);
 
 void viewVendorList() {
     int exist = 0;
@@ -355,7 +355,7 @@ void startOrder(int venID, int exist) {
     //} while (selection != 0);
 }
 
-void getReceipt(int total) { // confirmed order?? //kat sini jugak assign all the data to database
+void getReceipt(double total) { // confirmed order?? //kat sini jugak assign all the data to database
     vector<vector<string>> order = cust.getOrder();
 
 
@@ -375,6 +375,9 @@ void getReceipt(int total) { // confirmed order?? //kat sini jugak assign all th
         tableOrder.endOfRow();
     }
 
+    stringstream t;
+    t << fixed << setprecision(2) << total;
+
     tableOrder.add("");
     tableOrder.add("Delivery charge");
     tableOrder.add("");
@@ -384,7 +387,7 @@ void getReceipt(int total) { // confirmed order?? //kat sini jugak assign all th
     tableOrder.add("");
     tableOrder.add("Total");
     tableOrder.add("");
-    tableOrder.add(to_string(total));
+    tableOrder.add(t.str());
     tableOrder.endOfRow();
 
     tableOrder.setAlignment(2, TextTable::Alignment::RIGHT);
@@ -402,6 +405,7 @@ void getReceipt(int total) { // confirmed order?? //kat sini jugak assign all th
     //    cout << "\t" << order[i][0] << "\t\t" << order[i][2] << endl;
     //}
 
+    cust.insertOrder(conn);
     order.clear();
 }
 

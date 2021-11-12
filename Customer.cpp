@@ -257,7 +257,7 @@ void Customer::insertOrder(MYSQL* conn) {
 	// 2. insert details to order_detail
 
 	int totalQuantity = 0;
-	double totalPrice;
+	double totalPrice = 0;
 
 	time_t now = time(0);
 	char* dt = ctime(&now);
@@ -268,7 +268,6 @@ void Customer::insertOrder(MYSQL* conn) {
 	}
 
 	stringstream ss;
-	stringstream ssOrder;
 
 	// ss << "INSERT INTO order_detail SET username = '" + username + "' WHERE id = " + to_string(this->custID);
 
@@ -286,22 +285,26 @@ void Customer::insertOrder(MYSQL* conn) {
 
 	if (!qstate) {
 
+		cout << "\nOrder has been created successfully!\n";
 		for (int i = 0; i < order.size(); i++) {
-			ssOrder << "INSERT INTO order_detail (cust_order_id, product_id, quantity) VALUES ('" + to_string(orderID) + "', '" + order[i][3] + "', '" + order[i][2]  + "')";
+			stringstream ssOrder;
+			ssOrder << "INSERT INTO order_detail (product_id, quantity) VALUES ('" + order[i][3] + "', '" + order[i][2]  + "')";
+			// ssOrder << "INSERT INTO order_detail (cust_order_id, product_id, quantity) VALUES ('" + to_string(orderID) + "', '" + order[i][3] + "', '" + order[i][2]  + "')";
 		
 			string queryDetail = ssOrder.str();
 			const char* qD = queryDetail.c_str();
 			int qDstate = mysql_query(conn, qD);
 
-			if (!qDstate) {}
+			if (!qDstate) {
+				cout << "\nProduct " << i + 1 << " created.\n";
+			}
 
 			else {
 				cout << "\nOrder cannot be created!\n";
-				system("pause");
-				break;
+				//system("pause");
+				//break;
 			}
 		}
-		cout << "\nOrder has been created successfully!\n";
 		system("pause");
 	}
 	else {
