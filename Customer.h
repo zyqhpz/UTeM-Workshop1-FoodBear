@@ -60,7 +60,7 @@ public:
 
 	void selectProduct(Vendor, int, int, double&);
 
-	void insertOrder(MYSQL*);
+	void insertOrder(MYSQL*, int);
 
 	vector<vector<string>> getOrder();
 

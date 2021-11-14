@@ -334,7 +334,7 @@ void startOrder(int venID, int exist) {
                 }
                 else if (proceed == 'n' || proceed == 'N') {
                     //cout << "\nthis is payment page\n";
-                    getReceipt(total);
+                    getReceipt(total, venID);
                     goto jump;
                     //break; // go to payment page
                 }
@@ -355,7 +355,7 @@ void startOrder(int venID, int exist) {
     //} while (selection != 0);
 }
 
-void getReceipt(double total) { // confirmed order?? //kat sini jugak assign all the data to database
+void getReceipt(double total, int vendorID) { // confirmed order?? //kat sini jugak assign all the data to database
     vector<vector<string>> order = cust.getOrder();
 
 
@@ -405,7 +405,7 @@ void getReceipt(double total) { // confirmed order?? //kat sini jugak assign all
     //    cout << "\t" << order[i][0] << "\t\t" << order[i][2] << endl;
     //}
 
-    cust.insertOrder(conn);
+    cust.insertOrder(conn, vendorID);
     order.clear();
 }
 

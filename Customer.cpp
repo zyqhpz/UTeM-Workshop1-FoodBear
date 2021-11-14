@@ -252,7 +252,7 @@ void Customer::selectProduct(Vendor vendor, int id, int quantity, double& total)
 	//order.clear();
 }
 
-void Customer::insertOrder(MYSQL* conn) {
+void Customer::insertOrder(MYSQL* conn, int venID) {
 	// 1. create cust_order table first
 	// 2. insert details to order_detail
 
@@ -278,14 +278,21 @@ void Customer::insertOrder(MYSQL* conn) {
 
 	ss << "INSERT INTO cust_order (customer_id, total_quantity, total_price, date) VALUES ('" + to_string(this->custID) + "', '" + to_string(totalQuantity) + "', '" + to_string(totalPrice) + "', '" + date.str() + "')";
 
-	string slt = "SELECT id FROM cust_order";
-
 	string query = ss.str();
 	const char* q = query.c_str();
 	int qstate = mysql_query(conn, q);
 	//mysql_insert_id(conn);
 
 	int orderID = mysql_insert_id(conn);
+
+	// insert to payment table here
+	stringstream st;
+
+	st << "INSERT INTO payment (order_id, vendor_id, total_payment) VALUES ('" + to_string(orderID) + "', '" + to_string(venID) + "', '" + to_string(totalPrice + 4) + "')'";
+
+	string queryP = ss.str();
+	const char* qP = queryP.c_str();
+	int qPState = mysql_query(conn, qP);
 
 	if (!qstate) {
 
@@ -295,8 +302,6 @@ void Customer::insertOrder(MYSQL* conn) {
 			//ssOrder << "INSERT INTO order_detail (product_id, quantity) VALUES ('" + order[i][3] + "', '" + order[i][2]  + "')";
 			ssOrder << "INSERT INTO order_detail (cust_order_id, product_id, quantity) VALUES ('" + to_string(orderID) + "', '" + order[i][3] + "', '" + order[i][2]  + "')";
 		
-			// insert to payment table here
-
 			string queryDetail = ssOrder.str();
 			const char* qD = queryDetail.c_str();
 			int qDstate = mysql_query(conn, qD);
@@ -311,6 +316,8 @@ void Customer::insertOrder(MYSQL* conn) {
 				//break;
 			}
 		}
+
+
 		system("pause");
 	}
 	else {
