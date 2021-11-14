@@ -37,6 +37,19 @@ struct CustomerDetails {
 	string address;
 };
 
+struct CustomerOrders {
+	int id;
+	int total_quantity;
+	double total_price;
+};
+
+struct OrderDetails {
+	//int id;
+	int cust_order_id;
+	int product_id;
+	int quantity;
+};
+
 class Customer {
 private:
 	//int custNum
@@ -44,7 +57,10 @@ private:
 	string custName, custUsername, custPass, custAddress, custPhone;
 	CustomerDetails data[100];
 
-	vector<vector<string>> order; // 2d vector array to store order details.
+	vector<vector<string>> order; // 2d vector array to store order details when ordering
+
+	CustomerOrders cust_order[100];
+	OrderDetails order_detail[100];
 
 public:
 	Customer();
@@ -56,6 +72,8 @@ public:
 	void registerCustomer(MYSQL*);
 
 	int fetchData(MYSQL_RES*);
+	int fetchOrderData(MYSQL*);
+	int fetchOrderDetails(MYSQL*);
 	void viewProfile(function<void()>, MYSQL*);
 
 	void selectProduct(Vendor, int, int, double&);
@@ -63,6 +81,8 @@ public:
 	void insertOrder(MYSQL*, int);
 
 	vector<vector<string>> getOrder();
+
+	void displayPreviousOrder();
 
 	string getName();
 	int getID();

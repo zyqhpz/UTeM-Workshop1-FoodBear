@@ -105,6 +105,70 @@ int Customer::fetchData(MYSQL_RES* res) {
 	return total;
 }
 
+int Customer::fetchOrderData(MYSQL* conn) {
+	MYSQL_ROW row;
+	MYSQL_RES* res;
+
+	//string sql = "SELECT * FROM cust_order";
+
+	stringstream sql;
+	sql << "SELECT * FROM cust_order WHERE customer_id = " + to_string(this->custID);
+
+	const char* qC = sql.str().c_str();
+	int q = mysql_query(conn, qC);
+	if (!q) {
+		res = mysql_store_result(conn);
+		int i = 0;
+		int total = 0;
+		while (row = mysql_fetch_row(res)) {
+			cust_order[i].id = stoi(row[0]); // string to int
+			cust_order[i].total_quantity = stoi(row[1]);
+			cust_order[i].total_price = stod(row[2]);
+			i++;
+			total++;
+		}
+	}
+	else {
+		cout << "\nPrevious Order Cannnot Be Displayed\n";
+	}
+
+	return 0;
+}
+
+int Customer::fetchOrderDetails(MYSQL* conn)
+{
+	// SELECT * FROM order_detail LEFT JOIN cust_order ON order_detail.cust_order_id = cust_order.id WHERE cust_order.customer_id = 2
+
+	//string sqlD = "SELECT * FROM order_detail ";
+
+	MYSQL_ROW row;
+	MYSQL_RES* res;
+
+	stringstream sqlD;
+
+	sqlD << "SELECT order_detail.cust_order_id, order_detail.product_id, order_detail.quantity FROM order_detail LEFT JOIN cust_order ON order_detail.cust_order_id = cust_order.id WHERE cust_order.customer_id = " << this->custID;
+
+	const char* qO = sqlD.str().c_str();
+	int qD = mysql_query(conn, qO);
+	if (!qD) {
+		res = mysql_store_result(conn);
+		int i = 0;
+		int total = 0;
+		while (row = mysql_fetch_row(res)) {
+			//order_detail[i].id = stoi(row[0]); // string to int
+			order_detail[i].cust_order_id = stoi(row[0]); // string to int
+			order_detail[i].product_id = stoi(row[0]); // string to int
+			order_detail[i].quantity = stoi(row[0]); // string to int
+			i++;
+		}
+	}
+	else {
+		cout << "\nPrevious Order Cannnot Be Displayed\n";
+	}
+
+	return 0;
+}
+
 // Function to view and user profile
 void Customer::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 	int operation;
@@ -247,7 +311,7 @@ void Customer::selectProduct(Vendor vendor, int id, int quantity, double& total)
 	cout << "\n---Cart---\n";
 	cout << tableOrder;
 
-	cout << "\nSubtotal amount: RM " << fixed << setprecision(2) << total << endl;
+	cout << "\nSubtotal: RM " << fixed << setprecision(2) << total << endl;
 
 	//order.clear();
 }
@@ -286,11 +350,11 @@ void Customer::insertOrder(MYSQL* conn, int venID) {
 	int orderID = mysql_insert_id(conn);
 
 	// insert to payment table here
-	stringstream st;
+	stringstream sp;
 
-	st << "INSERT INTO payment (order_id, vendor_id, total_payment) VALUES ('" + to_string(orderID) + "', '" + to_string(venID) + "', '" + to_string(totalPrice + 4) + "')'";
+	sp << "INSERT INTO payment (order_id, vendor_id, total_payment) VALUES ('" + to_string(orderID) + "', '" + to_string(venID) + "', '" + to_string(totalPrice + 4) + "')'";
 
-	string queryP = ss.str();
+	string queryP = sp.str();
 	const char* qP = queryP.c_str();
 	int qPState = mysql_query(conn, qP);
 
@@ -329,6 +393,17 @@ void Customer::insertOrder(MYSQL* conn, int venID) {
 
 vector<vector<string>> Customer::getOrder() {
 	return this->order;
+}
+// display previous order that being made by the customer
+// get all data from table product, cust_order, payment, delivery.
+void Customer::displayPreviousOrder() {
+	int id = getID();
+
+	stringstream ss;
+	ss << "SELECT cust_order.id, cust_order.customer_id, cust_order.date, order_detail.product_id, order_detail.quantity FROM `cust_order` INNER JOIN order_detail ON cust_order.id = order_detail.cust_order_id";
+	ss << "SELECT cust_order.id FROM cust_order WHERE customer_id = " << id;
+
+	ss << "SELECT * FROM cust_order INNER JOIN order_detail ON cust_order.id = order_detail.cust_order_id INNER JOIN product ON order_detail.product_id = product.id";
 }
 
 string Customer::getName() {

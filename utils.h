@@ -358,7 +358,6 @@ void startOrder(int venID, int exist) {
 void getReceipt(double total, int vendorID) { // confirmed order?? //kat sini jugak assign all the data to database
     vector<vector<string>> order = cust.getOrder();
 
-
     TextTable tableOrder('-', '|', '+');
 
     tableOrder.add("No.");
@@ -374,6 +373,8 @@ void getReceipt(double total, int vendorID) { // confirmed order?? //kat sini ju
         tableOrder.add(order[i][1]);
         tableOrder.endOfRow();
     }
+
+    total += 4;
 
     stringstream t;
     t << fixed << setprecision(2) << total;
@@ -407,6 +408,11 @@ void getReceipt(double total, int vendorID) { // confirmed order?? //kat sini ju
 
     cust.insertOrder(conn, vendorID);
     order.clear();
+}
+
+void viewPreviousOrder() {
+    int totalOrder = cust.fetchOrderData(conn);
+    int totalOrderDetail = cust.fetchOrderDetails(conn);
 }
 
 void viewProductList(int vendorID) {
