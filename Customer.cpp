@@ -259,8 +259,11 @@ void Customer::insertOrder(MYSQL* conn) {
 	int totalQuantity = 0;
 	double totalPrice = 0;
 
-	time_t now = time(0);
-	char* dt = ctime(&now);
+	time_t t = time(0);
+	//char* dt = ctime(&t);
+	tm* now = localtime(&t);
+	stringstream date;
+	date << to_string(now->tm_year + 1900) + "-" + to_string(now->tm_mon + 1) + "-" + to_string(now->tm_mday);
 
 	for (int i = 0; i < order.size(); i++) {
 		totalQuantity += stoi(order[i][2]);
@@ -273,7 +276,7 @@ void Customer::insertOrder(MYSQL* conn) {
 
 	// ss << "INSERT INTO customer (username, password, name, phone) VALUES ('" + username + "', '" + password + "', '" + name + "', '" + noPhone + "')";
 
-	ss << "INSERT INTO cust_order (customer_id, total_quantity, total_price, date) VALUES ('" + to_string(this->custID) + "', '" + to_string(totalQuantity) + "', '" + to_string(totalPrice) + "', '" + dt + "')";
+	ss << "INSERT INTO cust_order (customer_id, total_quantity, total_price, date) VALUES ('" + to_string(this->custID) + "', '" + to_string(totalQuantity) + "', '" + to_string(totalPrice) + "', '" + date.str() + "')";
 
 	string slt = "SELECT id FROM cust_order";
 
@@ -292,6 +295,8 @@ void Customer::insertOrder(MYSQL* conn) {
 			//ssOrder << "INSERT INTO order_detail (product_id, quantity) VALUES ('" + order[i][3] + "', '" + order[i][2]  + "')";
 			ssOrder << "INSERT INTO order_detail (cust_order_id, product_id, quantity) VALUES ('" + to_string(orderID) + "', '" + order[i][3] + "', '" + order[i][2]  + "')";
 		
+			// insert to payment table here
+
 			string queryDetail = ssOrder.str();
 			const char* qD = queryDetail.c_str();
 			int qDstate = mysql_query(conn, qD);
