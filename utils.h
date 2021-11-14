@@ -255,7 +255,7 @@ void viewAddProduct() {
 
 // Customer operation
 void startOrder(int, int);
-void getReceipt(double);
+void getReceipt(double, int);
 
 void viewVendorList() {
     int exist = 0;
@@ -413,6 +413,10 @@ void getReceipt(double total, int vendorID) { // confirmed order?? //kat sini ju
 void viewPreviousOrder() {
     int totalOrder = cust.fetchOrderData(conn);
     int totalOrderDetail = cust.fetchOrderDetails(conn);
+
+    for (int i = 0; i < totalOrder; i++) {
+        cust.displayPreviousOrder(i, totalOrderDetail);
+    }
 }
 
 void viewProductList(int vendorID) {

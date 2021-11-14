@@ -109,6 +109,8 @@ int Customer::fetchOrderData(MYSQL* conn) {
 	MYSQL_ROW row;
 	MYSQL_RES* res;
 
+	int i = 0;
+
 	//string sql = "SELECT * FROM cust_order";
 
 	stringstream sql;
@@ -118,21 +120,18 @@ int Customer::fetchOrderData(MYSQL* conn) {
 	int q = mysql_query(conn, qC);
 	if (!q) {
 		res = mysql_store_result(conn);
-		int i = 0;
-		int total = 0;
 		while (row = mysql_fetch_row(res)) {
 			cust_order[i].id = stoi(row[0]); // string to int
-			cust_order[i].total_quantity = stoi(row[1]);
-			cust_order[i].total_price = stod(row[2]);
+			cust_order[i].total_quantity = stoi(row[2]);
+			cust_order[i].total_price = stod(row[3]);
 			i++;
-			total++;
 		}
 	}
 	else {
-		cout << "\nPrevious Order Cannnot Be Displayed\n";
+		cout << "\nPrevious Order Cannnot Be Fetched\n";
 	}
 
-	return 0;
+	return i;
 }
 
 int Customer::fetchOrderDetails(MYSQL* conn)
@@ -144,29 +143,29 @@ int Customer::fetchOrderDetails(MYSQL* conn)
 	MYSQL_ROW row;
 	MYSQL_RES* res;
 
+	int i = 0;
+
 	stringstream sqlD;
 
-	sqlD << "SELECT order_detail.cust_order_id, order_detail.product_id, order_detail.quantity FROM order_detail LEFT JOIN cust_order ON order_detail.cust_order_id = cust_order.id WHERE cust_order.customer_id = " << this->custID;
-
-	const char* qO = sqlD.str().c_str();
+	sqlD << "SELECT order_detail.cust_order_id, order_detail.product_id, order_detail.quantity FROM order_detail LEFT JOIN cust_order ON order_detail.cust_order_id = cust_order.id WHERE cust_order.customer_id = " + to_string(this->custID);
+	string s = sqlD.str();
+	const char* qO = s.c_str();
 	int qD = mysql_query(conn, qO);
 	if (!qD) {
 		res = mysql_store_result(conn);
-		int i = 0;
-		int total = 0;
 		while (row = mysql_fetch_row(res)) {
 			//order_detail[i].id = stoi(row[0]); // string to int
 			order_detail[i].cust_order_id = stoi(row[0]); // string to int
-			order_detail[i].product_id = stoi(row[0]); // string to int
-			order_detail[i].quantity = stoi(row[0]); // string to int
+			order_detail[i].product_id = stoi(row[1]); // string to int
+			order_detail[i].quantity = stoi(row[2]); // string to int
 			i++;
 		}
 	}
 	else {
-		cout << "\nPrevious Order Cannnot Be Displayed\n";
+		cout << "\nPrevious Order Detail Cannnot Be Fetched\n";
 	}
 
-	return 0;
+	return i;
 }
 
 // Function to view and user profile
@@ -396,7 +395,7 @@ vector<vector<string>> Customer::getOrder() {
 }
 // display previous order that being made by the customer
 // get all data from table product, cust_order, payment, delivery.
-void Customer::displayPreviousOrder() {
+void Customer::displayPreviousOrder(int i, int totalDetail) {
 	int id = getID();
 
 	stringstream ss;
@@ -404,6 +403,14 @@ void Customer::displayPreviousOrder() {
 	ss << "SELECT cust_order.id FROM cust_order WHERE customer_id = " << id;
 
 	ss << "SELECT * FROM cust_order INNER JOIN order_detail ON cust_order.id = order_detail.cust_order_id INNER JOIN product ON order_detail.product_id = product.id";
+
+	cout << cust_order[i].id << " " << cust_order[i].total_price << " " << cust_order[i].total_quantity << endl;
+
+	for (int k = 0; k < totalDetail; k++) {
+		if (order_detail[k].cust_order_id == cust_order[i].id) {
+			cout << order_detail[k].product_id << " " << order_detail[k].quantity << endl;
+		}
+	}
 }
 
 string Customer::getName() {

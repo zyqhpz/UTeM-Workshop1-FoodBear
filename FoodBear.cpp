@@ -120,7 +120,9 @@ int main()
                                 viewVendorList();
                                 system("pause");
                             }
-                            if (operation == 2) {
+                            else if (operation == 2) {
+                                viewPreviousOrder();
+                                system("pause");
                             }
                             else if (operation == 4) {
                                 cust.viewProfile(mainHeader, conn);
