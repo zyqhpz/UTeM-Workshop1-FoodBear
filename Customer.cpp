@@ -114,9 +114,10 @@ int Customer::fetchOrderData(MYSQL* conn) {
 	//string sql = "SELECT * FROM cust_order";
 
 	stringstream sql;
+	//sql << "SELECT * FROM order_detail JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE cust_order.customer_id = 2;";
 	sql << "SELECT * FROM cust_order WHERE customer_id = " + to_string(this->custID);
-
-	const char* qC = sql.str().c_str();
+	string s = sql.str();
+	const char* qC = s.c_str();
 	int q = mysql_query(conn, qC);
 	if (!q) {
 		res = mysql_store_result(conn);
@@ -163,6 +164,57 @@ int Customer::fetchOrderDetails(MYSQL* conn)
 	}
 	else {
 		cout << "\nPrevious Order Detail Cannnot Be Fetched\n";
+	}
+
+	return i;
+}
+
+int Customer::fetchPreviousOrder(MYSQL* conn, TextTable& tb)
+{
+	MYSQL_ROW row;
+	MYSQL_RES* res;
+
+	int i = 0;
+
+	tb.add("Order ID");
+	tb.add("Quantity");
+	tb.add("Price (RM)");
+	tb.add("Date");
+	tb.add("Status");
+	tb.endOfRow();
+
+	stringstream sql;
+	//sql << "SELECT * FROM order_detail JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE cust_order.customer_id = " + this->custID;
+	sql << "SELECT * FROM order_detail JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE cust_order.customer_id = " << this->custID << " GROUP BY cust_order.id";
+	string s = sql.str();
+	const char* qC = s.c_str();
+	int q = mysql_query(conn, qC);
+	if (!q) {
+		res = mysql_store_result(conn);
+		while (row = mysql_fetch_row(res)) {
+			string orderID = row[1];
+			string quantity = row[6];
+			string price = row[11];
+			string date = row[8];
+			string riderID = row[14];
+			string status = row[15];
+			///prev_order.push_back({ row[1], row[5], row[7], row[10], row[13], row[14] });
+			prev_order.push_back({ orderID, quantity, price, date, riderID, status });
+			tb.add(orderID);
+			tb.add(quantity);
+			tb.add(price);
+			tb.add(date);
+			if (status == "0")
+				tb.add("Pending");
+			else
+				tb.add("In Delivery");
+			tb.endOfRow();
+			cout << prev_order[i][0] << endl << prev_order[i][1] << endl << prev_order[i][4] << endl;
+			i++;
+		}
+	}
+	else {
+		cout << "\nPrevious Order New Cannnot Be Fetched\n";
 	}
 
 	return i;

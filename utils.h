@@ -22,6 +22,9 @@
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
 
+#include <jdbc/mysql_driver.h>
+#include <jdbc/mysql_connection.h>
+
 #pragma once
 
 using namespace std;
@@ -411,8 +414,11 @@ void getReceipt(double total, int vendorID) { // confirmed order?? //kat sini ju
 }
 
 void viewPreviousOrder() {
+    TextTable tb;
+
     int totalOrder = cust.fetchOrderData(conn);
     int totalOrderDetail = cust.fetchOrderDetails(conn);
+    int totalPrev = cust.fetchPreviousOrder(conn, tb);
 
     vector<vector<int>> detail;
 
@@ -427,7 +433,10 @@ void viewPreviousOrder() {
         cust.displayPreviousOrder(i, totalOrderDetail, tt);
     }
 
+
     cout << tt;
+
+    cout << tb;
 }
 
 void viewProductList(int vendorID) {

@@ -62,6 +62,8 @@ private:
 	CustomerOrders cust_order[100];
 	OrderDetails order_detail[100];
 
+	vector<vector<string>> prev_order;
+
 public:
 	Customer();
 	Customer(string, string);
@@ -74,6 +76,7 @@ public:
 	int fetchData(MYSQL_RES*);
 	int fetchOrderData(MYSQL*);
 	int fetchOrderDetails(MYSQL*);
+	int fetchPreviousOrder(MYSQL*, TextTable&);
 	void viewProfile(function<void()>, MYSQL*);
 
 	void selectProduct(Vendor, int, int, double&);
