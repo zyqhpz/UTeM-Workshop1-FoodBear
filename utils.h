@@ -414,9 +414,20 @@ void viewPreviousOrder() {
     int totalOrder = cust.fetchOrderData(conn);
     int totalOrderDetail = cust.fetchOrderDetails(conn);
 
+    vector<vector<int>> detail;
+
+    TextTable tt;
+
+    tt.add("Order ID");
+    tt.add("Total Price (RM)");
+    tt.add("Quantity");
+    tt.endOfRow();
+
     for (int i = 0; i < totalOrder; i++) {
-        cust.displayPreviousOrder(i, totalOrderDetail);
+        cust.displayPreviousOrder(i, totalOrderDetail, tt);
     }
+
+    cout << tt;
 }
 
 void viewProductList(int vendorID) {

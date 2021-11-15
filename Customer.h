@@ -82,7 +82,7 @@ public:
 
 	vector<vector<string>> getOrder();
 
-	void displayPreviousOrder(int, int);
+	void displayPreviousOrder(int, int, TextTable&);
 
 	string getName();
 	int getID();

@@ -395,16 +395,34 @@ vector<vector<string>> Customer::getOrder() {
 }
 // display previous order that being made by the customer
 // get all data from table product, cust_order, payment, delivery.
-void Customer::displayPreviousOrder(int i, int totalDetail) {
+void Customer::displayPreviousOrder(int i, int totalDetail, TextTable& tt) {
 	int id = getID();
 
-	stringstream ss;
+	string username, password;
+
+	stringstream s, ss;
+
+	ss << "SELECT * FROM user WHERE username LIKE '" << username << "' AND password LIKE '" << password << "'";
+
 	ss << "SELECT cust_order.id, cust_order.customer_id, cust_order.date, order_detail.product_id, order_detail.quantity FROM `cust_order` INNER JOIN order_detail ON cust_order.id = order_detail.cust_order_id";
 	ss << "SELECT cust_order.id FROM cust_order WHERE customer_id = " << id;
 
 	ss << "SELECT * FROM cust_order INNER JOIN order_detail ON cust_order.id = order_detail.cust_order_id INNER JOIN product ON order_detail.product_id = product.id";
 
-	cout << cust_order[i].id << " " << cust_order[i].total_price << " " << cust_order[i].total_quantity << endl;
+	ss << "SELECT * FROM payment";
+	s << "SELECT * FROM delivery";
+
+	//TextTable tt;
+
+	stringstream tp;
+	tp << fixed << setprecision(2) << cust_order[i].total_price;
+
+	tt.add(to_string(cust_order[i].id));
+	tt.add(tp.str());
+	tt.add(to_string(cust_order[i].total_quantity));
+	tt.endOfRow();
+
+	//cout << cust_order[i].id << " " << fixed << setprecision(2) << cust_order[i].total_price << " " << cust_order[i].total_quantity << endl;
 
 	for (int k = 0; k < totalDetail; k++) {
 		if (order_detail[k].cust_order_id == cust_order[i].id) {
