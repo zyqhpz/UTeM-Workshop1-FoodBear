@@ -179,7 +179,7 @@ int Customer::fetchPreviousOrder(MYSQL* conn, TextTable& tb)
 	tb.add("Order ID");
 	tb.add("Quantity");
 	tb.add("Price (RM)");
-	tb.add("Date");
+	tb.add("Order Created");
 	tb.add("Status");
 	tb.endOfRow();
 
@@ -196,7 +196,13 @@ int Customer::fetchPreviousOrder(MYSQL* conn, TextTable& tb)
 			string quantity = row[6];
 			string price = row[11];
 			string date = row[8];
-			string riderID = row[14];
+			string riderID;
+			if (row[14] == NULL) {
+				riderID = "Not Set";
+			}
+			else {
+				riderID = row[14];
+			}
 			string status = row[15];
 			///prev_order.push_back({ row[1], row[5], row[7], row[10], row[13], row[14] });
 			prev_order.push_back({ orderID, quantity, price, date, riderID, status });
@@ -206,10 +212,12 @@ int Customer::fetchPreviousOrder(MYSQL* conn, TextTable& tb)
 			tb.add(date);
 			if (status == "0")
 				tb.add("Pending");
-			else
+			else if (status == "1")
 				tb.add("In Delivery");
+			else if (status == "2")
+				tb.add("Delivered");
 			tb.endOfRow();
-			cout << prev_order[i][0] << endl << prev_order[i][1] << endl << prev_order[i][4] << endl;
+			//cout << prev_order[i][0] << endl << prev_order[i][1] << endl << prev_order[i][4] << endl;
 			i++;
 		}
 	}
@@ -409,6 +417,15 @@ void Customer::insertOrder(MYSQL* conn, int venID) {
 	const char* qP = queryP.c_str();
 	int qPState = mysql_query(conn, qP);
 
+	// insert to delivery table
+	stringstream sd;
+
+	sd << "INSERT INTO delivery (payment_id) VALUES (' " + to_string(orderID) + "')";
+
+	string queryD = sd.str();
+	const char* qD = queryD.c_str();
+	int qDState = mysql_query(conn, qD);
+
 	if (!qstate) {
 
 		cout << "\nOrder has been created successfully!\n";
@@ -431,8 +448,6 @@ void Customer::insertOrder(MYSQL* conn, int venID) {
 				//break;
 			}
 		}
-
-
 		system("pause");
 	}
 	else {
@@ -476,11 +491,13 @@ void Customer::displayPreviousOrder(int i, int totalDetail, TextTable& tt) {
 
 	//cout << cust_order[i].id << " " << fixed << setprecision(2) << cust_order[i].total_price << " " << cust_order[i].total_quantity << endl;
 
+	/*
 	for (int k = 0; k < totalDetail; k++) {
 		if (order_detail[k].cust_order_id == cust_order[i].id) {
 			cout << order_detail[k].product_id << " " << order_detail[k].quantity << endl;
 		}
 	}
+	*/
 }
 
 string Customer::getName() {
