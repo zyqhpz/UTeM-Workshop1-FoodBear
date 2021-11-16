@@ -32,7 +32,8 @@ using namespace std;
 void displayMainMenu() {
     mainHeader();
 
-    cout << "\nWelcome to FoodBear Delivery\nNow all on fingertips\n\n";
+    //cout << "\nWelcome to FoodBear Delivery\nNow all on fingertips\n\n";
+    cout << "\nWelcome to FoodBear Delivery\n";
 
     cout << "\n--Main--\n";
     cout << "1-Login\n2-Register\n0-Exit\n";
@@ -112,7 +113,7 @@ int main()
                             cout << "\n---Welcome " << cust.getName() << "---\n" << endl;
 
                             cout << "---Operation---\n";
-                            cout << "Enter\n\t1-View foods\n\t3-View order\n\t4-View profile\n\t0-Logout\n";
+                            cout << "Enter\n\t1-View foods\n\t2-View order\n\t4-View profile\n\t0-Logout\n";
                             cout << ">> ";
                             cin >> operation;
 

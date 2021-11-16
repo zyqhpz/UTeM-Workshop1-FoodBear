@@ -25,6 +25,8 @@
 #include <jdbc/mysql_driver.h>
 #include <jdbc/mysql_connection.h>
 
+#include "Menu.h"
+
 #pragma once
 
 using namespace std;
@@ -96,11 +98,16 @@ inline void mainHeader() {
      LPDWORD written{};
      WriteConsole(screen, s, sizeof(s), written, 0);*/
 
-    cout << setw(25);
+    gotoXY(10, 5);
+    //cout << setw(25);
     cout << "###########################################################" << endl;
+    gotoXY(10, 6);
     cout << "##                                                       ##" << endl;
+    gotoXY(10, 7);
     cout << "##   FoodBear Online Food Ordering and Delivery System   ##" << endl;
+    gotoXY(10, 8);
     cout << "##                                                       ##" << endl;
+    gotoXY(10, 9);
     cout << "###########################################################" << endl << endl;
 
  /*   if (additional != "") {
