@@ -386,7 +386,8 @@ void Customer::insertOrder(MYSQL* conn, int venID) {
 	//char* dt = ctime(&t);
 	tm* now = localtime(&t);
 	stringstream date;
-	date << to_string(now->tm_year + 1900) + "-" + to_string(now->tm_mon + 1) + "-" + to_string(now->tm_mday);
+	//date << to_string(now->tm_year + 1900) + "-" + to_string(now->tm_mon + 1) + "-" + to_string(now->tm_mday);
+	date << to_string(now->tm_year + 1900) + "-" + to_string(now->tm_mon + 1) + "-" + to_string(now->tm_mday) + " " + to_string(now->tm_hour) + ":" + to_string(now->tm_min) + ":" + to_string(now->tm_sec);
 
 	for (int i = 0; i < order.size(); i++) {
 		totalQuantity += stoi(order[i][2]);
@@ -411,7 +412,9 @@ void Customer::insertOrder(MYSQL* conn, int venID) {
 	// insert to payment table here
 	stringstream sp;
 
-	sp << "INSERT INTO payment (order_id, vendor_id, total_payment) VALUES ('" + to_string(orderID) + "', '" + to_string(venID) + "', '" + to_string(totalPrice + 4) + "')'";
+	totalPrice += 4;
+
+	sp << "INSERT INTO payment (order_id, vendor_id, total_payment) VALUES (" + to_string(orderID) + ", " + to_string(venID) + ", " + to_string(totalPrice) + ")";
 
 	string queryP = sp.str();
 	const char* qP = queryP.c_str();
@@ -420,7 +423,7 @@ void Customer::insertOrder(MYSQL* conn, int venID) {
 	// insert to delivery table
 	stringstream sd;
 
-	sd << "INSERT INTO delivery (payment_id) VALUES (' " + to_string(orderID) + "')";
+	sd << "INSERT INTO delivery (payment_id) VALUES (" + to_string(orderID) + ")";
 
 	string queryD = sd.str();
 	const char* qD = queryD.c_str();
@@ -439,16 +442,16 @@ void Customer::insertOrder(MYSQL* conn, int venID) {
 			int qDstate = mysql_query(conn, qD);
 
 			if (!qDstate) {
-				cout << "\nProduct " << i + 1 << " created.\n";
+				//cout << "\nProduct " << i + 1 << " created.\n";
 			}
 
 			else {
-				cout << "\nOrder cannot be created!\n";
+				//cout << "\nOrder cannot be created!\n";
 				//system("pause");
 				//break;
 			}
 		}
-		system("pause");
+		//system("pause");
 	}
 	else {
 		cout << "\nOrder cannot be created!\n";
