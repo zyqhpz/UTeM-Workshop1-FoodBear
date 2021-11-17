@@ -66,16 +66,20 @@ int main()
         cout << "\n>> ";
         cin >> chooseMain;
 
+        int role = 0;
+
         if (chooseMain == 1) {
             do {
                 mainHeader();
-                cout << "---Login---\n";
-                cout << "Enter\n\t1-Vendor\n\t2-Customer\n\t3-Rider\n\t0-Back to Main Menu\n";
-                cout << ">> ";
-                cin >> chooseLogin;
+                //cout << "---Login---\n";
+                //cout << "Enter\n\t1-Vendor\n\t2-Customer\n\t3-Rider\n\t0-Back to Main Menu\n";
+                //cout << ">> ";
+                //cin >> chooseLogin;
+                
+                role = login();
 
-                if (chooseLogin == 1) {
-                    if (loginUser(chooseLogin)) { // Vendor
+                if (role == 1) {
+                    if (role == 1) { // Vendor
                         do {
                             mainHeader();
                             cout << "\n---Welcome " << vendor.getName() << "---\n" << endl;
@@ -106,8 +110,8 @@ int main()
                         system("pause");
                     }
                 }
-                else if (chooseLogin == 2) { // Customer
-                    if (loginUser(chooseLogin)) {
+                else if (role == 2) { // Customer
+                    if (role == 2) {
                         do {
                             mainHeader();
                             cout << "\n---Welcome " << cust.getName() << "---\n" << endl;
@@ -138,8 +142,8 @@ int main()
                         system("pause");
                     }
                 }
-                else if (chooseLogin == 3) { // Rider
-                    if (loginUser(chooseLogin)) {
+                else if (role == 3) { // Rider
+                    if (role == 3) {
                         do {
                             mainHeader();
                             cout << "\n---Welcome " << rider.getName() << "---\n" << endl;
@@ -160,13 +164,13 @@ int main()
                         } while (operation != 0);
                     }
                     else {
-                        cout << "failed login\n";
+                        cout << "Login Failed\n";
                         system("pause");
                     }
                 }
-                else if (chooseLogin == 0) {
+                else if (role == 0) {
                 }
-            } while (chooseLogin != 0);
+            } while (role == 0);
         } 
         else if (chooseMain == 2) {
             do {

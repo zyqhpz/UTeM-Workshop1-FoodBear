@@ -237,6 +237,7 @@ bool loginUser(int logType) {
         log = cust.login(user, pass, totalRider);
     }*/
 
+    /*
     if (logType == 1 && vendor.login(user, pass, totalVendor)) {
        // cout << "Welcome " << rider.getName() << endl;
         return true;
@@ -251,8 +252,52 @@ bool loginUser(int logType) {
        // cout << "Welcome " << rider.getName() << endl;
         return true;
     }
+    */
+
+    if (vendor.login(user, pass, totalVendor) || cust.login(user, pass, totalCustomer) || rider.login(user, pass, totalRider)) {
+        // cout << "Welcome " << rider.getName() << endl;
+        return true;
+    }
 
     return false;
+}
+
+int login() {
+    mainHeader();
+
+    string user, pass;
+    cout << "\n----Login----\n";
+    cout << "Username: ";
+    cin >> user;
+    cout << "Password: ";
+    pass = inputPassword();
+
+    int role;
+
+    //cout << pass << endl;
+
+    /*
+    if (logType == 3) { // Customer
+       // totalRider = rider.fetchData(res, count);
+        log = cust.login(user, pass, totalRider);
+    }*/
+
+    if (vendor.login(user, pass, totalVendor)) {
+       // cout << "Welcome " << rider.getName() << endl;
+        return role = 1;
+    }
+
+    if (cust.login(user, pass, totalCustomer)) {
+       // cout << "Welcome " << rider.getName() << endl;
+        return role = 2;
+    }
+
+    if (rider.login(user, pass, totalRider)) {
+       // cout << "Welcome " << rider.getName() << endl;
+        return role = 3;
+    }
+    
+    return 0;
 }
 
 // Vendor operation
