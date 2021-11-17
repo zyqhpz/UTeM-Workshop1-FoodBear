@@ -66,7 +66,7 @@ int main()
         cout << "\n>> ";
         cin >> chooseMain;
 
-        int role = 0;
+        int role;
 
         if (chooseMain == 1) {
             do {
@@ -169,6 +169,9 @@ int main()
                     }
                 }
                 else if (role == 0) {
+                    cout << "\nLogin Failed\n";
+                    system("pause");
+                    break;
                 }
             } while (role == 0);
         } 
