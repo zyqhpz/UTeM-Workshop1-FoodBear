@@ -81,12 +81,13 @@ int main()
                 if (role == 1) {
                     if (role == 1) { // Vendor
                         do {
+                            fetchAllData();
                             mainHeader();
                             cout << "\n---Welcome " << vendor.getName() << "---\n" << endl;
 
                             cout << "---Operation---\n";
                             //cout << "Enter 1-View products, 2-View sales report, 3-View all order, 4-View profile 0-Logout\n";
-                            cout << "Enter 1-add products, 2-View sales report, 3-View all order, 4-View profile 0-Logout\n";
+                            cout << "Enter\n\t1-Manage products\n\t2-View sales report\n\t3-View all order\n\t4-View profile\n\t0-Logout\n";
                             cout << ">> ";
                             cin >> operation;
 
@@ -113,6 +114,7 @@ int main()
                 else if (role == 2) { // Customer
                     if (role == 2) {
                         do {
+                            fetchAllData();
                             mainHeader();
                             cout << "\n---Welcome " << cust.getName() << "---\n" << endl;
 
@@ -145,6 +147,7 @@ int main()
                 else if (role == 3) { // Rider
                     if (role == 3) {
                         do {
+                            fetchAllData();
                             mainHeader();
                             cout << "\n---Welcome " << rider.getName() << "---\n" << endl;
 

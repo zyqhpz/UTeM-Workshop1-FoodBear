@@ -59,6 +59,12 @@
     <ClInclude Include="md5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TextTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Go.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>

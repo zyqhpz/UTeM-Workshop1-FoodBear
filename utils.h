@@ -303,9 +303,32 @@ int login() {
 // Vendor operation
 
 void viewAddProduct() {
-    mainHeader();
-    //vendor.viewProduct(vendor.getID(), totalProduct, totalVendor);
-    vendor.addProduct(conn, vendor.getID());
+    int e;
+    char op;
+
+    do {
+        mainHeader();
+        vendor.viewProduct(vendor.getID(), totalProduct, totalVendor, e);
+
+        cout << "\n\t---Operations---\n\t1-Add product\n\t2-Edit product\n\t0-Exit\n\t>> ";
+        cin >> op;
+
+        if (op == '1') {
+            mainHeader();
+            vendor.viewProduct(vendor.getID(), totalProduct, totalVendor, e);
+            vendor.addProduct(conn, vendor.getID());
+        }
+
+        else if (op == '2') {}
+
+        else if (op == '0') {
+            //break;
+        }
+
+        else
+            cout << "\nInvalid input. Try again.\n";
+
+    } while (op != '0');
 }
 
 // Customer operation

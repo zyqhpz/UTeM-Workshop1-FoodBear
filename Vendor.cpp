@@ -218,7 +218,7 @@ void Vendor::viewVendor(int totalVendor) {
 }
 
 void Vendor::addProduct(MYSQL* conn, int vendorID) {
-	string id, name;
+	string id, name, category;
 	double price;
 
 	cout << "\n---Add Product---\n";
@@ -227,12 +227,22 @@ void Vendor::addProduct(MYSQL* conn, int vendorID) {
 	cout << "Enter product name: ";
 	cin.ignore();
 	getline(cin, name);
+	
+	do {
+		cout << "Product category (1-Food, 2-Beverage): ";
+		cin >> category;
+		if (category == "1" || category == "2")
+			break;
+		else
+			cout << "\nInvalid input.Try again.\n";
+	} while (category != "1" || category != "2");
+
 	cout << "Enter product price: ";
 	cin >> price;
 
 	stringstream ss;
 
-	ss << "INSERT INTO product (id, name, price, vendor_id) VALUES ('" + id + "', '" + name + "', " + to_string(price) + ", " + to_string(vendorID) + ")";
+	ss << "INSERT INTO product (name, price, vendor_id, category_id) VALUES ('" + name + "', " + to_string(price) + ", " + to_string(vendorID) + ", " + category + ")";
 
 	string query = ss.str();
 	const char* q = query.c_str();
