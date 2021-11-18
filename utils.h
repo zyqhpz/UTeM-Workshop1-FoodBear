@@ -380,10 +380,30 @@ void startOrder(int venID, int exist) {
     //mainHeader();
     //vendor.viewProduct(venID, totalProduct, totalVendor, exist);
 
+    stringstream checker;
+    checker << "SELECT address FROM customer WHERE id = " << cust.getID();
+
+    string qC = checker.str();
+    const char* q = qC.c_str();
+    int qstate = mysql_query(conn, q);
+
+    res = mysql_store_result(conn);
+    string address;
+
+    row = mysql_fetch_row(res);
+
     cout << "Start ordering (Y/N) >> ";
     cin >> selection;
 
-    if (selection == 'Y' || selection == 'y') {
+    if (selection == 'N' || selection == 'n') {}
+
+    else if (row[0] == NULL) {
+        color(12);
+        cout << "\nAddress not set. Update your address to start ordering\n\n";
+        color(7);
+    }
+
+    else if (selection == 'Y' || selection == 'y') {
         // start select product id
         //cout << "start order\n";
         //cout << "\n1-Enter product id\n0-Cancel\n";
