@@ -51,7 +51,13 @@ void Rider::registerRider(MYSQL* conn) {
 	const char* qC = queC.c_str();
 	int qCstate = mysql_query(conn, qC);
 
-	if (!qCstate) {
+	MYSQL_ROW row;
+	MYSQL_RES* res;
+
+	res = mysql_store_result(conn);
+	row = mysql_fetch_row(res);
+
+	if (row > 0) {
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
 		cout << "\nUsername already taken. Please try again.\n";
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
