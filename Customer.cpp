@@ -50,22 +50,35 @@ void Customer::registerCustomer(MYSQL* conn) {
 	cin >> noPhone;
 
 	stringstream ss;
-
 	ss << "INSERT INTO customer (username, password, name, phone) VALUES ('"+ username +"', '"+ password +"', '"+ name +"', '"+ noPhone +"')";
 
-	string slt = "SELECT * FROM customer";
+	stringstream checker;
+	checker << "SELECT username FROM customer WHERE username = '" << username << "' UNION SELECT username FROM vendor WHERE username = '" << username << "' UNION SELECT username FROM rider WHERE username = '" << username << "'";
 
-	string query = ss.str();
-	const char* q = query.c_str();
-	int qstate = mysql_query(conn, q);
+	string queC = checker.str();
+	const char* qC = queC.c_str();
+	int qCstate = mysql_query(conn, qC);
 
-	if (!qstate) {
-		cout << "\nRegistration Successful!\n";
+	if (!qCstate) {
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+		cout << "\nUsername already taken. Please try again.\n";
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 		system("pause");
 	}
+
 	else {
-		cout << "\nRegistration Failed!\n";
-		system("pause");
+		string query = ss.str();
+		const char* q = query.c_str();
+		int qstate = mysql_query(conn, q);
+
+		if (!qstate) {
+			cout << "\nRegistration Successful!\n";
+			system("pause");
+		}
+		else {
+			cout << "\nRegistration Failed!\n";
+			system("pause");
+		}
 	}
 }
 
