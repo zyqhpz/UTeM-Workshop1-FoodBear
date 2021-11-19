@@ -44,20 +44,35 @@ void Vendor::registerVendor(MYSQL* conn) {
 	cin >> noPhone;
 
 	stringstream ss;
-
 	ss << "INSERT INTO vendor (username, password, name, phone) VALUES ('" + username + "', '" + password + "', '" + name + "', '" + noPhone + "')";
 
-	string query = ss.str();
-	const char* q = query.c_str();
-	int qstate = mysql_query(conn, q);
+	stringstream checker;
+	checker << "SELECT username FROM customer WHERE username = '" << username << "' UNION SELECT username FROM vendor WHERE username = '" << username << "' UNION SELECT username FROM rider WHERE username = '" << username << "'";
 
-	if (!qstate) {
-		cout << "\nRegistration Successful!\n";
+	string queC = checker.str();
+	const char* qC = queC.c_str();
+	int qCstate = mysql_query(conn, qC);
+
+	if (!qCstate) {
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+		cout << "\nUsername already taken. Please try again.\n";
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 		system("pause");
 	}
+
 	else {
-		cout << "\nRegistration Failed!\n";
-		system("pause");
+		string query = ss.str();
+		const char* q = query.c_str();
+		int qstate = mysql_query(conn, q);
+
+		if (!qstate) {
+			cout << "\nRegistration Successful!\n";
+			system("pause");
+		}
+		else {
+			cout << "\nRegistration Failed!\n";
+			system("pause");
+		}
 	}
 }
 
