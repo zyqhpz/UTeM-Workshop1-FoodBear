@@ -72,6 +72,7 @@ public:
 	bool login(string, string, int);
 
 	void registerCustomer(MYSQL*);
+	string inputNoPhone();
 
 	int fetchData(MYSQL_RES*);
 	int fetchOrderData(MYSQL*);

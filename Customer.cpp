@@ -46,8 +46,8 @@ void Customer::registerCustomer(MYSQL* conn) {
 	//cin >> name;
 	cin.ignore();
 	getline(cin, name);
-	cout << "Enter Phone Number: ";
-	cin >> noPhone;
+	noPhone = inputNoPhone();
+
 
 	stringstream ss;
 	ss << "INSERT INTO customer (username, password, name, phone) VALUES ('"+ username +"', '"+ password +"', '"+ name +"', '"+ noPhone +"')";
@@ -86,6 +86,37 @@ void Customer::registerCustomer(MYSQL* conn) {
 			system("pause");
 		}
 	}
+}
+
+string Customer::inputNoPhone(){
+	string num;
+	string numResult;
+	bool loopCheck;
+	do {
+		cout << "Enter No Phone: ";
+		cin >> num;
+		char check[10] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+		int length = num.size();
+		int verify = 0;
+		loopCheck = true;
+		for (int i = 0; i < length; i++) {
+			for (int k = 0; k <= 9; k++) {
+				if (num[i] == check[k]) {
+					verify++;
+				}
+			}
+		}
+		if (verify != length) {
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+			cout << "Error input. Only numeric value will be accepted.\n";
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+			loopCheck = false;
+		}
+		else {
+			numResult = atoi(num.c_str());
+		}
+	} while (loopCheck != true);
+	return numResult;
 }
 
 int Customer::fetchData(MYSQL_RES* res) {
