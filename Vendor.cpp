@@ -152,12 +152,30 @@ void Vendor::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 	string pass, username, name, phone, address;
 	//string id = (string)this->custID;
 
+	TextTable tt;
+
 	do {
 		mainHeader();
+		tt.add("Username");
+		tt.add("Name");
+		tt.add("No. Phone");
+		tt.add("Address");
+		tt.endOfRow();
+
+		tt.add(this->vendorUsername);
+		tt.add(this->vendorName);
+		tt.add(this->vendorPhone);
+		tt.add(this->vendorAddress);
+		tt.endOfRow();
+
+		cout << tt << endl;
+
+		/*
 		cout << "\tusername" << "\tname" << "\t\tphone" << "\t\taddress" << endl;
 		cout << "---------------------------------------------------------------------------------------------------------------" << endl;
 		cout << "\t" << this->vendorUsername << "\t" << this->vendorName << "\t" << this->vendorPhone << "\t" << this->vendorAddress << endl;
 		cout << endl;
+		*/
 
 		cout << "\n---Edit User Profile---\n";
 		cout << "\nEnter number to edit respective data:\n 1-Username\n 2-Password\n 3-Name\n 4-Phone\n 5-Address\n 0-Back to Home\n";
