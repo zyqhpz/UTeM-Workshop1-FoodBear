@@ -37,11 +37,10 @@ void Vendor::registerVendor(MYSQL* conn) {
 	cout << "Enter Password: ";
 	cin >> password;
 	password = sha256(password);
+	noPhone = inputNoPhone();
 	cout << "Enter Vendor Name: ";
 	cin.ignore();
 	getline(cin, name);
-	cout << "Enter Phone Number: ";
-	cin >> noPhone;
 
 	stringstream ss;
 	ss << "INSERT INTO vendor (username, password, name, phone) VALUES ('" + username + "', '" + password + "', '" + name + "', '" + noPhone + "')";
@@ -80,6 +79,34 @@ void Vendor::registerVendor(MYSQL* conn) {
 			system("pause");
 		}
 	}
+}
+
+string Vendor::inputNoPhone() {
+	string num;
+	string numResult;
+	bool loopCheck;
+	do {
+		cout << "Enter No Phone: ";
+		cin >> num;
+		char check[10] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+		int length = num.size();
+		int verify = 0;
+		loopCheck = true;
+		for (int i = 0; i < length; i++) {
+			for (int k = 0; k <= 9; k++) {
+				if (num[i] == check[k]) {
+					verify++;
+				}
+			}
+		}
+		if (verify != length) {
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+			cout << "Error input. Only numeric value will be accepted.\n";
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+			loopCheck = false;
+		}
+	} while (loopCheck != true);
+	return num;
 }
 
 int Vendor::fetchData(MYSQL_RES* res, int count) {

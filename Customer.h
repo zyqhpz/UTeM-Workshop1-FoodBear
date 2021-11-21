@@ -70,7 +70,6 @@ public:
 	~Customer();
 
 	bool login(string, string, int);
-
 	void registerCustomer(MYSQL*);
 	string inputNoPhone();
 

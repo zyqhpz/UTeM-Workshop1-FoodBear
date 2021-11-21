@@ -36,8 +36,9 @@ public:
 	~Rider();
 
 	bool login(string, string, int);
-
 	void registerRider(MYSQL*);
+	string inputNoPhone();
+
 	int fetchData(MYSQL_RES*);
 	void viewProfile(function<void()>, MYSQL*);
 

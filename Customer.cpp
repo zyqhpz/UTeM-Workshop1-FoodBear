@@ -112,11 +112,8 @@ string Customer::inputNoPhone(){
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 			loopCheck = false;
 		}
-		else {
-			numResult = atoi(num.c_str());
-		}
 	} while (loopCheck != true);
-	return numResult;
+	return num;
 }
 
 int Customer::fetchData(MYSQL_RES* res) {

@@ -57,8 +57,8 @@ public:
 	~Vendor();
 
 	bool login(string, string, int);
-
 	void registerVendor(MYSQL*);
+	string inputNoPhone();
 
 	int fetchData(MYSQL_RES*, int);
 	void viewProfile(function<void()>, MYSQL*);

@@ -38,8 +38,7 @@ void Rider::registerRider(MYSQL* conn) {
 	cout << "Enter Your Name: ";
 	cin.ignore();
 	getline(cin, name);
-	cout << "Enter Phone Number: ";
-	cin >> noPhone;
+	noPhone = inputNoPhone();
 
 	stringstream ss;
 	ss << "INSERT INTO rider (username, password, name, phone) VALUES ('" + username + "', '" + password + "', '" + name + "', '" + noPhone + "')";
@@ -78,6 +77,34 @@ void Rider::registerRider(MYSQL* conn) {
 			system("pause");
 		}
 	}
+}
+
+string Rider::inputNoPhone() {
+	string num;
+	string numResult;
+	bool loopCheck;
+	do {
+		cout << "Enter No Phone: ";
+		cin >> num;
+		char check[10] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+		int length = num.size();
+		int verify = 0;
+		loopCheck = true;
+		for (int i = 0; i < length; i++) {
+			for (int k = 0; k <= 9; k++) {
+				if (num[i] == check[k]) {
+					verify++;
+				}
+			}
+		}
+		if (verify != length) {
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+			cout << "Error input. Only numeric value will be accepted.\n";
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+			loopCheck = false;
+		}
+	} while (loopCheck != true);
+	return num;
 }
 
 int Rider::fetchData(MYSQL_RES* res) {
