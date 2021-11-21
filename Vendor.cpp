@@ -265,6 +265,112 @@ void Vendor::viewVendor(int totalVendor) {
 	cout << vv;
 }
 
+int Vendor::fetchProduct(MYSQL_RES* res) {
+	MYSQL_ROW row;
+	int i = 0;
+	int total = 0;
+	while (row = mysql_fetch_row(res)) {
+		product[i].id = stoi(row[0]); // string to int
+		product[i].name = (string)row[1];
+		product[i].price = stod(row[2]);
+		product[i].vendor_id = stoi(row[3]);
+		if (row[4] == NULL) {
+			product[i].category_id = 0; // fix this later
+		}
+		else {
+			product[i].category_id = stoi(row[4]);
+		}
+		i++;
+		total++;
+	}
+	return total;
+}
+
+void Vendor::viewProduct(int vendorID, int totalProduct, int totalVendor, int& e) {
+	TextTable tf('-', '|', '+');
+	TextTable tb('-', '|', '+');
+
+	food.clear();
+	beverage.clear();
+
+	bool exist = TRUE;
+	e = 1;
+	for (int i = 0; i < totalVendor; i++) {
+		if (vendorID != data[i].id) { // check id entered by user is exist in system or not
+			//cout << "\tNo vendor selected\n";
+			exist = FALSE;
+			e = 0;
+		}
+		else {
+			exist = TRUE;
+			e = 1;
+			break;
+		}
+	}
+
+	for (int i = 0; i < totalProduct; i++) {
+		if (product[i].category_id == 1) {
+			food.push_back({ product[i].id, product[i].name, product[i].price, product[i].vendor_id, product[i].category_id });
+		}
+		else if (product[i].category_id == 2) {
+			beverage.push_back({ product[i].id, product[i].name, product[i].price, product[i].vendor_id, product[i].category_id });
+		}
+	}
+	//cout << "\n-----Food-----\n";
+	tf.add("ID");
+	tf.add("Product Name");
+	tf.add("Price (RM)");
+	tf.endOfRow();
+	//cout << "\n\tId" << "\tProduct Name" << "\t\tPrice (RM)" << endl;
+	for (int i = 0; i < food.size(); i++) {
+		//cout << "-----------------------------------------------------------------\n";
+		if (food[i].vendor_id == vendorID) {
+			stringstream ss;
+			ss << fixed << setprecision(2) << food[i].price;
+			tf.add(to_string(food[i].id));
+			tf.add(food[i].name);
+			tf.add(ss.str());
+			tf.endOfRow();
+		}
+		//cout << "\t" << food[i].id << "\t" << food[i].name << "\t\t" << setprecision(2) << food[i].price << endl;
+	}
+	tf.setAlignment(8, TextTable::Alignment::LEFT);
+
+	//cout << "\n-----Beverage-----\n";
+	tb.add("ID");
+	tb.add("Product Name");
+	tb.add("Price (RM)");
+	tb.endOfRow();
+
+	for (int i = 0; i < beverage.size(); i++) {
+		//cout << "-----------------------------------------------------------------\n";
+		if (beverage[i].vendor_id == vendorID) {
+			stringstream ss;
+			ss << fixed << setprecision(2) << beverage[i].price;
+			tb.add(to_string(beverage[i].id));
+			tb.add(beverage[i].name);
+			tb.add(ss.str());
+			tb.endOfRow();
+			//cout << left << setw(10) << beverage[i].id << left << setw(30) << beverage[i].name << left << setw(10) << beverage[i].price << endl;
+			//cout << "\t" << beverage[i].id << "\t" << beverage[i].name << setw(20) << beverage[i].price << endl;
+		}
+	}
+
+	tb.setAlignment(8, TextTable::Alignment::LEFT);
+	//cout << t;
+
+	if (exist) {
+		cout << "\n\t----Foods----\n";
+		cout << tf;
+		cout << "\n\t----Beverages---\n";
+		cout << tb;
+	}
+	else {
+		cout << "\n\tNo vendor selected. Try again.\n";
+	}
+	cout << endl;
+}
+
 void Vendor::addProduct(MYSQL* conn, int vendorID) {
 	string id, name, category;
 	double price;
@@ -327,7 +433,9 @@ void Vendor::editProduct(function<void()> mainHeader, MYSQL* conn, int totalProd
 		tt.add("Category");
 		tt.endOfRow();
 
-		for (int i = 0; i < totalProduct; i++) {
+		int i;
+
+		for (i = 0; i < totalProduct; i++) {
 			if (id == product[i].id && this->vendorID == product[i].vendor_id) {
 				exist = true;
 				tt.add(to_string(product[i].id));
@@ -341,96 +449,76 @@ void Vendor::editProduct(function<void()> mainHeader, MYSQL* conn, int totalProd
 				else
 					tt.add("Beverage");
 				tt.endOfRow();
+				break;
 			}
 			else {
 				exist = false;
-				//cout << "\nInvalid input. Item not found.\n";
-				//break;
 			}
 		}
 
 		if (!exist) {
-			cout << "\nInvalid input. Item not found.\n";
-			//break;
-		}
-
-		mainHeader();
-		cout << tt;
-
-		cout << "\n----Manage product----\n";
-		cout << "\nEnter number to edit respective data:\n\t1-Name\n\t2-Price\n\t3-Category\n\t0-Cancel\n\t>> ";
-		cin >> edit;
-
-		stringstream update;
-
-		if (edit == '0')
-			break;
-
-		else if (edit == '1') { // Name
-			//mainHeader();
-			cout << "Edit name: ";
-			cin.ignore();
-			getline(cin, name);
-
-			update << "UPDATE product SET name = '" + name + "' WHERE id = " + to_string(id);
-		}
-
-		else if (edit == '2') { // Price
-			//mainHeader();
-			cout << "Edit price: ";
-			cin >> price;
-
-			update << "UPDATE product SET price = '" + to_string(price) + "' WHERE id = " + to_string(id);
-		}
-
-		else if (edit == '3') { // Category
-			//mainHeader();
-			do {
-				cout << "Edit category (1-Food, 2-Beverage): ";
-				cin >> category;
-				if (category != '1' || category != '2')
-					cout << "Invalid input. Try again.\n";
-			} while (category != '1' || category != '2');
-
-			update << "UPDATE product SET category_id = '" + to_string(category) + "' WHERE id = " + to_string(id);
-		}
-
-		string query = update.str();
-		const char* q = query.c_str();
-		int qstate = mysql_query(conn, q);
-
-		if (!qstate) {
-			cout << "\nUpdate Successful!\n";
+			cout << "\nInvalid input. Item not found. Please try again.\n";
 			system("pause");
 			break;
 		}
-		else {
-			cout << "\nUpdate Failed!\n";
-			system("pause");
-		}
-	} while (operation != '0');
-}
 
-
-int Vendor::fetchProduct(MYSQL_RES* res) {
-	MYSQL_ROW row;
-	int i = 0;
-	int total = 0;
-	while (row = mysql_fetch_row(res)) {
-		product[i].id = stoi(row[0]); // string to int
-		product[i].name = (string)row[1];
-		product[i].price = stod(row[2]);
-		product[i].vendor_id = stoi(row[3]);
-		if (row[4] == NULL) {
-			product[i].category_id = 0; // fix this later
-		}
 		else {
-			product[i].category_id = stoi(row[4]);
+			mainHeader();
+			cout << tt;
+
+			cout << "\n----Manage product----\n";
+			cout << "\nEnter number to edit respective data:\n\t1-Name\n\t2-Price\n\t3-Category\n\t0-Cancel\n\t>> ";
+			cin >> edit;
+
+			stringstream update;
+
+			if (edit == '0')
+				break;
+
+			else if (edit == '1') { // Name
+				//mainHeader();
+				cout << "Edit name: ";
+				cin.ignore();
+				getline(cin, name);
+				product[i].name = name;
+				update << "UPDATE product SET name = '" + name + "' WHERE id = " + to_string(id);
+			}
+
+			else if (edit == '2') { // Price
+				//mainHeader();
+				cout << "Edit price: ";
+				cin >> price;
+				product[i].price = price;
+				update << "UPDATE product SET price = '" + to_string(price) + "' WHERE id = " + to_string(id);
+			}
+
+			else if (edit == '3') { // Category
+				//mainHeader();
+				do {
+					cout << "Edit category (1-Food, 2-Beverage): ";
+					cin >> category;
+					if (category != '1' || category != '2')
+						cout << "Invalid input. Try again.\n";
+				} while (category != '1' || category != '2');
+				product[i].category_id = category;
+				update << "UPDATE product SET category_id = '" + to_string(category) + "' WHERE id = " + to_string(id);
+			}
+
+			string query = update.str();
+			const char* q = query.c_str();
+			int qstate = mysql_query(conn, q);
+
+			if (!qstate) {
+				cout << "\nUpdate Successful!\n";
+				system("pause");
+				break;
+			}
+			else {
+				cout << "\nUpdate Failed!\n";
+				system("pause");
+			}
 		}
-		i++;
-		total++;
-	}
-	return total;
+	} while (operation != '0');	
 }
 
 void Vendor::getCategory(int totalProduct) {
@@ -438,93 +526,6 @@ void Vendor::getCategory(int totalProduct) {
 
 	}
 }
-
-void Vendor::viewProduct(int vendorID, int totalProduct, int totalVendor, int& e) {
-	TextTable tf('-', '|', '+');
-	TextTable tb('-', '|', '+');
-
-	food.clear();
-	beverage.clear();
-
-	bool exist = TRUE;
-	e = 1;
-	for (int i = 0; i < totalVendor; i++) {
-		if (vendorID != data[i].id) { // check id entered by user is exist in system or not
-			//cout << "\tNo vendor selected\n";
-			exist = FALSE;
-			e = 0;
-		}
-		else {
-			exist = TRUE;
-			e = 1;
-			break;
-		}
-	}
-
-	for (int i = 0; i < totalProduct; i++) {
-		if (product[i].category_id == 1) {
-			food.push_back({ product[i].id, product[i].name, product[i].price, product[i].vendor_id, product[i].category_id });
-		}
-		else if (product[i].category_id == 2) {
-			beverage.push_back({ product[i].id, product[i].name, product[i].price, product[i].vendor_id, product[i].category_id });
-		}
-	}
-	//cout << "\n-----Food-----\n";
-	tf.add("ID");
-	tf.add("Product Name");
-	tf.add("Price (RM)");
-	tf.endOfRow();
-	//cout << "\n\tId" << "\tProduct Name" << "\t\tPrice (RM)" << endl;
-	for (int i = 0; i < food.size(); i++) {
-		//cout << "-----------------------------------------------------------------\n";
-		if (food[i].vendor_id == vendorID) {
-			stringstream ss;
-			ss << fixed << setprecision(2) << food[i].price;
-			tf.add(to_string(food[i].id));
-			tf.add(food[i].name);
-			tf.add(ss.str());
-			tf.endOfRow();
-		}
-			//cout << "\t" << food[i].id << "\t" << food[i].name << "\t\t" << setprecision(2) << food[i].price << endl;
-	}
-	tf.setAlignment(8, TextTable::Alignment::LEFT);
-
-	//cout << "\n-----Beverage-----\n";
-	tb.add("ID");
-	tb.add("Product Name");
-	tb.add("Price (RM)");
-	tb.endOfRow();
-
-	for (int i = 0; i < beverage.size(); i++) {
-		//cout << "-----------------------------------------------------------------\n";
-		if (beverage[i].vendor_id == vendorID) {
-			stringstream ss;
-			ss << fixed << setprecision(2) << beverage[i].price;
-			tb.add(to_string(beverage[i].id));
-			tb.add(beverage[i].name);
-			tb.add(ss.str());
-			tb.endOfRow();
-			//cout << left << setw(10) << beverage[i].id << left << setw(30) << beverage[i].name << left << setw(10) << beverage[i].price << endl;
-			//cout << "\t" << beverage[i].id << "\t" << beverage[i].name << setw(20) << beverage[i].price << endl;
-		}
-	}
-
-	tb.setAlignment(8, TextTable::Alignment::LEFT);
-	//cout << t;
-
-	if (exist) {
-		cout << "\n\t----Foods----\n";
-		cout << tf;
-		cout << "\n\t----Beverages---\n";
-		cout << tb;
-	}
-	else {
-		cout << "\n\tNo vendor selected. Try again.\n";
-	}
-	cout << endl;
-}
-
-// void makeOrder()
 
 string Vendor::getFoodName(int id) {
 	// cout << "Enter ID\t";
