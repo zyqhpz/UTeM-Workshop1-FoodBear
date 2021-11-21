@@ -302,7 +302,7 @@ int login() {
 
 // Vendor operation
 
-void viewAddProduct() {
+void viewManageProduct() {
     int e;
     char op;
 
@@ -319,7 +319,11 @@ void viewAddProduct() {
             vendor.addProduct(conn, vendor.getID());
         }
 
-        else if (op == '2') {}
+        else if (op == '2') {
+            mainHeader();
+            vendor.viewProduct(vendor.getID(), totalProduct, totalVendor, e);
+            vendor.editProduct(mainHeader, conn, totalProduct);
+        }
 
         else if (op == '0') {
             //break;

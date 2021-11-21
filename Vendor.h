@@ -69,6 +69,7 @@ public:
 	void viewProduct(int, int, int, int&);
 
 	void addProduct(MYSQL*, int);
+	void editProduct(function<void()>, MYSQL*, int);
 
 	void getCategory(int);
 

@@ -270,8 +270,8 @@ void Vendor::addProduct(MYSQL* conn, int vendorID) {
 	double price;
 
 	cout << "\n---Add Product---\n";
-	cout << "Enter product ID: ";
-	cin >> id; // Check data in table, ada similar with other vendor tak. Or predefined. V01F01 -> Vendor 01, Food 01
+	// cout << "Enter product ID: ";
+	// cin >> id; // Check data in table, ada similar with other vendor tak. Or predefined. V01F01 -> Vendor 01, Food 01
 	cout << "Enter product name: ";
 	cin.ignore();
 	getline(cin, name);
@@ -304,6 +304,111 @@ void Vendor::addProduct(MYSQL* conn, int vendorID) {
 		cout << "\nProduct cannot be added. Please try again.\n"; // output error? why cant insert?
 		system("pause");
 	}
+}
+
+void Vendor::editProduct(function<void()> mainHeader, MYSQL* conn, int totalProduct) {
+	char operation, edit;
+	int id;
+	bool exist = true;
+	TextTable tt;
+
+	string name;
+	char category;
+	double price;
+
+	do {
+		cout << "\nEnter product ID that want to be edit\n\t>> ";
+		cin >> operation;
+		id = operation - '0'; // convert char to int
+
+		tt.add("ID");
+		tt.add("Name");
+		tt.add("Price (RM)");
+		tt.add("Category");
+		tt.endOfRow();
+
+		for (int i = 0; i < totalProduct; i++) {
+			if (id == product[i].id && this->vendorID == product[i].vendor_id) {
+				exist = true;
+				tt.add(to_string(product[i].id));
+				tt.add(product[i].name);
+				stringstream p;
+				p << fixed << setprecision(2) << product[i].price;
+				tt.add(p.str());
+				cout << "exist";
+				if (product[i].category_id == 1)
+					tt.add("Food");
+				else
+					tt.add("Beverage");
+				tt.endOfRow();
+			}
+			else {
+				exist = false;
+				//cout << "\nInvalid input. Item not found.\n";
+				//break;
+			}
+		}
+
+		if (!exist) {
+			cout << "\nInvalid input. Item not found.\n";
+			//break;
+		}
+
+		mainHeader();
+		cout << tt;
+
+		cout << "\n----Manage product----\n";
+		cout << "\nEnter number to edit respective data:\n\t1-Name\n\t2-Price\n\t3-Category\n\t0-Cancel\n\t>> ";
+		cin >> edit;
+
+		stringstream update;
+
+		if (edit == '0')
+			break;
+
+		else if (edit == '1') { // Name
+			//mainHeader();
+			cout << "Edit name: ";
+			cin.ignore();
+			getline(cin, name);
+
+			update << "UPDATE product SET name = '" + name + "' WHERE id = " + to_string(id);
+		}
+
+		else if (edit == '2') { // Price
+			//mainHeader();
+			cout << "Edit price: ";
+			cin >> price;
+
+			update << "UPDATE product SET price = '" + to_string(price) + "' WHERE id = " + to_string(id);
+		}
+
+		else if (edit == '3') { // Category
+			//mainHeader();
+			do {
+				cout << "Edit category (1-Food, 2-Beverage): ";
+				cin >> category;
+				if (category != '1' || category != '2')
+					cout << "Invalid input. Try again.\n";
+			} while (category != '1' || category != '2');
+
+			update << "UPDATE product SET category_id = '" + to_string(category) + "' WHERE id = " + to_string(id);
+		}
+
+		string query = update.str();
+		const char* q = query.c_str();
+		int qstate = mysql_query(conn, q);
+
+		if (!qstate) {
+			cout << "\nUpdate Successful!\n";
+			system("pause");
+			break;
+		}
+		else {
+			cout << "\nUpdate Failed!\n";
+			system("pause");
+		}
+	} while (operation != '0');
 }
 
 
@@ -408,9 +513,9 @@ void Vendor::viewProduct(int vendorID, int totalProduct, int totalVendor, int& e
 	//cout << t;
 
 	if (exist) {
-		cout << "\n----Foods----\n";
+		cout << "\n\t----Foods----\n";
 		cout << tf;
-		cout << "\n----Beverages---\n";
+		cout << "\n\t----Beverages---\n";
 		cout << tb;
 	}
 	else {

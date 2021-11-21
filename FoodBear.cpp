@@ -94,7 +94,7 @@ int main()
                             if (operation == 1) {
                                 //vendor.viewProduct(vendor.)
                                 //vendor.addProduct();
-                                viewAddProduct();
+                                viewManageProduct();
                                 system("pause");
                             }
 
