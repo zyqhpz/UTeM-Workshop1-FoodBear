@@ -282,12 +282,23 @@ void Customer::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 	string pass, username, name, phone, address;
 	//string id = (string)this->custID;
 
+	TextTable tt;
+
 	do {
 		mainHeader();
-		cout << "\tusername" << "\tname" << "\t\tphone" << "\t\taddress" << endl;
-		cout << "---------------------------------------------------------------------------------------------------------------" << endl;
-		cout << "\t" << this->custUsername << "\t" << this->custName << "\t" << this->custPhone << "\t" << this->custAddress << endl;
-		cout << endl;
+		tt.add("Username");
+		tt.add("Name");
+		tt.add("No. Phone");
+		tt.add("Address");
+		tt.endOfRow();
+
+		tt.add(this->custUsername);
+		tt.add(this->custName);
+		tt.add(this->custPhone);
+		tt.add(this->custAddress);
+		tt.endOfRow();
+
+		cout << tt << endl;
 
 		cout << "\n---Edit User Profile---\n";
 		cout << "\nEnter number to edit respective data:\n 1-Username\n 2-Password\n 3-Name\n 4-Phone\n 5-Address\n 0-Back to Home\n";

@@ -136,12 +136,21 @@ void Rider::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 
 	string pass, username, name, phone;
 
+	TextTable tt;
+
 	do {
 		mainHeader();
-		cout << "\tusername" << "\tname" << "\t\tphone" << endl;
-		cout << "---------------------------------------------------------------------------------------------------------------" << endl;
-		cout << "\t" << this->riderUsername << "\t" << this->riderName << "\t" << this->riderPhone << endl;
-		cout << endl;
+		tt.add("Username");
+		tt.add("Name");
+		tt.add("No. Phone");
+		tt.endOfRow();
+
+		tt.add(this->riderUsername);
+		tt.add(this->riderName);
+		tt.add(this->riderPhone);
+		tt.endOfRow();
+
+		cout << tt << endl;
 
 		cout << "\n---Edit User Profile---\n";
 		cout << "\nEnter number to edit respective data:\n 1-Username\n 2-Password\n 3-Name\n 4-Phone\n 5-Address\n 0-Back to Home\n";
