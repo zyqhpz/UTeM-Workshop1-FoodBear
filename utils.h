@@ -98,16 +98,16 @@ inline void mainHeader() {
      LPDWORD written{};
      WriteConsole(screen, s, sizeof(s), written, 0);*/
 
-    gotoXY(10, 5);
+    gotoXY(5, 5);
     //cout << setw(25);
     cout << "###########################################################" << endl;
-    gotoXY(10, 6);
+    gotoXY(5, 6);
     cout << "##                                                       ##" << endl;
-    gotoXY(10, 7);
+    gotoXY(5, 7);
     cout << "##   FoodBear Online Food Ordering and Delivery System   ##" << endl;
-    gotoXY(10, 8);
+    gotoXY(5, 8);
     cout << "##                                                       ##" << endl;
-    gotoXY(10, 9);
+    gotoXY(5, 9);
     cout << "###########################################################" << endl << endl;
 
  /*   if (additional != "") {
@@ -532,9 +532,13 @@ void viewPreviousOrder() {
         cust.displayPreviousOrder(i, totalOrderDetail, tt);
     }
 
+    mainHeader();
 
-    cout << tt;
+    //cout << tt;
 
+    // latest prevOrder display
+    gotoXY(10, 13);
+    cout << "-----Previous Order------\n";
     cout << tb;
 }
 

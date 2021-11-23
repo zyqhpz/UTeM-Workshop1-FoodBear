@@ -82,8 +82,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(IncludePath)</IncludePath>
-    <LibraryPath>C:\src\vcpkg\installed\x86-windows\lib;$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>C:\src\vcpkg\installed\x86-windows\include;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>C:\src\vcpkg\installed\x86-windows\lib;E:\Programming\cpp\FTXUI\build\examples;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>E:\Programming\cpp\FTXUI\include;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\src\vcpkg\installed\x86-windows\include;E:\Programming\cpp\FoodBear\db\include;E:\Programming\cpp\FoodBear\connector\include;E:\Programming\cpp\FoodBear\connector\include\jdbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Programming\cpp\FTXUI\include;C:\src\vcpkg\installed\x86-windows\include;E:\Programming\cpp\FoodBear\db\include;E:\Programming\cpp\FoodBear\connector\include;E:\Programming\cpp\FoodBear\connector\include\jdbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -141,8 +141,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\src\vcpkg\installed\x86-windows\lib;E:\Programming\cpp\FoodBear\db\lib;E:\Programming\cpp\FoodBear\connector\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libmysql.lib;mysqlcppconn.lib;ftxui/component.lib;ftxui/dom.lib;ftxui/screen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\src\vcpkg\installed\x86-windows\lib;E:\Programming\cpp\FoodBear\db\lib;E:\Programming\cpp\FTXUI\build\examples;E:\Programming\cpp\FoodBear\connector\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libmysql.lib;mysqlcppconn.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

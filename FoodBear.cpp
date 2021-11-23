@@ -18,9 +18,10 @@
 #include "utils.h"
 #include "Menu.h"
 
-#include "ftxui/dom/elements.hpp"
-#include "ftxui/screen/screen.hpp"
-#include "ftxui/component/component.hpp"
+#include <ftxui/dom/node.hpp>
+#include <ftxui/dom/elements.hpp>
+#include <ftxui/screen/screen.hpp>
+#include <ftxui/component/component.hpp>
 
 #include <jdbc/mysql_driver.h>
 #include <jdbc/mysql_connection.h>
@@ -28,6 +29,8 @@
 
 
 using namespace std;
+
+using namespace ftxui;
 
 void displayMainMenu() {
     mainHeader();
@@ -41,6 +44,8 @@ void displayMainMenu() {
 
 int main()
 {
+   // text("I am a piece of text");
+    //border(gauge(0.5));
     system("Connection To DB");
 
     db_connection::ConnectionFunction();
