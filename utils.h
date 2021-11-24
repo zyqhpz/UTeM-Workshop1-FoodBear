@@ -301,7 +301,6 @@ int login() {
 }
 
 // Vendor operation
-
 void viewManageProduct() {
     int e;
     char op;
@@ -333,6 +332,19 @@ void viewManageProduct() {
             cout << "\nInvalid input. Try again.\n";
 
     } while (op != '0');
+}
+
+void viewActiveOrder() {
+    TextTable tb;
+
+    int totalActive = vendor.viewActiveOrder(conn, tb);
+
+    // view active order
+    gotoXY(10, 13);
+    cout << "------Active Order------\n";
+    cout << tb;
+
+    // accept order function here
 }
 
 // Customer operation

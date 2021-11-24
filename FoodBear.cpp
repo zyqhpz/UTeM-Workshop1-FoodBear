@@ -92,7 +92,7 @@ int main()
 
                             cout << "---Operation---\n";
                             //cout << "Enter 1-View products, 2-View sales report, 3-View all order, 4-View profile 0-Logout\n";
-                            cout << "Enter\n\t1-Manage products\n\t2-View sales report\n\t3-View all order\n\t4-View profile\n\t0-Logout\n";
+                            cout << "Enter\n\t1-Manage products\n\t2-View active order\n\t3-View all order\n\t4-View sales report\n\t5-View profile\n\t0-Logout\n";
                             cout << ">> ";
                             cin >> operation;
 
@@ -100,6 +100,12 @@ int main()
                                 //vendor.viewProduct(vendor.)
                                 //vendor.addProduct();
                                 viewManageProduct();
+                                system("pause");
+                            }
+                            
+                            else if (operation == 2) {
+                                mainHeader();
+                                viewActiveOrder();
                                 system("pause");
                             }
 
