@@ -259,10 +259,14 @@ int Customer::fetchPreviousOrder(MYSQL* conn, TextTable& tb)
 			tb.add(date);
 			if (status == "0")
 				tb.add("Pending");
+			else if (status == "-1")
+				tb.add("Rejected"); // after vendor reject the order
 			else if (status == "1")
-				tb.add("In Delivery");
+				tb.add("Accepted"); // after vendor accept the order
 			else if (status == "2")
-				tb.add("Delivered");
+				tb.add("In Delivery"); // after rider has pick up the order. rider only can view the list of order with accepted value (3)
+			else if (status == "3")
+				tb.add("Delivered"); // rider change the status after has delivered the order
 			tb.endOfRow();
 			//cout << prev_order[i][0] << endl << prev_order[i][1] << endl << prev_order[i][4] << endl;
 			i++;

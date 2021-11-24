@@ -135,6 +135,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>E:\Programming\cpp\FTXUI\include;C:\src\vcpkg\installed\x86-windows\include;E:\Programming\cpp\FoodBear\db\include;E:\Programming\cpp\FoodBear\connector\include;E:\Programming\cpp\FoodBear\connector\include\jdbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalUsingDirectories>E:\Programming\cpp\FTXUI\include\ftxui;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
