@@ -342,9 +342,31 @@ void viewActiveOrder() {
     // view active order
     gotoXY(10, 13);
     cout << "------Active Order------\n";
-    cout << tb;
+    cout << tb << endl;
 
-    // accept order function here
+    TextTable td;
+    int orderID;
+    int exist = 0;
+
+    cout << "\n--Enter OrderID to view details--\n\t>> ";
+    cin >> orderID;
+
+    vendor.viewActiveOrderDetail(conn, td, orderID, exist);
+
+    /*
+    if (exist == 1) {
+        cout << "order exist";
+    }
+    else {
+        cout << "invalid choice";
+    }
+    */
+
+    /*
+    1. enter orderId to view details of the order
+    2. ada option untuk accept or reject
+    */
+
 }
 
 // Customer operation

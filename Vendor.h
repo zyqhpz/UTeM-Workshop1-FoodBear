@@ -74,6 +74,7 @@ public:
 	void editProduct(function<void()>, MYSQL*, int);
 
 	int viewActiveOrder(MYSQL*, TextTable&);
+	void viewActiveOrderDetail(MYSQL*, TextTable&, int, int&);
 
 	void getCategory(int);
 

@@ -601,6 +601,21 @@ int Vendor::viewActiveOrder(MYSQL* conn, TextTable &tb) {
 	return i;
 }
 
+void Vendor::viewActiveOrderDetail(MYSQL*, TextTable&, int orderID, int& exist) {
+	for (int i = 0; i < active_order.size(); i++) {
+		if (orderID == stoi(active_order[i][0])) {
+			exist = 1;
+		}
+	}
+
+	if (exist == 1) {
+		cout << "exist orderID\n";
+	}
+	else {
+		cout << "invalid choice\n";
+	}
+}
+
 void Vendor::getCategory(int totalProduct) {
 	for (int i = 0; i < totalProduct; i++) {
 
