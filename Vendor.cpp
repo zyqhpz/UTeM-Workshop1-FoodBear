@@ -601,7 +601,11 @@ int Vendor::viewActiveOrder(MYSQL* conn, TextTable &tb) {
 	return i;
 }
 
-void Vendor::viewActiveOrderDetail(MYSQL*, TextTable&, int orderID, int& exist) {
+void Vendor::viewActiveOrderDetail(MYSQL* conn, int orderID, int& exist) {
+	TextTable tb;
+
+	exist = 0;
+
 	for (int i = 0; i < active_order.size(); i++) {
 		if (orderID == stoi(active_order[i][0])) {
 			exist = 1;
@@ -609,10 +613,100 @@ void Vendor::viewActiveOrderDetail(MYSQL*, TextTable&, int orderID, int& exist) 
 	}
 
 	if (exist == 1) {
-		cout << "exist orderID\n";
+
+		MYSQL_ROW row;
+		MYSQL_RES* res;
+
+		stringstream sql;
+		sql << "SELECT cust_order.date, product.name, order_detail.quantity, product.price, payment.total_payment FROM order_detail JOIN product ON order_detail.product_id = product.id JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE cust_order_id = " << orderID;
+		//sql << "SELECT * FROM order_detail JOIN product ON order_detail.product_id = product.id JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE cust_order_id = " << orderID;
+		//sql << "SELECT * FROM order_detail JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE payment.vendor_id = " << to_string(this->vendorID);
+		string s = sql.str();
+		const char* qC = s.c_str();
+		int q = mysql_query(conn, qC);
+
+		//cout << "exist orderID\n";
+		stringstream m;
+		m << "  OrderID: " << orderID << "  ";
+		tb.add("");
+		tb.add(m.str());
+		tb.add("");
+		tb.add("");
+		tb.add("");
+		tb.endOfRow();
+
+		tb.add("No.");
+		tb.add("Name");
+		tb.add("Quantity");
+		tb.add("Price per unit(RM)");
+		tb.add("Total Price (RM)");
+		//tb.addRow("1");
+		tb.endOfRow();
+
+		if (!q) {
+			int i = 0;
+			string date;
+			double pxq;
+			string totalP;
+			double subTotal = 0;
+			res = mysql_store_result(conn);
+			while (row = mysql_fetch_row(res)) {
+				++i;
+				string date = row[0];
+				string name = row[1];
+				int quantity = stoi(row[2]);
+				double price = stod(row[3]);
+				pxq = quantity * price;
+				subTotal += pxq;
+				totalP = row[4];
+
+				stringstream p;
+				p << fixed << setprecision(2) << price;
+
+				stringstream pq;
+				pq << fixed << setprecision(2) << pxq;
+
+				tb.add(to_string(i));
+				tb.add(name);
+				tb.add(to_string(quantity));
+				tb.add(p.str());
+				tb.add(pq.str());
+				tb.endOfRow();
+			}
+
+			tb.setAlignment(2, TextTable::Alignment::RIGHT);
+			tb.setAlignment(3, TextTable::Alignment::RIGHT);
+			tb.setAlignment(4, TextTable::Alignment::RIGHT);
+
+			tb.add("");
+			tb.add("");
+			tb.add("");
+			tb.add("Subtotal ");
+			stringstream st;
+			st << fixed << setprecision(2) << subTotal;
+			tb.add(st.str());
+			tb.endOfRow();
+
+			tb.add("");
+			tb.add("");
+			tb.add("");
+			tb.add("Delivery Charge ");
+			tb.add("4.00");
+			tb.endOfRow();
+
+			tb.add("");
+			tb.add("");
+			tb.add("");
+			tb.add("Total Payment ");
+			tb.add(totalP);
+			tb.endOfRow();
+
+		}
+		cout << tb;
 	}
 	else {
-		cout << "invalid choice\n";
+		cout << "\nInvalid choice. Try again.\n";
+		system("pause");
 	}
 }
 

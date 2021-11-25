@@ -339,32 +339,36 @@ void viewActiveOrder() {
 
     int totalActive = vendor.viewActiveOrder(conn, tb);
 
-    // view active order
-    gotoXY(10, 13);
-    cout << "------Active Order------\n";
-    cout << tb << endl;
-
     TextTable td;
     int orderID;
     int exist = 0;
 
-    cout << "\n--Enter OrderID to view details--\n\t>> ";
-    cin >> orderID;
+    // view active order
+    do {
+        jump:;
+        mainHeader();
+        gotoXY(10, 13);
+        cout << "\n\t------Active Order------\n";
+        cout << tb << endl;
 
-    vendor.viewActiveOrderDetail(conn, td, orderID, exist);
+        cout << "\n   Enter OrderID to view details (0 - back to Main Menu)\n\t>> ";
+        cin >> orderID;
+        
+        if (orderID == 0)
+            break;
+        else {
+            mainHeader();
+            vendor.viewActiveOrderDetail(conn, orderID, exist);
+            if (exist == 0) {
+                goto jump;
+            }
+            system("pause");
+        }
+    } while (orderID != 0);
 
     /*
-    if (exist == 1) {
-        cout << "order exist";
-    }
-    else {
-        cout << "invalid choice";
-    }
-    */
-
-    /*
-    1. enter orderId to view details of the order
-    2. ada option untuk accept or reject
+        1. enter orderId to view details of the order - done
+        2. ada option untuk accept or reject
     */
 
 }

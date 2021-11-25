@@ -106,7 +106,7 @@ int main()
                             else if (operation == 2) {
                                 mainHeader();
                                 viewActiveOrder();
-                                system("pause");
+                                //system("pause");
                             }
 
                             else if (operation == 4) {
