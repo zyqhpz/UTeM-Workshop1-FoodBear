@@ -237,20 +237,24 @@ int Customer::fetchPreviousOrder(MYSQL* conn, TextTable& tb)
 	const char* qC = s.c_str();
 	int q = mysql_query(conn, qC);
 	if (!q) {
+		cout << "success";
 		res = mysql_store_result(conn);
+		cout << "success";
 		while (row = mysql_fetch_row(res)) {
+		cout << "success";
 			string orderID = row[1];
-			string quantity = row[6];
-			string price = row[11];
-			string date = row[8];
+		cout << "success";
+			string quantity = row[7];
+			string price = row[12];
+			string date = row[9];
 			string riderID;
-			if (row[14] == NULL) {
+			if (row[15] == NULL) {
 				riderID = "Not Set";
 			}
 			else {
-				riderID = row[14];
+				riderID = row[15];
 			}
-			string status = row[15];
+			string status = row[16];
 			///prev_order.push_back({ row[1], row[5], row[7], row[10], row[13], row[14] });
 			prev_order.push_back({ orderID, quantity, price, date, riderID, status });
 			tb.add(orderID);
@@ -497,7 +501,7 @@ void Customer::insertOrder(MYSQL* conn, int venID) {
 		for (int i = 0; i < order.size(); i++) {
 			stringstream ssOrder;
 			//ssOrder << "INSERT INTO order_detail (product_id, quantity) VALUES ('" + order[i][3] + "', '" + order[i][2]  + "')";
-			ssOrder << "INSERT INTO order_detail (cust_order_id, product_id, quantity) VALUES ('" + to_string(orderID) + "', '" + order[i][3] + "', '" + order[i][2]  + "')";
+			ssOrder << "INSERT INTO order_detail (cust_order_id, product_id, quantity, price) VALUES ('" + to_string(orderID) + "', '" + order[i][3] + "', '" + order[i][2] + "', '" + order[i][1] + "')";
 		
 			string queryDetail = ssOrder.str();
 			const char* qD = queryDetail.c_str();

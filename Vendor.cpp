@@ -561,17 +561,17 @@ int Vendor::viewActiveOrder(MYSQL* conn, TextTable &tb) {
 		res = mysql_store_result(conn);
 		while (row = mysql_fetch_row(res)) {
 			string orderID = row[1];
-			string quantity = row[6];
-			string price = row[11];
-			string date = row[8];
+			string quantity = row[7];
+			string price = row[12];
+			string date = row[9];
 			string riderID;
-			if (row[14] == NULL) {
+			if (row[15] == NULL) {
 				riderID = "Not Set";
 			}
 			else {
-				riderID = row[14];
+				riderID = row[15];
 			}
-			string status = row[15];
+			string status = row[16];
 			///prev_order.push_back({ row[1], row[5], row[7], row[10], row[13], row[14] });
 			active_order.push_back({ orderID, quantity, price, date, riderID, status });
 			tb.add(orderID);
@@ -618,7 +618,7 @@ void Vendor::viewActiveOrderDetail(MYSQL* conn, int orderID, int& exist) {
 		MYSQL_RES* res;
 
 		stringstream sql;
-		sql << "SELECT cust_order.date, product.name, order_detail.quantity, product.price, payment.total_payment FROM order_detail JOIN product ON order_detail.product_id = product.id JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE cust_order_id = " << orderID;
+		sql << "SELECT cust_order.date, product.name, order_detail.quantity, order_detail.price, payment.total_payment FROM order_detail JOIN product ON order_detail.product_id = product.id JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE cust_order_id = " << orderID;
 		//sql << "SELECT * FROM order_detail JOIN product ON order_detail.product_id = product.id JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE cust_order_id = " << orderID;
 		//sql << "SELECT * FROM order_detail JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE payment.vendor_id = " << to_string(this->vendorID);
 		string s = sql.str();
@@ -655,8 +655,9 @@ void Vendor::viewActiveOrderDetail(MYSQL* conn, int orderID, int& exist) {
 				string date = row[0];
 				string name = row[1];
 				int quantity = stoi(row[2]);
-				double price = stod(row[3]);
-				pxq = quantity * price;
+				pxq = stod(row[3]);
+				//pxq = quantity * price;
+				double price = pxq / quantity;
 				subTotal += pxq;
 				totalP = row[4];
 
