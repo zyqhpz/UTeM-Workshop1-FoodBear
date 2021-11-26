@@ -1,4 +1,5 @@
 #include "Admin.h"
+#include "sha256.h"
 
 Admin::Admin()
 {
@@ -11,6 +12,7 @@ Admin::~Admin()
 bool Admin::login(string user, string pass)
 {
 	boost::to_lower(user);
+	pass = sha256(pass);
 	for (int i = 0; i < 6; i++) {
 		if (user == data[i].username && pass == data[i].password) {
 			cout << "login succeed" << endl;

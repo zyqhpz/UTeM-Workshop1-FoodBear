@@ -109,7 +109,7 @@ int main()
                                 //system("pause");
                             }
 
-                            else if (operation == 4) {
+                            else if (operation == 5) {
                                 vendor.viewProfile(mainHeader, conn);
                             }
                             else if (operation == 0) {
