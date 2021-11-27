@@ -36,7 +36,13 @@ void displayMainMenu() {
     mainHeader();
 
     //cout << "\nWelcome to FoodBear Delivery\nNow all on fingertips\n\n";
-    cout << "\nWelcome to FoodBear Delivery\n";
+    //COORD c;
+    //SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
+    //GetStdHandle();
+    GetStdHandle(STD_OUTPUT_HANDLE);
+    cout << "\n\tWelcome to FoodBear Delivery\n";
+    //unsigned int padding = 40 + (sname.size() / 2);
+    //cout << setw(padding) << sname;
 
     cout << "\n--Main--\n";
     cout << "1-Login\n2-Register\n0-Exit\n";
@@ -102,13 +108,17 @@ int main()
                                 viewManageProduct();
                                 system("pause");
                             }
-                            
                             else if (operation == 2) {
                                 mainHeader();
                                 viewActiveOrder();
                                 //system("pause");
                             }
+                            else if (operation == 3) {
 
+                            }
+                            else if (operation == 4) {
+
+                            }
                             else if (operation == 5) {
                                 vendor.viewProfile(mainHeader, conn);
                             }
@@ -130,7 +140,7 @@ int main()
                             cout << "\n---Welcome " << cust.getName() << "---\n" << endl;
 
                             cout << "---Operation---\n";
-                            cout << "Enter\n\t1-View foods\n\t2-View order\n\t4-View profile\n\t0-Logout\n";
+                            cout << "Enter\n\t1-View foods\n\t2-View order\n\t3-View total expenses\n\t4-View profile\n\t0-Logout\n";
                             cout << ">> ";
                             cin >> operation;
 
@@ -141,6 +151,9 @@ int main()
                             else if (operation == 2) {
                                 viewPreviousOrder();
                                 system("pause");
+                            }
+                            else if (operation == 3) {
+
                             }
                             else if (operation == 4) {
                                 cust.viewProfile(mainHeader, conn);
@@ -163,7 +176,7 @@ int main()
                             cout << "\n---Welcome " << rider.getName() << "---\n" << endl;
 
                             cout << "---Operation---\n";
-                            cout << "Enter 1-Start food delivery, 2-View past delivery, 3-View earning report, 4-View profile, 0-Logout\n";
+                            cout << "Enter 1-Start food delivery, 2-View past delivery, 3-View total earning, 4-View profile, 0-Logout\n";
                             cout << ">> ";
                             cin >> operation;
 
