@@ -58,7 +58,7 @@ public:
     static MYSQL* ConnectionFunction() {
         conn = mysql_init(0);
         if (conn) {
-            cout << "Connected" << endl;
+            //cout << "Connected" << endl;
             system("cls");
         }
         else {
@@ -68,7 +68,7 @@ public:
         conn = mysql_real_connect(conn, "localhost", "root", "", "foodbear", 3306, NULL, 0);
 
         if (conn) {
-            cout << "Connected to MySQL" << conn << endl;
+            //cout << "Connected to MySQL" << conn << endl;
             //system("pause");
         }
         else {
@@ -77,6 +77,17 @@ public:
     return conn;
     }
 };
+
+void centerify_output(std::string str, int num_cols) {
+    // Calculate left padding
+    int padding_left = (num_cols / 2) - (str.size() / 2);
+
+    // Put padding spaces
+    for (int i = 0; i < padding_left; ++i) std::cout << ' ';
+
+    // Print the message
+    std::cout << str;
+}
 
 // function to display main header for every page
 //inline void mainHeader(std::string additional = "") {
@@ -98,6 +109,8 @@ inline void mainHeader() {
      LPDWORD written{};
      WriteConsole(screen, s, sizeof(s), written, 0);*/
 
+    /*
+    
     gotoXY(5, 3);
     //cout << setw(25);
     cout << "###########################################################" << endl;
@@ -109,10 +122,37 @@ inline void mainHeader() {
     cout << "##                                                       ##" << endl;
     gotoXY(5, 7);
     cout << "###########################################################" << endl << endl;
+    
+    */
 
- /*   if (additional != "") {
-        cout << additional << endl;
-    }*/
+    vector<string> lines = {
+        "###########################################################",
+        "##                                                       ##",
+        "##   FoodBear Online Food Ordering and Delivery System   ##",
+        "##                                                       ##",
+        "###########################################################",
+    };
+
+    int num_cols = 100;
+
+    // VIRTUAL BORDER
+    gotoXY(0, 3);
+    std::cout << std::endl;
+    for (int i = 0; i < num_cols; ++i) std::cout << ' ';
+    //std::cout << ' ' << std::endl;
+    std::cout << ' ' << std::endl;
+
+    // OUTPUT
+    for (int i = 0; i < lines.size(); ++i) {
+        centerify_output(lines[i], num_cols);
+        std::cout << std::endl;
+    }
+
+    // VIRTUAL BORDER
+    std::cout << std::endl;
+    for (int i = 0; i < num_cols; ++i) std::cout << ' ';
+    //std::cout << '|' << std::endl;
+    std::cout << ' ' << std::endl;
 }
 
 
@@ -266,9 +306,12 @@ int login() {
     mainHeader();
 
     string user, pass;
-    cout << "\n----Login----\n";
+    for (int i = 0; i < 40; ++i) std::cout << ' ';
+    cout << "----Login----\n";
+    for (int i = 0; i < 30; ++i) std::cout << ' ';
     cout << "Username: ";
     cin >> user;
+    for (int i = 0; i < 30; ++i) std::cout << ' ';
     cout << "Password: ";
     pass = inputPassword();
 

@@ -39,13 +39,45 @@ void displayMainMenu() {
     //COORD c;
     //SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
     //GetStdHandle();
-    GetStdHandle(STD_OUTPUT_HANDLE);
-    cout << "\n\tWelcome to FoodBear Delivery\n";
+    //GetStdHandle(STD_OUTPUT_HANDLE);
+    vector<string> title = {
+        "Welcome to FoodBear Delivery",
+        " ",
+        "----Main----",
+        "1-Login",
+        "2-Register",
+        "0-Exit",
+    };
+
+    int num_cols = 100;
+
+    // VIRTUAL BORDER
+    //gotoXY(0, 3);
+    std::cout << std::endl;
+    for (int i = 0; i < num_cols; ++i) std::cout << ' ';
+    //std::cout << ' ' << std::endl;
+    std::cout << ' ' << std::endl;
+
+    // OUTPUT
+    for (int i = 0; i < title.size(); ++i) {
+        centerify_output(title[i], num_cols);
+        std::cout << std::endl;
+    }
+
+    // VIRTUAL BORDER
+    std::cout << std::endl;
+    for (int i = 0; i < num_cols; ++i) std::cout << ' ';
+    //std::cout << '|' << std::endl;
+    std::cout << ' ' << std::endl;
+
+    //cout << "\n\t\t\tWelcome to FoodBear Delivery\n\n";
     //unsigned int padding = 40 + (sname.size() / 2);
     //cout << setw(padding) << sname;
 
-    cout << "\n--Main--\n";
-    cout << "1-Login\n2-Register\n0-Exit\n";
+    //centerify_output("\n--Main--\n", 100);
+    //for (int i = 0; i < 50; ++i) std::cout << ' ';
+    //cout << "--Main--\n";
+    //cout << "1-Login\n2-Register\n0-Exit\n";
 }
 
 int main()
@@ -74,7 +106,8 @@ int main()
     do {
         displayMainMenu();
         //select(); from menu.h
-        cout << "\n>> ";
+        for (int i = 0; i < 30; ++i) std::cout << ' ';
+        cout << ">> ";
         cin >> chooseMain;
 
         int role;
