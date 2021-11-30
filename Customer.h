@@ -77,6 +77,9 @@ public:
 	int fetchOrderData(MYSQL*);
 	int fetchOrderDetails(MYSQL*);
 	int fetchPreviousOrder(MYSQL*, TextTable&);
+
+	void viewPreviousOrderDetails(MYSQL*, int, int&);
+
 	void viewProfile(function<void()>, MYSQL*);
 
 	void selectProduct(Vendor, int, int, double&);

@@ -620,10 +620,41 @@ void viewPreviousOrder() {
 
     //cout << tt;
 
+    /*
+    
     // latest prevOrder display
     gotoXY(10, 13);
     cout << "-----Previous Order------\n";
     cout << tb;
+
+    */
+
+    // view previous order
+
+    int orderID;
+    int exist = 0;
+
+    do {
+    jump:;
+        mainHeader();
+        gotoXY(10, 13);
+        cout << "\n\t------Previous Order------\n";
+        cout << tb << endl;
+
+        cout << "\n   Enter OrderID to view details (0 - back to Main Menu)\n\t>> ";
+        cin >> orderID;
+
+        if (orderID == 0)
+            break;
+        else {
+            mainHeader();
+            cust.viewPreviousOrderDetails(conn, orderID, exist);
+            if (exist == 0) {
+                goto jump;
+            }
+            system("pause");
+        }
+    } while (orderID != 0);
 }
 
 void viewProductList(int vendorID) {

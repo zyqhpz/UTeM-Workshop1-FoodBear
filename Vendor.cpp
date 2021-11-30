@@ -715,7 +715,7 @@ void Vendor::viewActiveOrderDetail(MYSQL* conn, int orderID, int& exist) {
 				string s = ss.str();
 				const char* qC = s.c_str();
 				int q = mysql_query(conn, qC);
-				cout << "\tOrder accepted\t";
+				cout << "\tOrder has been accepted\n";
 				system("pause");
 				break;
 			}
@@ -724,7 +724,7 @@ void Vendor::viewActiveOrderDetail(MYSQL* conn, int orderID, int& exist) {
 				string s = ss.str();
 				const char* qC = s.c_str();
 				int q = mysql_query(conn, qC);
-				cout << "\tOrder rejected\t";
+				cout << "\tOrder has been rejected\n";
 				system("pause");
 				break;
 			}
