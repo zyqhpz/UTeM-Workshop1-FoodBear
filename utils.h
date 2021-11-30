@@ -307,7 +307,7 @@ int login() {
 
     string user, pass;
     for (int i = 0; i < 40; ++i) std::cout << ' ';
-    cout << "----Login----\n";
+    cout << "----Login----\n\n";
     for (int i = 0; i < 30; ++i) std::cout << ' ';
     cout << "Username: ";
     cin >> user;
@@ -405,7 +405,7 @@ void viewActiveOrder() {
             if (exist == 0) {
                 goto jump;
             }
-            system("pause");
+            //system("pause");
         }
     } while (orderID != 0);
 

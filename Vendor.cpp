@@ -704,6 +704,31 @@ void Vendor::viewActiveOrderDetail(MYSQL* conn, int orderID, int& exist) {
 
 		}
 		cout << tb;
+
+		int accept;
+		stringstream ss;
+		do {
+			cout << "\n    1-Accept OR 2-Reject\n\t>> ";
+			cin >> accept;
+			if (accept == 1) {
+				ss << "UPDATE delivery SET status = 1 WHERE payment_id = " << orderID;
+				string s = ss.str();
+				const char* qC = s.c_str();
+				int q = mysql_query(conn, qC);
+				cout << "\tOrder accepted\t";
+				system("pause");
+				break;
+			}
+			else if (accept == 2) {
+				ss << "UPDATE delivery SET status = -1 WHERE payment_id = " << orderID;
+				string s = ss.str();
+				const char* qC = s.c_str();
+				int q = mysql_query(conn, qC);
+				cout << "\tOrder rejected\t";
+				system("pause");
+				break;
+			}
+		} while (1 <= accept <= 2);
 	}
 	else {
 		cout << "\nInvalid choice. Try again.\n";
