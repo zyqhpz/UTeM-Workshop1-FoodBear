@@ -18,19 +18,22 @@
 #include "utils.h"
 #include "Menu.h"
 
+/*
 #include <ftxui/dom/node.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
 #include <ftxui/component/component.hpp>
+*/
 
 #include <jdbc/mysql_driver.h>
 #include <jdbc/mysql_connection.h>
+//#include <tabulate/table.hpp>
 //#include <jdbc/cppconn/*.h>
 
-
+using namespace tabulate;
 using namespace std;
 
-using namespace ftxui;
+//using namespace ftxui;
 
 void displayMainMenu() {
     mainHeader();
@@ -147,6 +150,7 @@ int main()
                                 //system("pause");
                             }
                             else if (operation == 3) {
+                                viewAllOrder();
 
                             }
                             else if (operation == 4) {
@@ -183,7 +187,7 @@ int main()
                             }
                             else if (operation == 2) {
                                 viewPreviousOrder();
-                                system("pause");
+                                //system("pause");
                             }
                             else if (operation == 3) {
 

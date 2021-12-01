@@ -53,6 +53,7 @@ private:
 	vector<VendorProducts> beverage;
 
 	vector<vector<string>> active_order;
+	vector<vector<string>> all_order;
 
 public:
 	Vendor();
@@ -75,6 +76,9 @@ public:
 
 	int viewActiveOrder(MYSQL*, TextTable&);
 	void viewActiveOrderDetail(MYSQL*, int, int&);
+
+	int viewPreviousOrder(MYSQL*, TextTable&);
+	void viewPreviousOrderDetail(MYSQL*, int, int&);
 
 	void getCategory(int);
 

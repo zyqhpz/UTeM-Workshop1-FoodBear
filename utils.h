@@ -19,22 +19,25 @@
 
 #include "TextTable.h"
 
-#include <ftxui/dom/elements.hpp>
-#include <ftxui/screen/screen.hpp>
+//#include <ftxui/dom/elements.hpp>
+//#include <ftxui/screen/screen.hpp>
 
 #include <jdbc/mysql_driver.h>
 #include <jdbc/mysql_connection.h>
 
 #include "Menu.h"
 
+//#include "tabulate/single_include/tabulate/tabulate.hpp"
 #include <tabulate/table.hpp>
+//using Row_t = Table::Row_t;
+
 using namespace tabulate;
 
 #pragma once
 
 using namespace std;
 
-using namespace ftxui;
+//using namespace ftxui;
 
 // Global variable
 MYSQL* conn;
@@ -417,6 +420,38 @@ void viewActiveOrder() {
         2. ada option untuk accept or reject
     */
 
+}
+// View all orders for vendor
+void viewAllOrder() {
+    TextTable tb;
+
+    int totalOrder = vendor.viewPreviousOrder(conn, tb);
+
+    TextTable td;
+    int orderID;
+    int exist = 0;
+
+    do {
+    jump:;
+        mainHeader();
+        gotoXY(10, 13);
+        cout << "\n\t------All Order------\n";
+        cout << tb << endl;
+
+        cout << "\n   Enter OrderID to view details (0 - back to Main Menu)\n\t>> ";
+        cin >> orderID;
+
+        if (orderID == 0)
+            break;
+        else {
+            mainHeader();
+            vendor.viewPreviousOrderDetail(conn, orderID, exist);
+            if (exist == 0) {
+                goto jump;
+            }
+            system("pause");
+        }
+    } while (orderID != 0);
 }
 
 // Customer operation
