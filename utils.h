@@ -27,6 +27,9 @@
 
 #include "Menu.h"
 
+#include <tabulate/table.hpp>
+using namespace tabulate;
+
 #pragma once
 
 using namespace std;
