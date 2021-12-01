@@ -87,7 +87,6 @@ int main()
     system("Connection To DB");
 
     db_connection::ConnectionFunction();
-    fetchAllData();
 
     std::string str = "Hello";
     std::wstring str2(str.length(), L' '); // Make room for characters
@@ -104,6 +103,7 @@ int main()
     int operation;
 
     do {
+        fetchAllData();
         displayMainMenu();
         //select(); from menu.h
         for (int i = 0; i < 30; ++i) std::cout << ' ';
