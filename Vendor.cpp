@@ -264,7 +264,8 @@ void Vendor::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 
 void Vendor::viewVendor(int totalVendor) {
 
-	TextTable vv;
+	//TextTable vv;
+	TableVendorList vv;
 
 	vv.add("ID");
 	vv.add("Name");
@@ -283,7 +284,7 @@ void Vendor::viewVendor(int totalVendor) {
 		//cout << "\t" << data[i].id << "\t" << data[i].name << setw(20) << data[i].phone << "\t" << data[i].address << endl;
 	}
 
-	vv.setAlignment(3, TextTable::Alignment::LEFT);
+	vv.setAlignment(3, TableVendorList::Alignment::LEFT);
 
 	cout << endl;
 	cout << vv;
@@ -419,10 +420,13 @@ void Vendor::viewProduct(int vendorID, int totalProduct, int totalVendor, int& e
 	tb[0][2].format().width(20);
 
 	if (exist) {
-		cout << "\n\t\t\t----Foods----\n";
+		for (int i = 0; i < 93; ++i) std::cout << ' ';
+		cout << "----Foods----\n";
 		//cout << tf;
 		cout << tf;
-		cout << "\n\n\t\t\t----Beverages---\n";
+		cout << "\n\n";
+		for (int i = 0; i < 93; ++i) std::cout << ' ';
+		cout << "---Beverages---\n";
 		cout << tb;
 	}
 	else {

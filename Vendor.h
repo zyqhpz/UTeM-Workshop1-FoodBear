@@ -18,7 +18,6 @@
 
 #include <boost/algorithm/string.hpp> // toLower string
 
-#include "TextTable.h"
 
 //#include "tabulate/single_include/tabulate/tabulate.hpp"
 

@@ -11,7 +11,7 @@
 #include <functional>
 #include "sha256.h"
 
-#include "TextTable.h"
+#include "External.h"
 
 #include <boost/algorithm/string.hpp>
 

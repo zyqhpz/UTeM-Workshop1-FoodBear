@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+#include "TextTable.h"
+
 #include <tabulate/table.hpp>
 
 using namespace tabulate;
