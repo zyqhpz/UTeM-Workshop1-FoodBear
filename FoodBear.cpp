@@ -17,6 +17,7 @@
 
 #include "utils.h"
 #include "Menu.h"
+//#include "External.h"
 
 /*
 #include <ftxui/dom/node.hpp>
@@ -72,6 +73,35 @@ void displayMainMenu() {
     for (int i = 0; i < num_cols; ++i) std::cout << ' ';
     //std::cout << '|' << std::endl;
     std::cout << ' ' << std::endl;
+
+    /*
+    
+    
+    Table table;
+
+    table.add_row({ "This paragraph contains a veryveryveryveryveryverylong word. The long word will "
+                   "break and word wrap to the next line.", " ",
+                   "This paragraph \nhas embedded '\\n' \ncharacters and\n will break\n exactly "
+                   "where\n you want it\n to\n break.", " "});
+    table.add_row({ "This paragraph contains a veryveryveryveryveryverylong word. The long word will "
+                   "break and word wrap to the next line.", " ", " ",
+                   "This paragraph \nhas embedded '\\n' \ncharacters and\n will break\n exactly "
+                   "where\n you want it\n to\n break." });
+    table.add_row({" ", "Column1", "Column2", " "});
+
+    table[0][0].format().width(20);
+    table[0][1].format().width(30);
+    table[0][2].format().width(30);
+    table[0][3].format().width(30);
+    */
+    //for (int i = 0; i < num_cols; ++i) std::cout << ' ';
+    //std::cout << "     "  << table << std::endl;
+
+    //for (int i = 0; i < cols; i++) {
+      //  cout << "       " << table;
+    //}
+
+   // cout << table << endl;
 
     //cout << "\n\t\t\tWelcome to FoodBear Delivery\n\n";
     //unsigned int padding = 40 + (sname.size() / 2);

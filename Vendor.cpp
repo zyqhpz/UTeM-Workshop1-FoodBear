@@ -305,8 +305,11 @@ int Vendor::fetchProduct(MYSQL_RES* res) {
 }
 
 void Vendor::viewProduct(int vendorID, int totalProduct, int totalVendor, int& e) {
-	TextTable tf('-', '|', '+');
-	TextTable tb('-', '|', '+');
+	//TextTable tf('-', '|', '+');
+	//TextTable tb('-', '|', '+');
+
+	Table tf;
+	Table tb;
 
 	food.clear();
 	beverage.clear();
@@ -334,6 +337,10 @@ void Vendor::viewProduct(int vendorID, int totalProduct, int totalVendor, int& e
 			beverage.push_back({ product[i].id, product[i].name, product[i].price, product[i].vendor_id, product[i].category_id });
 		}
 	}
+
+	/*
+	
+	
 	//cout << "\n-----Food-----\n";
 	tf.add("ID");
 	tf.add("Product Name");
@@ -353,34 +360,63 @@ void Vendor::viewProduct(int vendorID, int totalProduct, int totalVendor, int& e
 		//cout << "\t" << food[i].id << "\t" << food[i].name << "\t\t" << setprecision(2) << food[i].price << endl;
 	}
 	tf.setAlignment(8, TextTable::Alignment::LEFT);
+	*/
+
+	tf.add_row({ "ID", "Product Name", "Price (RM)"}); // NEW TABLE
+
+	for (int i = 0; i < food.size(); i++) {
+		//cout << "-----------------------------------------------------------------\n";
+		if (food[i].vendor_id == vendorID) {
+			stringstream ss;
+			ss << fixed << setprecision(2) << food[i].price;
+			//tf.add(to_string(food[i].id));
+			//tf.add(food[i].name);
+			//tf.add(ss.str());
+			//tf.endOfRow();
+			tf.add_row({ to_string(food[i].id), food[i].name, ss.str() });
+		}
+		//cout << "\t" << food[i].id << "\t" << food[i].name << "\t\t" << setprecision(2) << food[i].price << endl;
+	}
 
 	//cout << "\n-----Beverage-----\n";
-	tb.add("ID");
-	tb.add("Product Name");
-	tb.add("Price (RM)");
-	tb.endOfRow();
+	//tb.add("ID");
+	//tb.add("Product Name");
+	//tb.add("Price (RM)");
+	//tb.endOfRow();
+
+	tb.add_row({ "ID", "Product Name", "Price (RM)" }); // NEW TABLE
 
 	for (int i = 0; i < beverage.size(); i++) {
 		//cout << "-----------------------------------------------------------------\n";
 		if (beverage[i].vendor_id == vendorID) {
 			stringstream ss;
 			ss << fixed << setprecision(2) << beverage[i].price;
-			tb.add(to_string(beverage[i].id));
-			tb.add(beverage[i].name);
-			tb.add(ss.str());
-			tb.endOfRow();
+			//tb.add(to_string(beverage[i].id));
+			//tb.add(beverage[i].name);
+			//tb.add(ss.str());
+			//tb.endOfRow();
+			tb.add_row({ to_string(beverage[i].id), beverage[i].name, ss.str() });
 			//cout << left << setw(10) << beverage[i].id << left << setw(30) << beverage[i].name << left << setw(10) << beverage[i].price << endl;
 			//cout << "\t" << beverage[i].id << "\t" << beverage[i].name << setw(20) << beverage[i].price << endl;
 		}
 	}
 
-	tb.setAlignment(8, TextTable::Alignment::LEFT);
+	//tb.setAlignment(8, TextTable::Alignment::LEFT);
 	//cout << t;
 
+	tf[0][0].format().width(10);
+	tf[0][1].format().width(20);
+	tf[0][2].format().width(20);
+	
+	tb[0][0].format().width(10);
+	tb[0][1].format().width(20);
+	tb[0][2].format().width(20);
+
 	if (exist) {
-		cout << "\n\t----Foods----\n";
+		cout << "\n\t\t\t----Foods----\n";
+		//cout << tf;
 		cout << tf;
-		cout << "\n\t----Beverages---\n";
+		cout << "\n\n\t\t\t----Beverages---\n";
 		cout << tb;
 	}
 	else {

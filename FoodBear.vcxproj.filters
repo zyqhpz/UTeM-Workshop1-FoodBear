@@ -62,10 +62,10 @@
     <ClInclude Include="TextTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Go.h">
+    <ClInclude Include="Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Menu.h">
+    <ClInclude Include="External.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -26,9 +26,10 @@
 #include <jdbc/mysql_connection.h>
 
 #include "Menu.h"
+#include "External.h"
 
 //#include "tabulate/single_include/tabulate/tabulate.hpp"
-#include <tabulate/table.hpp>
+//#include <tabulate/table.hpp>
 //using Row_t = Table::Row_t;
 
 using namespace tabulate;
@@ -83,17 +84,6 @@ public:
     return conn;
     }
 };
-
-void centerify_output(std::string str, int num_cols) {
-    // Calculate left padding
-    int padding_left = (num_cols / 2) - (str.size() / 2);
-
-    // Put padding spaces
-    for (int i = 0; i < padding_left; ++i) std::cout << ' ';
-
-    // Print the message
-    std::cout << str;
-}
 
 // function to display main header for every page
 //inline void mainHeader(std::string additional = "") {
