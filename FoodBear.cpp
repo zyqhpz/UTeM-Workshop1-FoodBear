@@ -113,6 +113,88 @@ void displayMainMenu() {
     //cout << "1-Login\n2-Register\n0-Exit\n";
 }
 
+void userUI(int role) {
+
+    /*
+    
+    for (int i = 0; i < 75; ++i) std::cout << ' ';
+    cout << "---Welcome " << vendor.getName() << "---\n" << endl;
+
+    cout << "---Operation---\n";
+    //cout << "Enter 1-View products, 2-View sales report, 3-View all order, 4-View profile 0-Logout\n";
+    cout << "Enter\n\t1-Manage products\n\t2-View active order\n\t3-View all order\n\t4-View sales report\n\t5-View profile\n\t0-Logout\n";
+    cout << ">> ";
+    */
+
+    vector<string> title;
+
+    // Vendor
+    if (role == 1) {
+        title = {
+           "--- Welcome " + vendor.getName() + " ---",
+           " ",
+           "1-Manage products",
+           "2-View active order",
+           "3-View all order",
+           "4-View sales report",
+           "5-View profile",
+           "0-Logout",
+        };
+    }
+
+    // Customer
+    else if (role == 2) {
+        title = {
+          "--- Welcome " + cust.getName() + " ---",
+          " ",
+          "1-View foods",
+          "2-View order",
+          "3-View total expenses",
+          "4-View profile",
+          "0-Logout",
+        };
+    }
+
+    // Rider
+    else if (role == 3) {
+        title = {
+          "--- Welcome " + rider.getName() + " ---",
+          " ",
+          "1-Start food delivery",
+          "2-View past delivery",
+          "3-View total earning",
+          "4-View profile",
+          "0-Logout",
+        };
+    }
+    
+    // Admin
+    else if (role == 0) {
+
+    }
+
+    int num_cols = 200;
+
+    // VIRTUAL BORDER
+    //gotoXY(0, 3);
+    std::cout << std::endl;
+    for (int i = 0; i < num_cols; ++i) std::cout << ' ';
+    //std::cout << ' ' << std::endl;
+    std::cout << ' ' << std::endl;
+
+    // OUTPUT
+    for (int i = 0; i < title.size(); ++i) {
+        centerify_output(title[i], num_cols);
+        std::cout << std::endl;
+    }
+
+    // VIRTUAL BORDER
+    std::cout << std::endl;
+    for (int i = 0; i < num_cols; ++i) std::cout << ' ';
+    //std::cout << '|' << std::endl;
+    std::cout << ' ' << std::endl;
+}
+
 int main()
 {
    // text("I am a piece of text");
@@ -160,12 +242,18 @@ int main()
                         do {
                             fetchAllData();
                             mainHeader();
+
+                            /*
+                            
                             for (int i = 0; i < 75; ++i) std::cout << ' ';
                             cout << "---Welcome " << vendor.getName() << "---\n" << endl;
 
                             cout << "---Operation---\n";
                             //cout << "Enter 1-View products, 2-View sales report, 3-View all order, 4-View profile 0-Logout\n";
                             cout << "Enter\n\t1-Manage products\n\t2-View active order\n\t3-View all order\n\t4-View sales report\n\t5-View profile\n\t0-Logout\n";
+                            */
+                            userUI(role);
+                            for (int i = 0; i < 75; ++i) std::cout << ' ';
                             cout << ">> ";
                             cin >> operation;
 
@@ -205,11 +293,15 @@ int main()
                         do {
                             fetchAllData();
                             mainHeader();
+                            /*
                             for (int i = 0; i < 75; ++i) std::cout << ' ';
                             cout << "---Welcome " << cust.getName() << "---\n" << endl;
 
                             cout << "---Operation---\n";
                             cout << "Enter\n\t1-View foods\n\t2-View order\n\t3-View total expenses\n\t4-View profile\n\t0-Logout\n";
+                            */
+                            userUI(role);
+                            for (int i = 0; i < 75; ++i) std::cout << ' ';
                             cout << ">> ";
                             cin >> operation;
 
@@ -243,10 +335,14 @@ int main()
                         do {
                             fetchAllData();
                             mainHeader();
+                            /*
                             cout << "\n---Welcome " << rider.getName() << "---\n" << endl;
 
                             cout << "---Operation---\n";
                             cout << "Enter 1-Start food delivery, 2-View past delivery, 3-View total earning, 4-View profile, 0-Logout\n";
+                            */
+                            userUI(role);
+                            for (int i = 0; i < 75; ++i) std::cout << ' ';
                             cout << ">> ";
                             cin >> operation;
 
