@@ -143,12 +143,14 @@ int Customer::fetchData(MYSQL_RES* res) {
 		i++;
 		total++;
 	}
+	/*
 	cout << "\tid" << "\tusername" << "\tpassword" << "\tname" << "\t\tphone" << "\t\taddress" << endl;
 	cout << "---------------------------------------------------------------------------------------------------------------" << endl;
 	for (int i = 0; i < total; i++) {
 		cout << "\t" << data[i].id << "\t" << data[i].username << "\t" << data[i].password << "\t\t" << data[i].name << "\t" << data[i].phone << "\t" << data[i].address << endl;
 	}
 	cout << endl;
+	*/
 	return total;
 }
 

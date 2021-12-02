@@ -110,6 +110,8 @@ string Vendor::inputNoPhone() {
 }
 
 int Vendor::fetchData(MYSQL_RES* res, int count) {
+	//fill(begin(data), end(data), 0);
+
 	MYSQL_ROW row;
 	int i = 0;
 	int total = 0;
@@ -136,12 +138,16 @@ int Vendor::fetchData(MYSQL_RES* res, int count) {
 		i++;
 		total++;
 	}
+
+	/*
+	
 	cout << "\tid" << "\tusername" << "\tpassword" << "\tname" << "\t\tphone" << "\t\taddress" << endl;
 	cout << "---------------------------------------------------------------------------------------------------------------" << endl;
 	for (int i = 0; i < total; i++) {
 		cout << "\t" << data[i].id << "\t" << data[i].username << "\t" << data[i].password << "\t\t" << data[i].name << "\t" << data[i].phone << "\t" << data[i].address << endl;
 	}
 	cout << endl;
+	*/
 	return total;
 }
 
