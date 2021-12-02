@@ -53,7 +53,7 @@ void displayMainMenu() {
         "0-Exit",
     };
 
-    int num_cols = 100;
+    int num_cols = 200;
 
     // VIRTUAL BORDER
     //gotoXY(0, 3);
@@ -139,7 +139,7 @@ int main()
         fetchAllData();
         displayMainMenu();
         //select(); from menu.h
-        for (int i = 0; i < 30; ++i) std::cout << ' ';
+        for (int i = 0; i < 75; ++i) std::cout << ' ';
         cout << ">> ";
         cin >> chooseMain;
 
@@ -160,7 +160,8 @@ int main()
                         do {
                             fetchAllData();
                             mainHeader();
-                            cout << "\n---Welcome " << vendor.getName() << "---\n" << endl;
+                            for (int i = 0; i < 75; ++i) std::cout << ' ';
+                            cout << "---Welcome " << vendor.getName() << "---\n" << endl;
 
                             cout << "---Operation---\n";
                             //cout << "Enter 1-View products, 2-View sales report, 3-View all order, 4-View profile 0-Logout\n";
@@ -204,7 +205,8 @@ int main()
                         do {
                             fetchAllData();
                             mainHeader();
-                            cout << "\n---Welcome " << cust.getName() << "---\n" << endl;
+                            for (int i = 0; i < 75; ++i) std::cout << ' ';
+                            cout << "---Welcome " << cust.getName() << "---\n" << endl;
 
                             cout << "---Operation---\n";
                             cout << "Enter\n\t1-View foods\n\t2-View order\n\t3-View total expenses\n\t4-View profile\n\t0-Logout\n";
@@ -231,6 +233,7 @@ int main()
                         } while (operation != 0);
                     }
                     else {
+                        for (int i = 0; i < 75; ++i) std::cout << ' ';
                         cout << "failed login\n";
                         system("pause");
                     }
@@ -273,18 +276,51 @@ int main()
             do {
                 mainHeader();
 
-                cout << "--Registration--\n";
-                cout << "Enter: \n\t1-Vendor\n\t2-Customer\n\t3-Rider\n\t0-Back to Main Menu\n";
+                vector<string> reg = {
+                    "----Registration----",
+                    " ",
+                    "1-Vendor",
+                    "2-Customer",
+                    "3-Rider",
+                    "0-Back to Main Menu",
+                };
+
+                int num_cols = 200;
+
+                // VIRTUAL BORDER
+                //gotoXY(0, 3);
+                std::cout << std::endl;
+                for (int i = 0; i < num_cols; ++i) std::cout << ' ';
+                //std::cout << ' ' << std::endl;
+                std::cout << ' ' << std::endl;
+
+                // OUTPUT
+                for (int i = 0; i < reg.size(); ++i) {
+                    centerify_output(reg[i], num_cols);
+                    std::cout << std::endl;
+                }
+
+                // VIRTUAL BORDER
+                std::cout << std::endl;
+                for (int i = 0; i < num_cols; ++i) std::cout << ' ';
+                //std::cout << '|' << std::endl;
+                std::cout << ' ' << std::endl;
+
+               // cout << "--Registration--\n";
+               // cout << "Enter: \n\t1-Vendor\n\t2-Customer\n\t3-Rider\n\t0-Back to Main Menu\n";
+                for (int i = 0; i < 75; ++i) std::cout << ' ';
                 cout << ">> ";
                 cin >> chooseRegister;
 
                 if (chooseRegister == 1) {
                     mainHeader();
                     vendor.registerVendor(conn);
+                    break;
                 }
                 else if (chooseRegister == 2) {
                     mainHeader();
                     cust.registerCustomer(conn);
+                    break;
                 }
                 else if (chooseRegister == 3) {
                     mainHeader();
@@ -297,11 +333,15 @@ int main()
             } while (chooseRegister != 0);
         }
         else if (chooseMain == 0) {
+            for (int i = 0; i < 75; ++i) std::cout << ' ';
             cout << "Exiting..\n";
             break;
         }
         else if (chooseMain > 2 || chooseMain < 0) {
+            for (int i = 0; i < 75; ++i) std::cout << ' ';
             cout << "Error! Wrong choice\n";
+            for (int i = 0; i < 75; ++i) std::cout << ' ';
+            system("pause");
         }
         else {}
     } while (chooseMain != 0);

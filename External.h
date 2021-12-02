@@ -20,4 +20,11 @@ inline void centerify_output(std::string str, int num_cols) {
     std::cout << str;
 }
 
+inline void gotoXY(int x, int y) {
+    COORD c;
+    c.X = x;
+    c.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
+}
+
 #endif

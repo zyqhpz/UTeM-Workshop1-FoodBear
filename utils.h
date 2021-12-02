@@ -129,7 +129,7 @@ inline void mainHeader() {
         "###########################################################",
     };
 
-    int num_cols = 100;
+    int num_cols = 200;
 
     // VIRTUAL BORDER
     gotoXY(0, 3);
@@ -302,12 +302,12 @@ int login() {
     mainHeader();
 
     string user, pass;
-    for (int i = 0; i < 40; ++i) std::cout << ' ';
+    for (int i = 0; i < 93; ++i) std::cout << ' ';
     cout << "----Login----\n\n";
-    for (int i = 0; i < 30; ++i) std::cout << ' ';
+    for (int i = 0; i < 80; ++i) std::cout << ' ';
     cout << "Username: ";
     cin >> user;
-    for (int i = 0; i < 30; ++i) std::cout << ' ';
+    for (int i = 0; i < 80; ++i) std::cout << ' ';
     cout << "Password: ";
     pass = inputPassword();
 

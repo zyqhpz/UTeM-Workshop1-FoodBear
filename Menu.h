@@ -11,13 +11,14 @@ using namespace std;
 void color(int color) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
-
+/*
 void gotoXY(int x, int y) {
 	COORD c;
 	c.X = x;
 	c.Y = y;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
 }
+*/
 
 void select() {
 	int Set[] = { 7, 7, 7 };
