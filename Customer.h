@@ -76,7 +76,7 @@ public:
 	int fetchData(MYSQL_RES*);
 	int fetchOrderData(MYSQL*);
 	int fetchOrderDetails(MYSQL*);
-	int fetchPreviousOrder(MYSQL*, TextTable&);
+	int fetchPreviousOrder(MYSQL*, TableOrder&);
 
 	void viewPreviousOrderDetails(MYSQL*, int, int&);
 

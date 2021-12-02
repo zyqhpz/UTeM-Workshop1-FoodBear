@@ -621,7 +621,8 @@ void getReceipt(double total, int vendorID) { // confirmed order?? //kat sini ju
 }
 
 void viewPreviousOrder() {
-    TextTable tb;
+    //TextTable tb;
+    TableOrder tb;
 
     int totalOrder = cust.fetchOrderData(conn);
     cout << "1\n";
@@ -665,10 +666,17 @@ void viewPreviousOrder() {
     jump:;
         mainHeader();
         gotoXY(10, 13);
-        cout << "\n\t------Previous Order------\n";
+        for (int i = 0; i < 75; ++i) std::cout << ' ';
+        cout << "------Previous Order------\n\n";
         cout << tb << endl;
 
-        cout << "\n   Enter OrderID to view details (0 - back to Main Menu)\n\t>> ";
+        cout << endl;
+        for (int i = 0; i < 70; ++i) std::cout << ' ';
+        cout << "Enter OrderID to view details (0 - back to Main Menu)";
+
+        cout << endl;
+        for (int i = 0; i < 72; ++i) std::cout << ' ';
+        cout << ">> ";
         cin >> orderID;
 
         if (orderID == 0)
@@ -679,6 +687,7 @@ void viewPreviousOrder() {
             if (exist == 0) {
                 goto jump;
             }
+            for (int i = 0; i < 67; ++i) std::cout << ' ';
             system("pause");
         }
     } while (orderID != 0);

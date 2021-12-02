@@ -362,7 +362,10 @@ int main()
                     }
                 }
                 else if (role == 0) {
-                    cout << "\nLogin Failed\n";
+                    cout << endl;
+                    for (int i = 0; i < 67; ++i) std::cout << ' ';
+                    cout << "Login Failed\n";
+                    for (int i = 0; i < 67; ++i) std::cout << ' ';
                     system("pause");
                     break;
                 }

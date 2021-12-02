@@ -218,7 +218,7 @@ int Customer::fetchOrderDetails(MYSQL* conn)
 	return i;
 }
 
-int Customer::fetchPreviousOrder(MYSQL* conn, TextTable& tb)
+int Customer::fetchPreviousOrder(MYSQL* conn, TableOrder& tb)
 {
 	MYSQL_ROW row;
 	MYSQL_RES* res;
@@ -286,7 +286,7 @@ int Customer::fetchPreviousOrder(MYSQL* conn, TextTable& tb)
 }
 
 void Customer::viewPreviousOrderDetails(MYSQL* conn, int orderID, int& exist) {
-	TextTable tb;
+	TableOrder tb;
 
 	exist = 0;
 
@@ -359,9 +359,9 @@ void Customer::viewPreviousOrderDetails(MYSQL* conn, int orderID, int& exist) {
 				tb.endOfRow();
 			}
 
-			tb.setAlignment(2, TextTable::Alignment::RIGHT);
-			tb.setAlignment(3, TextTable::Alignment::RIGHT);
-			tb.setAlignment(4, TextTable::Alignment::RIGHT);
+			tb.setAlignment(2, TableOrder::Alignment::RIGHT);
+			tb.setAlignment(3, TableOrder::Alignment::RIGHT);
+			tb.setAlignment(4, TableOrder::Alignment::RIGHT);
 
 			tb.add("");
 			tb.add("");
@@ -390,7 +390,9 @@ void Customer::viewPreviousOrderDetails(MYSQL* conn, int orderID, int& exist) {
 		cout << tb;
 	}
 	else {
-		cout << "\nInvalid choice. Try again.\n";
+		for (int i = 0; i < 67; ++i) std::cout << ' ';
+		cout << "Invalid choice. Try again.\n";
+		for (int i = 0; i < 67; ++i) std::cout << ' ';
 		system("pause");
 	}
 }
