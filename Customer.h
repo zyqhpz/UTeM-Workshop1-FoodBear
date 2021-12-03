@@ -64,6 +64,8 @@ private:
 
 	vector<vector<string>> prev_order;
 
+	vector<vector<string>> graph;
+
 public:
 	Customer();
 	Customer(string, string);
@@ -89,6 +91,8 @@ public:
 	vector<vector<string>> getOrder();
 
 	void displayPreviousOrder(int, int, TextTable&);
+
+	void displayChart(MYSQL*);
 
 	string getName();
 	int getID();

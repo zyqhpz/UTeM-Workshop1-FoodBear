@@ -693,6 +693,50 @@ void Customer::displayPreviousOrder(int i, int totalDetail, TextTable& tt) {
 	*/
 }
 
+void Customer::displayChart(MYSQL* conn) {
+
+	MYSQL_ROW row;
+	MYSQL_RES* res;
+
+	stringstream ss;
+	//ss << "SELECT COUNT(id) AS order_made, SUM(total_quantity) AS quantity, SUM(total_price) AS price FROM cust_order WHERE customer_id = GROUP BY customer_id";
+	//ss << "SELECT COUNT(id) AS order_made, SUM(total_quantity) AS quantity, SUM(total_price) AS price FROM cust_order WHERE customer_id = 2 GROUP BY date";
+	ss << "SELECT COUNT(id) AS order_made, SUM(total_quantity) AS quantity, SUM(total_price) AS price, extract(month FROM date) AS month FROM cust_order WHERE customer_id = 2 GROUP BY month";
+
+	string qs = ss.str();
+	const char* q = qs.c_str();
+	int qstate = mysql_query(conn, q);
+
+	res = mysql_store_result(conn);
+
+	TableOrder tt;
+
+	tt.add("Month");
+	tt.add("Total Order Made");
+	tt.add("Total Quantity");
+	tt.add("Total Expenses");
+	tt.endOfRow();
+
+	while (row = mysql_fetch_row(res)) {
+		graph.push_back({ row[0], row[1], row[2], row[3] });
+		tt.add(row[3]);
+		tt.add(row[0]);
+		tt.add(row[1]);
+		tt.add(row[2]);
+		tt.endOfRow();
+	}
+
+	for (int i = 0; i < graph.size(); i++) {
+		cout << graph[i][0] << endl;
+		cout << graph[i][1] << endl;
+		cout << graph[i][2] << endl;
+		cout << graph[i][3] << endl;
+	}
+
+	cout << tt;
+
+}
+
 string Customer::getName() {
 	return this->custName;
 }

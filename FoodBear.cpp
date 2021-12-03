@@ -220,6 +220,7 @@ int main()
     do {
         fetchAllData();
         displayMainMenu();
+
         //select(); from menu.h
         for (int i = 0; i < 75; ++i) std::cout << ' ';
         cout << ">> ";
@@ -314,7 +315,7 @@ int main()
                                 //system("pause");
                             }
                             else if (operation == 3) {
-
+                                viewCustomerExpenses();
                             }
                             else if (operation == 4) {
                                 cust.viewProfile(mainHeader, conn);

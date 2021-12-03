@@ -716,8 +716,150 @@ void viewPreviousOrder() {
     } while (orderID != 0);
 }
 
-void viewProductList(int vendorID) {
-    mainHeader();
+void viewCustomerExpenses() {
+    //mainHeader();
+
     //vendor.viewProduct(vendorID, totalProduct, totalVendor);
+    TableOrder tt;
+
+    tt.add("Month");
+    tt.add("Total Order Made");
+    tt.add("Total Quantity");
+    tt.add("Total Expenses");
+    tt.endOfRow();
+
+    vector<string> data;
+    vector<vector<string>> graph;
+
+    stringstream ss;
+    //ss << "SELECT COUNT(id) AS order_made, SUM(total_quantity) AS quantity, SUM(total_price) AS price FROM cust_order WHERE customer_id = GROUP BY customer_id";
+    //ss << "SELECT COUNT(id) AS order_made, SUM(total_quantity) AS quantity, SUM(total_price) AS price FROM cust_order WHERE customer_id = 2 GROUP BY date";
+    ss << "SELECT COUNT(id) AS order_made , SUM(total_quantity) AS quantity, SUM(total_price) AS price, extract(month FROM date) AS month FROM cust_order WHERE customer_id = " << cust.getID() << " GROUP BY month";
+
+    //cust.displayChart(conn);
+
+    string qs = ss.str();
+    const char* q = qs.c_str();
+    int qstate = mysql_query(conn, q);
+
+    res = mysql_store_result(conn);
+
+    while (row = mysql_fetch_row(res)) {
+        // order made, quantity, expenses, month
+        graph.push_back({ row[0], row[1], row[2], row[3] });
+        tt.add(row[3]);
+        tt.add(row[0]);
+        tt.add(row[1]);
+        tt.add(row[2]);
+        tt.endOfRow();
+    }
+
+    cout << tt;
+
+    Table chart;
+
+    chart.format()
+        .font_color(Color::white)
+        .padding_left(2)
+        .padding_right(0)
+        .column_separator("")
+        .hide_border();
+
+    for (size_t i = 0; i < 9; ++i) {
+        Row_t row;
+        row.push_back(std::to_string(90 - i * 10));
+        for (size_t j = 0; j <= 50; ++j) {
+            row.push_back(" ");
+        }
+        chart.add_row(row);
+    }
+
+    Row_t row;
+    for (int i = 0; i <= 12; ++i) {
+        if ((i + 1) % 4 == 0) {
+            row.push_back(std::to_string(i + 1));
+        }
+        else {
+            row.push_back(" ");
+        }
+    }
+    chart.add_row(row);
+    chart.add_row(Row_t{});
+
+    chart.column(0).format().padding_left(80).padding_right(1).border_left(" ");
+
+    for (size_t i = 1; i <= 18; ++i) {
+        chart.column(i).format().width(2);
+    }
+    
+    
+    int a[] = { 2, 4, 6, 8 };
+
+    string c[] = { "red", "yellow", "blue", "green" };
+
+    for (int j = 0; j < graph.size(); j++) {
+
+        //chart.column(j + 2).format().padding_right(2).border_left(" ");
+        chart.column(2).format().border_color(Color::white).border_left("|").border_top("-");
+        //chart.column(j + 2).format().border_color(Color::white).border_left("|").border_top("-");
+        for (int k = 0; k < stoi(graph[j][0]); k++) {
+
+            chart.column(j + a[j])[8 - k].format().background_color(Color::red);
+
+        }
+    }
+   
+    /*
+    chart.column(2).format().border_color(Color::white).border_left("|").border_top("-");
+    chart.column(2)[8].format().background_color(Color::red);
+    chart.column(2)[7].format().background_color(Color::red);
+    chart.column(2)[6].format().background_color(Color::red);
+    chart.column(2)[5].format().background_color(Color::red);
+
+    chart.column(3)[8].format().background_color(Color::yellow);
+    chart.column(3)[7].format().background_color(Color::yellow);
+    chart.column(3)[6].format().background_color(Color::yellow);
+
+    chart.column(6)[8].format().background_color(Color::red);
+    chart.column(6)[7].format().background_color(Color::red);
+    chart.column(6)[6].format().background_color(Color::red);
+    chart.column(6)[5].format().background_color(Color::red);
+
+    chart.column(7)[8].format().background_color(Color::yellow);
+    chart.column(7)[7].format().background_color(Color::yellow);
+    chart.column(7)[6].format().background_color(Color::yellow);
+    chart.column(7)[5].format().background_color(Color::yellow);
+    chart.column(7)[4].format().background_color(Color::yellow);
+
+    chart.column(10)[8].format().background_color(Color::red);
+    chart.column(10)[7].format().background_color(Color::red);
+    chart.column(10)[6].format().background_color(Color::red);
+    chart.column(10)[5].format().background_color(Color::red);
+    chart.column(10)[4].format().background_color(Color::red);
+    chart.column(10)[3].format().background_color(Color::red);
+
+    chart.column(11)[8].format().background_color(Color::yellow);
+    chart.column(11)[7].format().background_color(Color::yellow);
+    chart.column(11)[6].format().background_color(Color::yellow);
+    chart.column(11)[5].format().background_color(Color::yellow);
+    chart.column(11)[4].format().background_color(Color::yellow);
+    chart.column(11)[3].format().background_color(Color::yellow);
+    chart.column(11)[2].format().background_color(Color::yellow);
+    chart.column(11)[1].format().background_color(Color::yellow);
+
+    chart[2][15].format().background_color(Color::red);
+    chart[2][16].set_text("Batch 1");
+    chart.column(16).format().padding_left(1).width(20);
+
+    chart[4][15].format().background_color(Color::yellow);
+    chart[4][16].set_text("Batch 2");
+    */
+
+    cout << endl;
+    cout << "\n\n\t\t\t\t\t\t\t\t\t\tOrder Made per Month\n\n";
+    std::cout << chart;
+
+    cout << "\n\n\t\t\t\t\t\t\t\t\t\t";
+    system("pause");
 }
 #endif
