@@ -10,6 +10,7 @@
 
 using namespace tabulate;
 using namespace std;
+using Row_t = Table::Row_t;
 
 inline void centerify_output(std::string str, int num_cols) {
     // Calculate left padding

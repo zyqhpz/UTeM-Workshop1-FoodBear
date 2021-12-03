@@ -452,10 +452,20 @@ void viewVendorList() {
     int operation;
     do {
         mainHeader();
-        cout << "\n----Vendor List----\n";
+        gotoXY(90, 14);
+        cout << "----Vendor List----\n";
         vendor.viewVendor(totalVendor);
         // cout << "\n--Operation--\n\t1-Enter vendor ID to choose\n\t2-View all products\n\t0-Back to Main Menu\n";
-        cout << "\n--Operation--\n\t--Enter vendor ID to start ordering\n\t0-Back to Main Menu\n";
+        //cout << "\n--Operation--\n\t--Enter vendor ID to start ordering\n\t0-Back to Main Menu\n";
+
+        cout << "\n\n\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << "-------------------------------------\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << " * Enter vendor ID to start ordering\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << " 0-Back to Main Menu\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
         cout << ">> ";
         cin >> operation;
         if (operation == 0)
@@ -463,7 +473,9 @@ void viewVendorList() {
 
         // display vendor name here
         mainHeader();
-        cout << "\n------" << vendor.getVendorName(operation) << "------\n";
+        //for (int i = 0; i < 85; ++i) std::cout << ' ';
+        gotoXY(90, 14);
+        cout << "------" << vendor.getVendorName(operation) << "------\n\n\n";
         vendor.viewProduct(operation, totalProduct, totalVendor, exist);
             if (exist == 1) {
                 startOrder(operation, exist);
@@ -504,6 +516,8 @@ void startOrder(int venID, int exist) {
 
     row = mysql_fetch_row(res);
 
+    cout << "\n\n";
+    for (int i = 0; i < 85; ++i) std::cout << ' ';
     cout << "Start ordering (Y/N) >> ";
     cin >> selection;
 
@@ -521,23 +535,29 @@ void startOrder(int venID, int exist) {
         //cout << "\n1-Enter product id\n0-Cancel\n";
         do {
             mainHeader();
-            cout << "\n------" << vendor.getVendorName(venID) << "------\n";
+            gotoXY(90, 14);
+            cout << "------" << vendor.getVendorName(venID) << "------\n\n\n";
             vendor.viewProduct(venID, totalProduct, totalVendor, exist);
 
-            cout << "\nEnter food id (Enter 0 to Cancel) >> ";
+            cout << "\n\n";
+            for (int i = 0; i < 80; ++i) std::cout << ' ';
+            cout << "Enter food id (Enter 0 to Cancel) >> ";
             cin >> foodID;
 
             if (foodID == 0) {
                 break;
             }
-                
+
+            for (int i = 0; i < 80; ++i) std::cout << ' ';
             cout << "Enter quantity >> ";
             cin >> quantity;
 
             cust.selectProduct(vendor, foodID, quantity, total);
 
             do {
-                cout << "\nHave additional order? (Y/N) >> ";
+                cout << "\n\n";
+                for (int i = 0; i < 80; ++i) std::cout << ' ';
+                cout << "Have additional order? (Y/N) >> ";
                 cin >> proceed;
                 if (proceed == 'y' || proceed == 'Y') {
                     break;
@@ -549,6 +569,7 @@ void startOrder(int venID, int exist) {
                     //break; // go to payment page
                 }
                 else
+                    for (int i = 0; i < 80; ++i) std::cout << ' ';
                     cout << "Error input";
             } while (proceed != 'n' || proceed != 'N' && proceed != 'Y' || proceed != 'Y');
         } while (foodID != 0); // check only food id >= 0 entered accepted, else -> product not found
@@ -568,7 +589,7 @@ void startOrder(int venID, int exist) {
 void getReceipt(double total, int vendorID) { // confirmed order?? //kat sini jugak assign all the data to database
     vector<vector<string>> order = cust.getOrder();
 
-    TextTable tableOrder('-', '|', '+');
+    TableCart tableOrder('-', '|', '+');
 
     tableOrder.add("No.");
     tableOrder.add("Product Name");
@@ -601,14 +622,16 @@ void getReceipt(double total, int vendorID) { // confirmed order?? //kat sini ju
     tableOrder.add(t.str());
     tableOrder.endOfRow();
 
-    tableOrder.setAlignment(2, TextTable::Alignment::RIGHT);
-    tableOrder.setAlignment(3, TextTable::Alignment::RIGHT);
+    tableOrder.setAlignment(2, TableCart::Alignment::RIGHT);
+    tableOrder.setAlignment(3, TableCart::Alignment::RIGHT);
 
    // cout << tableOrder;
 
    // cout << "\nTotal amount: RM " << fixed << setprecision(2) << total << endl;
 
-    cout << "\n-----Receipt------\n";
+    cout << "\n\n";
+    for (int i = 0; i < 80; ++i) std::cout << ' ';
+    cout << "-----Receipt------\n";
     cout << tableOrder;
 
     //cout << "\n\tProduct Name\t\tQuantity\n";

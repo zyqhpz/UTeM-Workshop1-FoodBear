@@ -518,7 +518,9 @@ void Customer::selectProduct(Vendor vendor, int id, int quantity, double& total)
 
 	order.push_back({ name, streamPrice.str() , to_string(quantity), to_string(id) });
 
-	TextTable tableOrder('-', '|', '+');
+	//TextTable tableOrder('-', '|', '+');
+
+	TableCart tableOrder;
 
 	tableOrder.add("No.");
 	tableOrder.add("Product Name");
@@ -544,13 +546,17 @@ void Customer::selectProduct(Vendor vendor, int id, int quantity, double& total)
 	tableOrder.add(to_string(total));
 	tableOrder.endOfRow();*/
 
-	tableOrder.setAlignment(2, TextTable::Alignment::RIGHT);
-	tableOrder.setAlignment(3, TextTable::Alignment::RIGHT);
+	tableOrder.setAlignment(2, TableCart::Alignment::RIGHT);
+	tableOrder.setAlignment(3, TableCart::Alignment::RIGHT);
 
-	cout << "\n---Cart---\n";
+	cout << "\n\n";
+	for (int i = 0; i < 80; ++i) std::cout << ' ';
+	cout << "---Cart---\n";
 	cout << tableOrder;
 
-	cout << "\nSubtotal: RM " << fixed << setprecision(2) << total << endl;
+	cout << "\n\n";
+	for (int i = 0; i < 80; ++i) std::cout << ' ';
+	cout << "Subtotal: RM " << fixed << setprecision(2) << total << endl;
 
 	//order.clear();
 }
@@ -611,7 +617,9 @@ void Customer::insertOrder(MYSQL* conn, int venID) {
 
 	if (!qstate) {
 
-		cout << "\nOrder has been created successfully!\n";
+		cout << "\n\n";
+		for (int i = 0; i < 80; ++i) std::cout << ' ';
+		cout << "Order has been created successfully!\n";
 		for (int i = 0; i < order.size(); i++) {
 			stringstream ssOrder;
 			//ssOrder << "INSERT INTO order_detail (product_id, quantity) VALUES ('" + order[i][3] + "', '" + order[i][2]  + "')";
@@ -634,7 +642,9 @@ void Customer::insertOrder(MYSQL* conn, int venID) {
 		//system("pause");
 	}
 	else {
-		cout << "\nOrder cannot be created!\n";
+		cout << "\n\n";
+		for (int i = 0; i < 80; ++i) std::cout << ' ';
+		cout << "Order cannot be created!\n";
 		system("pause");
 	}
 
