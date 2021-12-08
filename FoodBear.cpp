@@ -348,6 +348,7 @@ int main()
                             cin >> operation;
 
                             if (operation == 1) {
+                                viewSelectOrder();
                             }
                             else if (operation == 4) {
                                 rider.viewProfile(mainHeader, conn);

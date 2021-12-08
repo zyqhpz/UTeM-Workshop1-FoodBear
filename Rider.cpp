@@ -223,6 +223,125 @@ void Rider::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 	} while (operation != -1);
 }
 
+void Rider::selectOrderDetails(MYSQL* conn, int orderID, int& exist) {
+	TableOrder tb;
+
+	exist = 0;
+
+	for (int i = 0; i < order.size(); i++) {
+		if (orderID == stoi(order[i][0])) {
+			exist = 1;
+		}
+	}
+
+	if (exist == 1) {
+
+		MYSQL_ROW row;
+		MYSQL_RES* res;
+
+		stringstream sql;
+		sql << "SELECT cust_order.date, product.name, order_detail.quantity, order_detail.price, payment.total_payment FROM order_detail JOIN product ON order_detail.product_id = product.id JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE cust_order_id = " << orderID;
+		string s = sql.str();
+		const char* qC = s.c_str();
+		int q = mysql_query(conn, qC);
+
+		//cout << "exist orderID\n";
+		stringstream m;
+		m << "  OrderID: " << orderID << "  ";
+		tb.add("");
+		tb.add(m.str());
+		tb.add("");
+		tb.add("");
+		tb.add("");
+		tb.endOfRow();
+
+		tb.add("No.");
+		tb.add("Name");
+		tb.add("Quantity");
+		tb.add("Price per unit(RM)");
+		tb.add("Total Price (RM)");
+		//tb.addRow("1");
+		tb.endOfRow();
+
+		if (!q) {
+			int i = 0;
+			string date;
+			double pxq;
+			string totalP;
+			double subTotal = 0;
+			res = mysql_store_result(conn);
+			while (row = mysql_fetch_row(res)) {
+				++i;
+				string date = row[0];
+				string name = row[1];
+				int quantity = stoi(row[2]);
+				pxq = stod(row[3]);
+				//pxq = quantity * price;
+				double price = pxq / quantity;
+				subTotal += pxq;
+				totalP = row[4];
+
+				stringstream p;
+				p << fixed << setprecision(2) << price;
+
+				stringstream pq;
+				pq << fixed << setprecision(2) << pxq;
+
+				tb.add(to_string(i));
+				tb.add(name);
+				tb.add(to_string(quantity));
+				tb.add(p.str());
+				tb.add(pq.str());
+				tb.endOfRow();
+			}
+
+			tb.setAlignment(2, TableOrder::Alignment::RIGHT);
+			tb.setAlignment(3, TableOrder::Alignment::RIGHT);
+			tb.setAlignment(4, TableOrder::Alignment::RIGHT);
+
+			tb.add("");
+			tb.add("");
+			tb.add("");
+			tb.add("Subtotal ");
+			stringstream st;
+			st << fixed << setprecision(2) << subTotal;
+			tb.add(st.str());
+			tb.endOfRow();
+
+			tb.add("");
+			tb.add("");
+			tb.add("");
+			tb.add("Delivery Charge ");
+			tb.add("4.00");
+			tb.endOfRow();
+
+			tb.add("");
+			tb.add("");
+			tb.add("");
+			tb.add("Total Payment ");
+			tb.add(totalP);
+			tb.endOfRow();
+
+		}
+		cout << tb;
+	}
+	else {
+		for (int i = 0; i < 67; ++i) std::cout << ' ';
+		cout << "Invalid choice. Try again.\n";
+		for (int i = 0; i < 67; ++i) std::cout << ' ';
+		system("pause");
+	}
+}
+
+vector<vector<string>> Rider::getOrder()
+{
+	return this->order;
+}
+
+void Rider::fetchOrder(vector<vector<string>> order) {
+	this->order = order;
+}
+
 string Rider::getName() {
 	return this->riderName;
 }

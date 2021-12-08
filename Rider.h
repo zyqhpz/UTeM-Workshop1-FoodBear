@@ -33,6 +33,8 @@ private:
 	string riderName, riderUsername, riderPass, riderPhone;
 	RiderDetails data[100];
 
+	vector<vector<string>> order;
+
 public:
 	Rider();
 	~Rider();
@@ -44,6 +46,10 @@ public:
 	int fetchData(MYSQL_RES*);
 	void viewProfile(function<void()>, MYSQL*);
 
+	void selectOrderDetails(MYSQL*, int, int&);
+
+	vector<vector<string>> getOrder();
+	void fetchOrder(vector<vector<string>>);
 	string getName();
 	int getID();
 	string getPassword();
