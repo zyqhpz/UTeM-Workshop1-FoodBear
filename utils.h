@@ -953,6 +953,7 @@ void viewSelectOrder() {
         cout << ">> ";
         cin >> orderID;
 
+        // CONDITION! if rider already select order to delivery, cannot accept any until it has been delivered
         if (orderID == 0)
             break;
         else {
@@ -961,6 +962,35 @@ void viewSelectOrder() {
             rider.selectOrderDetails(conn, orderID, exist);
             if (exist == 0) {
                 goto jump;
+            }
+            else {
+                // update order status
+                char selUp;
+                for (int i = 0; i < 67; ++i) std::cout << ' ';
+                cout << "Enter (A) to accept or (R) to reject.\n";
+                for (int i = 0; i < 67; ++i) std::cout << ' ';
+                cout << ">> ";
+                cin >> selUp;
+                if (selUp == 'a' || selUp == 'A') {
+                    string up;
+                    up = "UPDATE delivery SET status = " + to_string(2) + " WHERE payment_id = " + to_string(orderID);
+
+                    const char* q = up.c_str();
+                    int qstate = mysql_query(conn, q);
+
+                    if (!qstate) {
+                        for (int i = 0; i < 67; ++i) std::cout << ' ';
+                        cout << "Order has been accepted for delivery.\n";
+                        for (int i = 0; i < 67; ++i) std::cout << ' ';
+                        system("pause");
+                        break;
+                    }
+                    else {
+                        for (int i = 0; i < 67; ++i) std::cout << ' ';
+                        cout << "Update Failed!\n";
+                        system("pause");
+                    }
+                }
             }
             for (int i = 0; i < 67; ++i) std::cout << ' ';
             system("pause");
