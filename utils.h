@@ -889,13 +889,9 @@ void viewSelectOrder() {
     const char* qC = s.c_str();
     int q = mysql_query(conn, qC);
     if (!q) {
-        cout << "success";
         res = mysql_store_result(conn);
-        cout << "success";
         while (row = mysql_fetch_row(res)) {
-            cout << "success";
             string orderID = row[1];
-            cout << "success";
             string quantity = row[7];
             string price = row[12];
             string date = row[9];
@@ -936,64 +932,88 @@ void viewSelectOrder() {
     int orderID;
     int exist = 0;
 
+    string checkOrder = "SELECT payment_id FROM delivery WHERE rider_id = " + to_string(rider.getID()) + " AND status = 2";
+    const char* co = checkOrder.c_str();
+    int qo = mysql_query(conn, co);
+
+    MYSQL_RES* result = mysql_store_result(conn);
+    //MYSQL_ROW r = mysql_fetch_row(result);
+
+    int currentOrderID;
+    
     do {
     jump:;
         mainHeader();
         gotoXY(10, 13);
-        for (int i = 0; i < 75; ++i) std::cout << ' ';
-        cout << "------Current Active Order------\n\n";
-        cout << tb << endl;
-
-        cout << endl;
-        for (int i = 0; i < 70; ++i) std::cout << ' ';
-        cout << "Enter OrderID to view details (0 - back to Main Menu)";
-
-        cout << endl;
-        for (int i = 0; i < 72; ++i) std::cout << ' ';
-        cout << ">> ";
-        cin >> orderID;
 
         // CONDITION! if rider already select order to delivery, cannot accept any until it has been delivered
-        if (orderID == 0)
+        if (MYSQL_ROW r = mysql_fetch_row(result)) {
+            currentOrderID = stoi(r[0]);
+            cout << endl;
+            for (int i = 0; i < 75; ++i) std::cout << ' ';
+            cout << "You have an active order for delivery.\n\n";
+            // display address sekali
+            rider.viewOrderDetails(conn, currentOrderID);
+            rider.updateDeliveryStatus(conn, currentOrderID);
+            for (int i = 0; i < 75; ++i) std::cout << ' ';
+            system("pause");
             break;
+        }
+
         else {
-            mainHeader();
-           // cust.viewPreviousOrderDetails(conn, orderID, exist);
-            rider.selectOrderDetails(conn, orderID, exist);
-            if (exist == 0) {
-                goto jump;
-            }
+            for (int i = 0; i < 75; ++i) std::cout << ' ';
+            cout << "------Current Active Order------\n\n";
+            cout << tb << endl;
+
+            cout << endl;
+            for (int i = 0; i < 70; ++i) std::cout << ' ';
+            cout << "Enter OrderID to view details (0 - back to Main Menu)";
+
+            cout << endl;
+            for (int i = 0; i < 72; ++i) std::cout << ' ';
+            cout << ">> ";
+            cin >> orderID;
+
+            if (orderID == 0)
+                break;
             else {
-                // update order status
-                char selUp;
-                for (int i = 0; i < 67; ++i) std::cout << ' ';
-                cout << "Enter (A) to accept or (R) to reject.\n";
-                for (int i = 0; i < 67; ++i) std::cout << ' ';
-                cout << ">> ";
-                cin >> selUp;
-                if (selUp == 'a' || selUp == 'A') {
-                    string up;
-                    up = "UPDATE delivery SET status = " + to_string(2) + " WHERE payment_id = " + to_string(orderID);
+                mainHeader();
+                rider.selectOrderDetails(conn, orderID, exist);
+                if (exist == 0) {
+                    goto jump;
+                }
+                else {
+                    // update order status
+                    char selUp;
+                    for (int i = 0; i < 67; ++i) std::cout << ' ';
+                    cout << "Enter (A) to accept or (R) to reject.\n";
+                    for (int i = 0; i < 67; ++i) std::cout << ' ';
+                    cout << ">> ";
+                    cin >> selUp;
+                    if (selUp == 'a' || selUp == 'A') {
+                        string update;
+                        update = "UPDATE delivery SET status = " + to_string(2) + ", rider_id = " + to_string(rider.getID()) + " WHERE payment_id = " + to_string(orderID);
 
-                    const char* q = up.c_str();
-                    int qstate = mysql_query(conn, q);
+                        const char* q = update.c_str();
+                        int qstate = mysql_query(conn, q);
 
-                    if (!qstate) {
-                        for (int i = 0; i < 67; ++i) std::cout << ' ';
-                        cout << "Order has been accepted for delivery.\n";
-                        for (int i = 0; i < 67; ++i) std::cout << ' ';
-                        system("pause");
-                        break;
-                    }
-                    else {
-                        for (int i = 0; i < 67; ++i) std::cout << ' ';
-                        cout << "Update Failed!\n";
-                        system("pause");
+                        if (!qstate) {
+                            for (int i = 0; i < 67; ++i) std::cout << ' ';
+                            cout << "Order has been accepted for delivery.\n";
+                            for (int i = 0; i < 67; ++i) std::cout << ' ';
+                            system("pause");
+                            break;
+                        }
+                        else {
+                            for (int i = 0; i < 67; ++i) std::cout << ' ';
+                            cout << "Update Failed!\n";
+                            system("pause");
+                        }
                     }
                 }
+                for (int i = 0; i < 67; ++i) std::cout << ' ';
+                system("pause");
             }
-            for (int i = 0; i < 67; ++i) std::cout << ' ';
-            system("pause");
         }
     } while (orderID != 0);
 }

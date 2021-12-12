@@ -47,6 +47,8 @@ public:
 	void viewProfile(function<void()>, MYSQL*);
 
 	void selectOrderDetails(MYSQL*, int, int&);
+	void viewOrderDetails(MYSQL*, int);
+	void updateDeliveryStatus(MYSQL*, int);
 
 	vector<vector<string>> getOrder();
 	void fetchOrder(vector<vector<string>>);

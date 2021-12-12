@@ -333,6 +333,145 @@ void Rider::selectOrderDetails(MYSQL* conn, int orderID, int& exist) {
 	}
 }
 
+void Rider::viewOrderDetails(MYSQL* conn, int orderID) {
+
+	TableOrder tb;
+	MYSQL_ROW row;
+	MYSQL_RES* res;
+
+	stringstream sql;
+	sql << "SELECT cust_order.date, product.name, order_detail.quantity, order_detail.price, payment.total_payment FROM order_detail JOIN product ON order_detail.product_id = product.id JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE cust_order_id = " << orderID;
+	string s = sql.str();
+	const char* qC = s.c_str();
+	int q = mysql_query(conn, qC);
+
+	//cout << "exist orderID\n";
+	stringstream m;
+	m << "  OrderID: " << orderID << "  ";
+	tb.add("");
+	tb.add(m.str());
+	tb.add("");
+	tb.add("");
+	tb.add("");
+	tb.endOfRow();
+
+	tb.add("No.");
+	tb.add("Name");
+	tb.add("Quantity");
+	tb.add("Price per unit(RM)");
+	tb.add("Total Price (RM)");
+	//tb.addRow("1");
+	tb.endOfRow();
+
+	if (!q) {
+		int i = 0;
+		string date;
+		double pxq;
+		string totalP;
+		double subTotal = 0;
+		res = mysql_store_result(conn);
+		while (row = mysql_fetch_row(res)) {
+			++i;
+			string date = row[0];
+			string name = row[1];
+			int quantity = stoi(row[2]);
+			pxq = stod(row[3]);
+			//pxq = quantity * price;
+			double price = pxq / quantity;
+			subTotal += pxq;
+			totalP = row[4];
+
+			stringstream p;
+			p << fixed << setprecision(2) << price;
+
+			stringstream pq;
+			pq << fixed << setprecision(2) << pxq;
+
+			tb.add(to_string(i));
+			tb.add(name);
+			tb.add(to_string(quantity));
+			tb.add(p.str());
+			tb.add(pq.str());
+			tb.endOfRow();
+		}
+
+		tb.setAlignment(2, TableOrder::Alignment::RIGHT);
+		tb.setAlignment(3, TableOrder::Alignment::RIGHT);
+		tb.setAlignment(4, TableOrder::Alignment::RIGHT);
+
+		tb.add("");
+		tb.add("");
+		tb.add("");
+		tb.add("Subtotal ");
+		stringstream st;
+		st << fixed << setprecision(2) << subTotal;
+		tb.add(st.str());
+		tb.endOfRow();
+
+		tb.add("");
+		tb.add("");
+		tb.add("");
+		tb.add("Delivery Charge ");
+		tb.add("4.00");
+		tb.endOfRow();
+
+		tb.add("");
+		tb.add("");
+		tb.add("");
+		tb.add("Total Payment ");
+		tb.add(totalP);
+		tb.endOfRow();
+
+	}
+	cout << tb << endl;
+
+	string custD = "SELECT cust_order.id, cust_order.customer_id, customer.name, customer.phone, customer.address FROM `cust_order` JOIN customer ON cust_order.customer_id = customer.id WHERE cust_order.id = " + to_string(orderID);
+
+	const char* qD = custD.c_str();
+	int qd = mysql_query(conn, qD);
+
+	TableOrder tc;
+
+	tc.add("Customer Name");
+	tc.add("No. Phone");
+	tc.add("Address");
+	tc.endOfRow();
+
+	if (!qd) {
+		res = mysql_store_result(conn);
+		while (row = mysql_fetch_row(res)) {
+			tc.add(row[2]);
+			tc.add(row[3]);
+			tc.add(row[4]);
+			tc.endOfRow();
+		}
+	}
+	for (int i = 0; i < 75; ++i) std::cout << ' ';
+	cout << "--Customer's details--\n";
+	cout << tc << endl;
+}
+
+void Rider::updateDeliveryStatus(MYSQL* conn, int orderID) {
+	string update = "UPDATE delivery SET status = 3 WHERE payment_id = " + to_string(orderID);
+
+	const char* qU = update.c_str();
+	string selection;
+
+	for (int i = 0; i < 75; ++i) std::cout << ' ';
+	//cout << "Enter 1 to update order status. Press any key to Back to Main Menu.\n";
+	cout << "Update order status - Enter Y when order has been delivered.\n";
+	for (int i = 0; i < 75; ++i) std::cout << ' ';
+	cout << ">> ";
+	cin >> selection;
+	if (selection == "Y" || selection == "y") {
+		int q = mysql_query(conn, qU);
+		if (!q) {
+			for (int i = 0; i < 75; ++i) std::cout << ' ';
+			cout << "This order has been delivered successfully!\n";
+		}
+	}
+}
+
 vector<vector<string>> Rider::getOrder()
 {
 	return this->order;
