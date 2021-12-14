@@ -158,7 +158,8 @@ void Vendor::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 	string pass, username, name, phone, address;
 	//string id = (string)this->custID;
 
-	TextTable tt;
+	// TextTable tt;
+	TableCart tt;
 
 	do {
 		mainHeader();
@@ -183,8 +184,26 @@ void Vendor::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 		cout << endl;
 		*/
 
-		cout << "\n---Edit User Profile---\n";
-		cout << "\nEnter number to edit respective data:\n 1-Username\n 2-Password\n 3-Name\n 4-Phone\n 5-Address\n 0-Back to Home\n";
+		//cout << "\n---Edit User Profile---\n";
+		//cout << "\nEnter number to edit respective data:\n 1-Username\n 2-Password\n 3-Name\n 4-Phone\n 5-Address\n 0-Back to Home\n";
+		for (int i = 0; i < 75; ++i) std::cout << ' ';
+		cout << "---Edit User Profile---\n";
+		//cout << "\nEnter number to edit respective data:\n 1-Username\n 2-Password\n 3-Name\n 4-Phone\n 5-Address\n 0-Back to Home\n";
+		for (int i = 0; i < 75; ++i) std::cout << ' ';
+		cout << "Enter number to edit respective data: \n";
+		for (int i = 0; i < 75; ++i) std::cout << ' ';
+		cout << "1 - Username\n";
+		for (int i = 0; i < 75; ++i) std::cout << ' ';
+		cout << "2 - Password\n";
+		for (int i = 0; i < 75; ++i) std::cout << ' ';
+		cout << "3 - Name\n";
+		for (int i = 0; i < 75; ++i) std::cout << ' ';
+		cout << "4 - Phone\n";
+		for (int i = 0; i < 75; ++i) std::cout << ' ';
+		cout << "5 - Address\n";
+		for (int i = 0; i < 75; ++i) std::cout << ' ';
+		cout << "0 - Back to Home\n";
+		for (int i = 0; i < 75; ++i) std::cout << ' ';
 		cout << ">> ";
 		cin >> operation;
 
@@ -192,6 +211,7 @@ void Vendor::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 
 		if (operation == 1) { // Username
 			mainHeader();
+			for (int i = 0; i < 75; ++i) std::cout << ' ';
 			cout << "Enter new username: ";
 			cin >> username;
 
@@ -201,6 +221,7 @@ void Vendor::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 		}
 		else if (operation == 2) { // Password
 			mainHeader();
+			for (int i = 0; i < 75; ++i) std::cout << ' ';
 			cout << "Enter new password: ";
 			cin >> pass;
 
@@ -212,6 +233,7 @@ void Vendor::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 		}
 		else if (operation == 3) { // Name
 			mainHeader();
+			for (int i = 0; i < 75; ++i) std::cout << ' ';
 			cout << "Enter new name: ";
 			cin.ignore();
 			getline(cin, name);
@@ -222,6 +244,7 @@ void Vendor::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 		}
 		else if (operation == 4) { // Phone
 			mainHeader();
+			for (int i = 0; i < 75; ++i) std::cout << ' ';
 			cout << "Update phone number: ";
 			cin >> phone;
 
@@ -231,6 +254,7 @@ void Vendor::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 		}
 		else if (operation == 5) { // Address
 			mainHeader();
+			for (int i = 0; i < 75; ++i) std::cout << ' ';
 			cout << "Update address: ";
 			cin.ignore();
 			getline(cin, address);
