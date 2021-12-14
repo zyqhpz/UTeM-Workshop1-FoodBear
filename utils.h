@@ -734,7 +734,8 @@ void viewCustomerExpenses() {
     stringstream ss;
     //ss << "SELECT COUNT(id) AS order_made, SUM(total_quantity) AS quantity, SUM(total_price) AS price FROM cust_order WHERE customer_id = GROUP BY customer_id";
     //ss << "SELECT COUNT(id) AS order_made, SUM(total_quantity) AS quantity, SUM(total_price) AS price FROM cust_order WHERE customer_id = 2 GROUP BY date";
-    ss << "SELECT COUNT(id) AS order_made , SUM(total_quantity) AS quantity, SUM(total_price) AS price, extract(month FROM date) AS month FROM cust_order WHERE customer_id = " << cust.getID() << " GROUP BY month";
+    //ss << "SELECT COUNT(id) AS order_made , SUM(total_quantity) AS quantity, SUM(total_price) AS price, extract(month FROM date) AS month FROM cust_order WHERE customer_id = " << cust.getID() << " GROUP BY month";
+    ss << "SELECT COUNT(cust_order.id) AS order_made , SUM(cust_order.total_quantity) AS quantity, SUM(cust_order.total_price) AS price, extract(month FROM cust_order.date) AS month FROM cust_order JOIN delivery ON cust_order.id = delivery.payment_id WHERE cust_order.customer_id = " << cust.getID() << " AND delivery.status > 1 GROUP BY month";
 
     //cust.displayChart(conn);
 
