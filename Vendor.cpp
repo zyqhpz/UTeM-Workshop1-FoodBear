@@ -610,7 +610,7 @@ void Vendor::editProduct(function<void()> mainHeader, MYSQL* conn, int totalProd
 	} while (operation != '0');	
 }
 
-int Vendor::viewActiveOrder(MYSQL* conn, TextTable &tb) {
+int Vendor::viewActiveOrder(MYSQL* conn, TableCart &tb) {
 	MYSQL_ROW row;
 	MYSQL_RES* res;
 
@@ -779,7 +779,10 @@ void Vendor::viewActiveOrderDetail(MYSQL* conn, int orderID, int& exist) {
 		int accept;
 		stringstream ss;
 		do {
-			cout << "\n    1-Accept OR 2-Reject\n\t>> ";
+			for (int i = 0; i < 80; ++i) std::cout << ' ';
+			cout << "1-Accept OR 2-Reject";
+			for (int i = 0; i < 80; ++i) std::cout << ' ';
+			cout << "\t>> ";
 			cin >> accept;
 			if (accept == 1) {
 				ss << "UPDATE delivery SET status = 1 WHERE payment_id = " << orderID;
@@ -807,7 +810,7 @@ void Vendor::viewActiveOrderDetail(MYSQL* conn, int orderID, int& exist) {
 	}
 }
 
-int Vendor::viewPreviousOrder(MYSQL* conn, TextTable& tb) {
+int Vendor::viewPreviousOrder(MYSQL* conn, TableOrder& tb) {
 	MYSQL_ROW row;
 	MYSQL_RES* res;
 

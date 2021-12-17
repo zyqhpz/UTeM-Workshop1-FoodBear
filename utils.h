@@ -347,7 +347,17 @@ void viewManageProduct() {
         mainHeader();
         vendor.viewProduct(vendor.getID(), totalProduct, totalVendor, e);
 
-        cout << "\n\t---Operations---\n\t1-Add product\n\t2-Edit product\n\t0-Exit\n\t>> ";
+        cout << "\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << "---Operations---\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << "1 - Add product\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << "2 - Edit product\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << "0 - Exit\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << ">> ";
         cin >> op;
 
         if (op == '1') {
@@ -373,7 +383,7 @@ void viewManageProduct() {
 }
 
 void viewActiveOrder() {
-    TextTable tb;
+    TableCart tb;
 
     int totalActive = vendor.viewActiveOrder(conn, tb);
 
@@ -386,10 +396,15 @@ void viewActiveOrder() {
         jump:;
         mainHeader();
         gotoXY(10, 13);
-        cout << "\n\t------Active Order------\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << "------Active Order------\n";
         cout << tb << endl;
 
-        cout << "\n   Enter OrderID to view details (0 - back to Main Menu)\n\t>> ";
+        cout << "\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << "Enter OrderID to view details (0 - back to Main Menu)\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << ">> ";
         cin >> orderID;
         
         if (orderID == 0)
@@ -412,7 +427,7 @@ void viewActiveOrder() {
 }
 // View all orders for vendor
 void viewAllOrder() {
-    TextTable tb;
+    TableOrder tb;
 
     int totalOrder = vendor.viewPreviousOrder(conn, tb);
 
@@ -424,10 +439,15 @@ void viewAllOrder() {
     jump:;
         mainHeader();
         gotoXY(10, 13);
-        cout << "\n\t------All Order------\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << "------All Order------\n";
         cout << tb << endl;
 
-        cout << "\n   Enter OrderID to view details (0 - back to Main Menu)\n\t>> ";
+        cout << "\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << "Enter OrderID to view details (0 - back to Main Menu)\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << ">> ";
         cin >> orderID;
 
         if (orderID == 0)

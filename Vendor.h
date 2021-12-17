@@ -77,10 +77,10 @@ public:
 	void addProduct(MYSQL*, int);
 	void editProduct(function<void()>, MYSQL*, int);
 
-	int viewActiveOrder(MYSQL*, TextTable&);
+	int viewActiveOrder(MYSQL*, TableCart&);
 	void viewActiveOrderDetail(MYSQL*, int, int&);
 
-	int viewPreviousOrder(MYSQL*, TextTable&);
+	int viewPreviousOrder(MYSQL*, TableOrder&);
 	void viewPreviousOrderDetail(MYSQL*, int, int&);
 
 	void getCategory(int);
