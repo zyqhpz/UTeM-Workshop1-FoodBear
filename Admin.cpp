@@ -68,11 +68,6 @@ int Admin::fetchData(MYSQL_RES* res, int count) {
 		i++;
 		total++;
 	}
-	cout << "\tid" << "\tusername" << "\tpassword" << "\tname" << endl;
-	cout << "---------------------------------------------------------------------------------------------------------------" << endl;
-	for (int i = 0; i < total; i++) {
-		cout << "\t" << data[i].id << "\t" << data[i].username << "\t" << data[i].password << "\t\t" << data[i].name << "\t" << endl;
-	}
 	cout << endl;
 	return total;
 }

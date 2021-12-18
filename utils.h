@@ -204,12 +204,14 @@ void fetchAllData() {
     string sqlVendor = "SELECT * FROM vendor";
     string sqlCust = "SELECT * FROM customer";
     string sqlRider = "SELECT * FROM rider";
+    string sqlAdmin = "SELECT * FROM admin";
 
     string sqlProduct = "SELECT * FROM product";
 
     const char* qVendor = sqlVendor.c_str();
     const char* qCust = sqlCust.c_str();
     const char* qRider = sqlRider.c_str();
+    const char* qAdmin = sqlAdmin.c_str();
 
     const char* qProduct = sqlProduct.c_str();
 
@@ -224,7 +226,7 @@ void fetchAllData() {
     if (!qSCust) {
         res = mysql_store_result(conn);
         totalCustomer = cust.fetchData(res);
-        cout << totalCustomer << endl;
+       // cout << totalCustomer << endl;
         //system("pause");
     }
 
@@ -232,8 +234,15 @@ void fetchAllData() {
     if (!qSRider) {
         res = mysql_store_result(conn);
         totalRider = rider.fetchData(res);
-        cout << totalRider << " success" << endl;
+       // cout << totalRider << " success" << endl;
         //system("pause");
+    }
+
+    int qSAdmin = mysql_query(conn, qAdmin);
+    if (!qSAdmin) {
+        res = mysql_store_result(conn);
+        int count = mysql_num_fields(res);
+        totalAdmin = admin.fetchData(res, count);
     }
 
     int qSProduct = mysql_query(conn, qProduct);
@@ -333,6 +342,10 @@ int login() {
     if (rider.login(user, pass, totalRider)) {
        // cout << "Welcome " << rider.getName() << endl;
         return role = 3;
+    }
+
+    if (admin.login(user, pass)) {
+        return role = 4;
     }
     
     return 0;
@@ -1140,6 +1153,77 @@ void viewPastDelivery() {
             }
 
     } while (orderID != 0);
+}
+
+// Admin
+
+void viewManage(int role) {
+    // view in table
+    // - name, phone num, address
+
+
+    MYSQL_RES* result;
+    MYSQL_ROW r;
+    TableOrder tt;
+
+    string sql, title;
+
+    if (role == 1) {
+        sql = "SELECT name, phone, address FROM vendor";
+        title = "Vendor";
+    }
+    else if (role == 2) {
+        sql = "SELECT name, phone, address FROM customer";
+        title = "Customr";
+    }
+    else if (role == 3) {
+        sql = "SELECT name, phone FROM rider";
+        title = "Rider";
+    }
+
+    /*
+    string customer = "SELECT name, phone, address FROM customer";
+    string vendor = "SELECT name, phone, address FROM vendor";
+    string rider = "SELECT name, phone, address FROM rider";
+    */
+
+    tt.add("No.");
+    tt.add("Name");
+    tt.add("No. Phone");
+    if (role != 3)
+        tt.add("Address");
+    tt.endOfRow();
+
+    int count = 0;
+
+    const char* qS = sql.c_str();
+    int q = mysql_query(conn, qS);
+    if (!q) {
+        result = mysql_store_result(conn);
+        while (r = mysql_fetch_row(result)) {
+            tt.add(to_string(++count));
+            tt.add(r[0]);
+            tt.add(r[1]);
+            if (role != 3) {
+                if (r[2] == NULL)
+                    tt.add("Not Available");
+                else
+                    tt.add(r[2]);
+            }
+            tt.endOfRow();
+        }
+
+        mainHeader();
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << "Manage " << title << endl << endl;
+        cout << tt;
+        for (int i = 0; i < 67; ++i) std::cout << ' ';
+        system("pause");
+    }
+
+    else {
+        cout << "failed";
+    }
 }
 
 #endif

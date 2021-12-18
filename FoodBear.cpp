@@ -169,8 +169,15 @@ void userUI(int role) {
     }
     
     // Admin
-    else if (role == 0) {
-
+    else if (role == 4) {
+        title = {
+         "--- Welcome " + admin.getName() + " ---",
+         " ",
+         "1-Manage Vendor",
+         "2-Manage Customer",
+         "3-Manage Rider",
+         "0-Logout",
+        };
     }
 
     int num_cols = 200;
@@ -355,6 +362,35 @@ int main()
                             }
                             else if (operation == 4) {
                                 rider.viewProfile(mainHeader, conn);
+                            }
+                            else if (operation == 0) {
+                                break;
+                            }
+                        } while (operation != 0);
+                    }
+                    else {
+                        cout << "Login Failed\n";
+                        system("pause");
+                    }
+                }
+                else if (role == 4) { // Admin
+                    if (role == 4) {
+                        do {
+                            fetchAllData();
+                            mainHeader();
+                            userUI(role);
+                            for (int i = 0; i < 75; ++i) std::cout << ' ';
+                            cout << ">> ";
+                            cin >> operation;
+
+                            if (operation == 1) {
+                                viewManage(1);
+                            }
+                            else if (operation == 2) {
+                                viewManage(2);
+                            }
+                            else if (operation == 3) {
+                                viewManage(3);
                             }
                             else if (operation == 0) {
                                 break;
