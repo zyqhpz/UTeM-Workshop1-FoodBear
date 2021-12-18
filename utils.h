@@ -1039,4 +1039,107 @@ void viewSelectOrder() {
     } while (orderID != 0);
 }
 
+void viewPastDelivery() {
+    TableOrder tb;
+
+    vector<vector<string>> order;
+
+    MYSQL_ROW row;
+    MYSQL_RES* res;
+
+    int i = 0;
+
+    tb.add("Order ID");
+    tb.add("Quantity");
+    tb.add("Price (RM)");
+    tb.add("Order Created");
+    // tb.add("Status");
+    tb.endOfRow();
+
+    stringstream sql;
+    // sql << "SELECT * FROM order_detail JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE cust_order.customer_id = " << this->custID << " GROUP BY cust_order.id";
+    // sql << "SELECT * FROM order_detail JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE delivery.status >= 1 GROUP BY cust_order.id";
+    sql << "SELECT * FROM order_detail JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE delivery.status = 3 AND delivery.rider_id = " + to_string(rider.getID()) + " GROUP BY cust_order.id";
+    string s = sql.str();
+    const char* qC = s.c_str();
+    int q = mysql_query(conn, qC);
+    if (!q) {
+        res = mysql_store_result(conn);
+        while (row = mysql_fetch_row(res)) {
+            string orderID = row[1];
+            string quantity = row[7];
+            string price = row[12];
+            string date = row[9];
+            string riderID;
+            if (row[15] == NULL) {
+                riderID = "Not Set";
+            }
+            else {
+                riderID = row[15];
+            }
+            string status = row[16];
+            ///prev_order.push_back({ row[1], row[5], row[7], row[10], row[13], row[14] });
+            order.push_back({ orderID, quantity, price, date, riderID, status });
+            rider.getOrder();
+            tb.add(orderID);
+            tb.add(quantity);
+            tb.add(price);
+            tb.add(date);
+            /*
+            if (status == "0")
+                tb.add("Pending");
+            else if (status == "-1")
+                tb.add("Rejected"); // after vendor reject the order
+            else if (status == "1")
+                tb.add("Accepted"); // after vendor accept the order
+            else if (status == "2")
+                tb.add("In Delivery"); // after rider has pick up the order. rider only can view the list of order with accepted value (3)
+            else if (status == "3")
+                tb.add("Delivered"); // rider change the status after has delivered the order
+            */
+            tb.endOfRow();
+            //cout << prev_order[i][0] << endl << prev_order[i][1] << endl << prev_order[i][4] << endl;
+            i++;
+        }
+        rider.fetchOrder(order);
+    }
+
+    int orderID;
+    int exist = 0;
+
+    do {
+    jump:;
+        mainHeader();
+        gotoXY(10, 13);
+
+            for (int i = 0; i < 75; ++i) std::cout << ' ';
+            cout << "------Past Delivery History------\n\n";
+            cout << tb << endl;
+            for (int i = 0; i < 75; ++i) std::cout << ' ';
+            //system("pause");
+
+            cout << endl;
+            for (int i = 0; i < 70; ++i) std::cout << ' ';
+            cout << "Enter OrderID to view details (0 - back to Main Menu)";
+
+            cout << endl;
+            for (int i = 0; i < 72; ++i) std::cout << ' ';
+            cout << ">> ";
+            cin >> orderID;
+
+            if (orderID == 0)
+                break;
+            else {
+                mainHeader();
+                rider.selectOrderDetails(conn, orderID, exist);
+                if (exist == 0) {
+                    goto jump;
+                }
+                for (int i = 0; i < 67; ++i) std::cout << ' ';
+                system("pause");
+            }
+
+    } while (orderID != 0);
+}
+
 #endif
