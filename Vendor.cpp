@@ -516,14 +516,15 @@ void Vendor::editProduct(function<void()> mainHeader, MYSQL* conn, int totalProd
 	string name;
 	char category;
 	double price;
+	char deletion = 'n';
 
 	do {
 		for (int i = 0; i < 80; ++i) std::cout << ' ';
 		cout << "Enter product ID that want to be edit\n";
 		for (int i = 0; i < 80; ++i) std::cout << ' ';
 		cout << ">> ";
-		cin >> operation;
-		id = operation - '0'; // convert char to int
+		cin >> id;
+		//id = operation - '0'; // convert char to int
 
 		tt.add("ID");
 		tt.add("Name");
@@ -575,6 +576,8 @@ void Vendor::editProduct(function<void()> mainHeader, MYSQL* conn, int totalProd
 			for (int i = 0; i < 70; ++i) std::cout << ' ';
 			cout << "3 - Category\n";
 			for (int i = 0; i < 70; ++i) std::cout << ' ';
+			cout << "4 - Delete product\n";
+			for (int i = 0; i < 70; ++i) std::cout << ' ';
 			cout << "0 - Cancel\n";
 			for (int i = 0; i < 70; ++i) std::cout << ' ';
 			cout << ">> ";
@@ -617,21 +620,49 @@ void Vendor::editProduct(function<void()> mainHeader, MYSQL* conn, int totalProd
 				update << "UPDATE product SET category_id = '" + to_string(category) + "' WHERE id = " + to_string(id);
 			}
 
-			string query = update.str();
-			const char* q = query.c_str();
-			int qstate = mysql_query(conn, q);
-
-			if (!qstate) {
-				cout << "\nUpdate Successful!\n";
-				system("pause");
-				break;
+			else if (edit == '4') { // Delete
+				//mainHeader();
+				for (int i = 0; i < 70; ++i) std::cout << ' ';
+				cout << "This operation will delete this product permanently. Confirm? (Y/N): ";
+				cin >> deletion;
+				if (deletion == 'y' || deletion == 'Y')
+					update << "DELETE FROM product WHERE id = " + to_string(id);
+				else
+					break;
 			}
+
+			if (edit == '4' && (deletion == 'y' || deletion == 'Y')) {
+				string query = update.str();
+				const char* q = query.c_str();
+				int qstate = mysql_query(conn, q);
+				if (!qstate) {
+					cout << "\nDelete Successful!\n";
+					system("pause");
+					break;
+				}
+				else {
+					cout << "\nDelete Failed!\n";
+					system("pause");
+				}
+			}
+
 			else {
-				cout << "\nUpdate Failed!\n";
-				system("pause");
+				string query = update.str();
+				const char* q = query.c_str();
+				int qstate = mysql_query(conn, q);
+
+				if (!qstate) {
+					cout << "\nUpdate Successful!\n";
+					system("pause");
+					break;
+				}
+				else {
+					cout << "\nUpdate Failed!\n";
+					system("pause");
+				}
 			}
 		}
-	} while (operation != '0');	
+	} while (id != 0);	
 }
 
 int Vendor::viewActiveOrder(MYSQL* conn, TableCart &tb) {
