@@ -464,14 +464,17 @@ void Vendor::addProduct(MYSQL* conn, int vendorID) {
 	string id, name, category;
 	double price;
 
-	cout << "\n---Add Product---\n";
+	for (int i = 0; i < 80; ++i) std::cout << ' ';
+	cout << "---Add Product---\n";
 	// cout << "Enter product ID: ";
 	// cin >> id; // Check data in table, ada similar with other vendor tak. Or predefined. V01F01 -> Vendor 01, Food 01
+	for (int i = 0; i < 80; ++i) std::cout << ' ';
 	cout << "Enter product name: ";
 	cin.ignore();
 	getline(cin, name);
 	
 	do {
+		for (int i = 0; i < 80; ++i) std::cout << ' ';
 		cout << "Product category (1-Food, 2-Beverage): ";
 		cin >> category;
 		if (category == "1" || category == "2")
@@ -480,6 +483,7 @@ void Vendor::addProduct(MYSQL* conn, int vendorID) {
 			cout << "\nInvalid input.Try again.\n";
 	} while (category != "1" || category != "2");
 
+	for (int i = 0; i < 80; ++i) std::cout << ' ';
 	cout << "Enter product price: ";
 	cin >> price;
 
@@ -492,11 +496,13 @@ void Vendor::addProduct(MYSQL* conn, int vendorID) {
 	int qstate = mysql_query(conn, q);
 
 	if (!qstate) {
-		cout << "\nProduct has been added!\n";
+		for (int i = 0; i < 70; ++i) std::cout << ' ';
+		cout << "Product has been added!\n";
 		system("pause");
 	}
 	else {
-		cout << "\nProduct cannot be added. Please try again.\n"; // output error? why cant insert?
+		for (int i = 0; i < 70; ++i) std::cout << ' ';
+		cout << "Product cannot be added. Please try again.\n"; // output error? why cant insert?
 		system("pause");
 	}
 }
@@ -512,7 +518,10 @@ void Vendor::editProduct(function<void()> mainHeader, MYSQL* conn, int totalProd
 	double price;
 
 	do {
-		cout << "\nEnter product ID that want to be edit\n\t>> ";
+		for (int i = 0; i < 80; ++i) std::cout << ' ';
+		cout << "Enter product ID that want to be edit\n";
+		for (int i = 0; i < 80; ++i) std::cout << ' ';
+		cout << ">> ";
 		cin >> operation;
 		id = operation - '0'; // convert char to int
 
@@ -555,8 +564,20 @@ void Vendor::editProduct(function<void()> mainHeader, MYSQL* conn, int totalProd
 			mainHeader();
 			cout << tt;
 
-			cout << "\n----Manage product----\n";
-			cout << "\nEnter number to edit respective data:\n\t1-Name\n\t2-Price\n\t3-Category\n\t0-Cancel\n\t>> ";
+			for (int i = 0; i < 70; ++i) std::cout << ' ';
+			cout << "----Manage product----\n";
+			for (int i = 0; i < 70; ++i) std::cout << ' ';
+			cout << "Enter number to edit respective data:\n";
+			for (int i = 0; i < 70; ++i) std::cout << ' ';
+			cout << "1 - Name\n";
+			for (int i = 0; i < 70; ++i) std::cout << ' ';
+			cout << "2 - Price\n";
+			for (int i = 0; i < 70; ++i) std::cout << ' ';
+			cout << "3 - Category\n";
+			for (int i = 0; i < 70; ++i) std::cout << ' ';
+			cout << "0 - Cancel\n";
+			for (int i = 0; i < 70; ++i) std::cout << ' ';
+			cout << ">> ";
 			cin >> edit;
 
 			stringstream update;
@@ -566,6 +587,7 @@ void Vendor::editProduct(function<void()> mainHeader, MYSQL* conn, int totalProd
 
 			else if (edit == '1') { // Name
 				//mainHeader();
+				for (int i = 0; i < 70; ++i) std::cout << ' ';
 				cout << "Edit name: ";
 				cin.ignore();
 				getline(cin, name);
@@ -575,6 +597,7 @@ void Vendor::editProduct(function<void()> mainHeader, MYSQL* conn, int totalProd
 
 			else if (edit == '2') { // Price
 				//mainHeader();
+				for (int i = 0; i < 70; ++i) std::cout << ' ';
 				cout << "Edit price: ";
 				cin >> price;
 				product[i].price = price;
@@ -584,6 +607,7 @@ void Vendor::editProduct(function<void()> mainHeader, MYSQL* conn, int totalProd
 			else if (edit == '3') { // Category
 				//mainHeader();
 				do {
+					for (int i = 0; i < 70; ++i) std::cout << ' ';
 					cout << "Edit category (1-Food, 2-Beverage): ";
 					cin >> category;
 					if (category != '1' || category != '2')

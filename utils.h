@@ -357,6 +357,7 @@ void viewManageProduct() {
     char op;
 
     do {
+        fetchAllData();
         mainHeader();
         vendor.viewProduct(vendor.getID(), totalProduct, totalVendor, e);
 
