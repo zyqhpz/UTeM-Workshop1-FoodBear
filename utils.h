@@ -509,6 +509,7 @@ void orderBy() {
         }
         else if (operation == '2') {
             searchProduct();
+            system("pause");
         }
         else if (operation == '0') {
             break;
@@ -520,7 +521,7 @@ void orderBy() {
 void searchProduct() {
     mainHeader();
     gotoXY(90, 14);
-    cout << "---Search Product Name---\n";
+    cout << "---Search Product Name---\n\n";
 
     string target;
     for (int i = 0; i < 80; ++i) std::cout << ' ';
@@ -528,9 +529,16 @@ void searchProduct() {
     for (int i = 0; i < 80; ++i) std::cout << ' ';
     cout << ">> ";
     cin >> target;
+    boost::algorithm::to_lower(target);
 
+    // get all product name here
 
-    
+    vector<string> words{ "Nasi Lemak", "Nasi Goreng", "Iced Lemon Tea", "Roti Canai", "Lamb Chop" };
+
+    bool search = false;
+
+    vendor.searchProductByName(target, totalProduct, totalVendor);
+
 }
 
 // View list of vendor

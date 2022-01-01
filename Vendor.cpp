@@ -1065,6 +1065,60 @@ void Vendor::viewPreviousOrderDetail(MYSQL* conn, int orderID, int& exist) {
 	}
 }
 
+void Vendor::searchProductByName(string target, int totalProduct, int totalVendor) {
+
+	bool search = false;
+
+	//const int total = totalVendor;
+
+	// display separate table BY vendor
+	// vendor id, vendor name, list of product found
+
+	for (int i = 0; i < totalVendor; i++) {
+		vector<vector<string>> vendor1;
+	}
+	vector<vector<string>> vendor;
+
+	TableOrder tt;
+
+	vector<string> vendor_name;
+
+	//array<int, totalVendor> a;
+
+	for (int i = 0; i < totalVendor; i++) {
+		vendor_name.push_back(data[i].name);
+	}
+
+	tt.add("Product Name");
+	tt.add("Vendor Name");
+	tt.add("Vendor ID");
+	tt.endOfRow();
+
+	for (int i = 0; i < totalProduct; i++) {
+		string check = boost::algorithm::to_lower_copy(product[i].name);
+		//size_t found = words[i].find(target);
+		size_t found = check.find(target);
+		if (found != string::npos) {
+			for (int k = 0; k < totalVendor; k++) {
+				if (product[i].vendor_id == data[k].id) {
+					tt.add(product[i].name);
+					tt.add(data[k].name);
+					tt.add(to_string(product[i].vendor_id));
+					tt.endOfRow();
+					//cout << "found at " << product[i].name << endl;
+					search = true;
+				}
+			}
+		}
+	}
+
+	cout << tt;
+
+	if (!search) {
+		cout << "item not found";
+	}
+}
+
 void Vendor::getCategory(int totalProduct) {
 	for (int i = 0; i < totalProduct; i++) {
 
