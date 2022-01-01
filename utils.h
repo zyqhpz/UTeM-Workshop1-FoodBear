@@ -480,7 +480,60 @@ void viewAllOrder() {
 // Customer operation
 void startOrder(int, int);
 void getReceipt(double, int);
+void viewVendorList();
+void searchProduct();
 
+// Select operation in viewing product
+void orderBy() {
+    char operation;
+
+    do {
+        mainHeader();
+        gotoXY(90, 14);
+        cout << "---Selection---\n\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << "1-Select vendor\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << "2-Search product\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << "0-Back to Main Menu\n";
+
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << ">> ";
+        cin >> operation;
+
+        if (operation == '1') {
+            viewVendorList();
+            system("pause");
+            break;
+        }
+        else if (operation == '2') {
+            searchProduct();
+        }
+        else if (operation == '0') {
+            break;
+        }
+
+    } while (operation == '1' || operation == '2');
+}
+
+void searchProduct() {
+    mainHeader();
+    gotoXY(90, 14);
+    cout << "---Search Product Name---\n";
+
+    string target;
+    for (int i = 0; i < 80; ++i) std::cout << ' ';
+    cout << "Enter product name:\n";
+    for (int i = 0; i < 80; ++i) std::cout << ' ';
+    cout << ">> ";
+    cin >> target;
+
+
+    
+}
+
+// View list of vendor
 void viewVendorList() {
     int exist = 0;
     int operation;
@@ -896,6 +949,66 @@ void viewCustomerExpenses() {
 
     cout << "\n\n\t\t\t\t\t\t\t\t\t\t";
     system("pause");
+}
+
+void viewBarChart() {
+    TableOrder tt;
+
+    tt.add("Month");
+    tt.add("Total Order Made");
+    tt.add("Total Quantity");
+    tt.add("Total Expenses");
+    tt.endOfRow();
+
+    vector<string> data;
+    vector<vector<string>> graph;
+
+    stringstream ss;
+    ss << "SELECT COUNT(cust_order.id) AS order_made , SUM(cust_order.total_quantity) AS quantity, SUM(cust_order.total_price) AS price, extract(month FROM cust_order.date) AS month FROM cust_order JOIN delivery ON cust_order.id = delivery.payment_id WHERE cust_order.customer_id = " << cust.getID() << " AND delivery.status > 1 GROUP BY month";
+
+    string qs = ss.str();
+    const char* q = qs.c_str();
+    int qstate = mysql_query(conn, q);
+
+    res = mysql_store_result(conn);
+
+    while (row = mysql_fetch_row(res)) {
+        // order made, quantity, expenses, month
+        graph.push_back({ row[0], row[1], row[2], row[3] });
+        tt.add(row[3]);
+        tt.add(row[0]);
+        tt.add(row[1]);
+        tt.add(row[2]);
+        tt.endOfRow();
+    }
+
+    int array[5] = { 1, 3, 5, 7, 9 };
+
+    int highest = array[0];
+
+    for (int i = 0; i <= 5; i++) {
+        if (array[i] > highest)
+            highest = array[i];
+    }
+
+    for (int row = highest; row >= 1; row--) {
+        for (int col = 0; col <= 5; col++) {
+            if (array[col] >= row)
+                cout << "*  ";
+            else
+                cout << "   ";
+        }
+
+        cout << endl;
+    }
+
+    for (int col = 0; col < 5; col++)
+        cout << "---";
+    cout << endl;
+    for (int col = 1; col < 6; col++)
+        cout << col << "  ";
+    cout << endl;
+
 }
 
 // Rider

@@ -224,10 +224,12 @@ int main()
 
     int operation;
 
+
     do {
         fetchAllData();
         displayMainMenu();
 
+    viewBarChart();
         //select(); from menu.h
         for (int i = 0; i < 75; ++i) std::cout << ' ';
         cout << ">> ";
@@ -314,14 +316,16 @@ int main()
                             cin >> operation;
 
                             if (operation == 1) {
-                                viewVendorList();
-                                system("pause");
+                                //viewVendorList();
+                                orderBy();
+                                //system("pause");
                             }
                             else if (operation == 2) {
                                 viewPreviousOrder();
                                 //system("pause");
                             }
                             else if (operation == 3) {
+                               // viewBarChart();
                                 viewCustomerExpenses();
                             }
                             else if (operation == 4) {
