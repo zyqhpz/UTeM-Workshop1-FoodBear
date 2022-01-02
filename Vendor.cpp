@@ -1065,9 +1065,9 @@ void Vendor::viewPreviousOrderDetail(MYSQL* conn, int orderID, int& exist) {
 	}
 }
 
-void Vendor::searchProductByName(string target, int totalProduct, int totalVendor) {
+void Vendor::searchProductByName(string target, int totalProduct, int totalVendor, bool& search) {
 
-	bool search = false;
+	//bool search = false;
 
 	//const int total = totalVendor;
 
@@ -1080,14 +1080,20 @@ void Vendor::searchProductByName(string target, int totalProduct, int totalVendo
 	vector<vector<string>> vendor;
 
 	TableOrder tt;
+	vector<TableOrder> td{}; //try ni later
 
-	vector<string> vendor_name;
+	vector<vector<string>> vendor_name;
 
 	//array<int, totalVendor> a;
 
 	for (int i = 0; i < totalVendor; i++) {
-		vendor_name.push_back(data[i].name);
+		//vendor_name.push_back(data[i].name);
+		//td.push_back("1232");
+		//vendor_name.
+		vendor.push_back({data[i].name, to_string(data[i].id), "0"});
 	}
+
+	vector<vector<string>> product_data;
 
 	tt.add("Product Name");
 	tt.add("Vendor Name");
@@ -1112,10 +1118,14 @@ void Vendor::searchProductByName(string target, int totalProduct, int totalVendo
 		}
 	}
 
-	cout << tt;
-
 	if (!search) {
-		cout << "item not found";
+		cout << "\n\n";
+		for (int i = 0; i < 80; ++i) std::cout << ' ';
+		cout << "item not found\n";
+	}
+	else {
+		cout << "\n\n";
+		cout << tt;
 	}
 }
 

@@ -83,7 +83,7 @@ public:
 	int viewPreviousOrder(MYSQL*, TableOrder&);
 	void viewPreviousOrderDetail(MYSQL*, int, int&);
 
-	void searchProductByName(string, int, int);
+	void searchProductByName(string, int, int, bool&);
 
 	void getCategory(int);
 	string getFoodName(int);

@@ -535,10 +535,43 @@ void searchProduct() {
 
     vector<string> words{ "Nasi Lemak", "Nasi Goreng", "Iced Lemon Tea", "Roti Canai", "Lamb Chop" };
 
-    bool search = false;
+    bool found = false;
 
-    vendor.searchProductByName(target, totalProduct, totalVendor);
+    int vendor_id;
+    int exist = 0;
+    do {
+        vendor.searchProductByName(target, totalProduct, totalVendor, found);
+        if (found) {
+            cout << "\n\n\n";
+            for (int i = 0; i < 80; ++i) std::cout << ' ';
+            cout << "-------------------------------------\n";
+            for (int i = 0; i < 80; ++i) std::cout << ' ';
+            cout << " * Enter vendor ID to start ordering\n";
+            for (int i = 0; i < 80; ++i) std::cout << ' ';
+            cout << " 0-Back to Main Menu\n";
+            for (int i = 0; i < 80; ++i) std::cout << ' ';
+            cout << ">> ";
+            cin >> vendor_id;
 
+            if (vendor_id == 0)
+                goto exit;
+
+            mainHeader();
+            //for (int i = 0; i < 85; ++i) std::cout << ' ';
+            gotoXY(90, 14);
+            cout << "------" << vendor.getVendorName(vendor_id) << "------\n\n\n";
+            vendor.viewProduct(vendor_id, totalProduct, totalVendor, exist);
+            if (exist == 1) {
+                startOrder(vendor_id, exist);
+                goto exit;
+            }
+            system("pause");
+        }
+        else {
+            break;
+        }
+    } while (vendor_id != 0);
+exit:;
 }
 
 // View list of vendor
