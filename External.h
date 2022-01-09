@@ -8,6 +8,11 @@
 
 #include <tabulate/table.hpp>
 
+#include <random>
+#include <numeric>
+
+#include "gnuplot-iostream.h"
+
 using namespace tabulate;
 using namespace std;
 using Row_t = Table::Row_t;

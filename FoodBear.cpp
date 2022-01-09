@@ -327,6 +327,7 @@ int main()
                             else if (operation == 3) {
                                // viewBarChart();
                                 viewCustomerExpenses();
+                               // plotGraph();
                             }
                             else if (operation == 4) {
                                 cust.viewProfile(mainHeader, conn);

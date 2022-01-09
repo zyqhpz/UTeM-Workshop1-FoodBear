@@ -159,6 +159,7 @@
     <ClInclude Include="Admin.h" />
     <ClInclude Include="Customer.h" />
     <ClInclude Include="External.h" />
+    <ClInclude Include="gnuplot-iostream.h" />
     <ClInclude Include="md5.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Rider.h" />

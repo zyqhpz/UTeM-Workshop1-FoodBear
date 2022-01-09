@@ -68,5 +68,8 @@
     <ClInclude Include="External.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="gnuplot-iostream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

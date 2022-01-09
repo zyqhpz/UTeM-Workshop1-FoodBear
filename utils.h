@@ -843,6 +843,47 @@ void viewPreviousOrder() {
         }
     } while (orderID != 0);
 }
+void graphPlot(vector<vector<string>> data ) {
+    Gnuplot gp("\"C:\\Program Files\\gnuplot\\bin\\gnuplot.exe\"");
+
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::normal_distribution<double> normdist(0., 1.);
+
+    std::vector<double> v0, v1, v3;
+
+    v3.push_back(0);
+
+    for (int i = 0; i < data.size(); i++) {
+        v3.push_back(stoi(data[i][0]));
+    }
+
+    for (int i = 0; i < 1000; i++) {
+        v0.push_back(normdist(mt));
+        v1.push_back(normdist(mt));
+    }
+
+    std::partial_sum(v0.begin(), v0.end(), v0.begin());
+    std::partial_sum(v1.begin(), v1.end(), v1.begin());
+
+    gp << "set title 'Total Order Made per Month'\n";
+    gp << "set xlabel 'Month'\n";
+    gp << "set ylabel 'Total Order'\n";
+    gp << "set xrange [0:12]\n";
+    gp << "set xtics ('1' 1, '2' 2, '3' 3, '4' 4, '5' 5, '6' 6, '7' 7, '8' 8, '9' 9, '10' 10, '11' 11, '12' 12)\n";
+    gp << "set yrange [0:10]\n";
+    gp << "set ytics ('1' 1, '2' 2, '3' 3, '4' 4, '5' 5, '6' 6, '7' 7, '8' 8, '9' 9, '10' 10, '11' 11, '12' 12)\n";
+    gp << "set style data histogram\n";
+    gp << "plot '-' with lines title 'Total Order Made by Month'\n";
+
+    //gp.send(v0);
+    //gp.send(v1);
+    gp.send(v3);
+
+    std::cin.get();
+
+    system("pause");
+}
 
 void viewCustomerExpenses() {
     //mainHeader();
@@ -884,6 +925,8 @@ void viewCustomerExpenses() {
     }
 
     cout << tt;
+
+    graphPlot(graph);
 
     Table chart;
 
@@ -1381,4 +1424,31 @@ void viewManage(int role) {
     }
 }
 
+void plotGraph() {
+    Gnuplot gp("\"C:\\Program Files\\gnuplot\\bin\\gnuplot.exe\"");
+
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::normal_distribution<double> normdist(0., 1.);
+
+    std::vector<double> v0, v1;
+
+    for (int i = 0; i < 1000; i++) {
+        v0.push_back(normdist(mt));
+        v1.push_back(normdist(mt));
+    }
+
+    std::partial_sum(v0.begin(), v0.end(), v0.begin());
+    std::partial_sum(v1.begin(), v1.end(), v1.begin());
+
+    gp << "set title 'Graph of two random lines'\n";
+    gp << "plot '-' with lines title 'v0'," << "'-' with lines title 'v1'\n";
+
+    gp.send(v0);
+    gp.send(v1);
+
+    std::cin.get();
+
+    system("pause");
+}
 #endif
