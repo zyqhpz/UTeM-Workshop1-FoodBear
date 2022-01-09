@@ -149,7 +149,7 @@ void userUI(int role) {
           " ",
           "1-View foods",
           "2-View order",
-          "3-View total expenses",
+          "3-View report",
           "4-View profile",
           "0-Logout",
         };
@@ -229,7 +229,7 @@ int main()
         fetchAllData();
         displayMainMenu();
 
-    viewBarChart();
+    //viewBarChart();
         //select(); from menu.h
         for (int i = 0; i < 75; ++i) std::cout << ' ';
         cout << ">> ";
