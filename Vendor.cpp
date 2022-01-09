@@ -835,16 +835,17 @@ void Vendor::viewActiveOrderDetail(MYSQL* conn, int orderID, int& exist) {
 		stringstream ss;
 		do {
 			for (int i = 0; i < 80; ++i) std::cout << ' ';
-			cout << "1-Accept OR 2-Reject";
+			cout << "1-Accept OR 2-Reject\n";
 			for (int i = 0; i < 80; ++i) std::cout << ' ';
-			cout << "\t>> ";
+			cout << ">> ";
 			cin >> accept;
 			if (accept == 1) {
 				ss << "UPDATE delivery SET status = 1 WHERE payment_id = " << orderID;
 				string s = ss.str();
 				const char* qC = s.c_str();
 				int q = mysql_query(conn, qC);
-				cout << "\tOrder has been accepted\n";
+				for (int i = 0; i < 80; ++i) std::cout << ' ';
+				cout << "Order has been accepted\n";
 				system("pause");
 				break;
 			}
@@ -853,7 +854,8 @@ void Vendor::viewActiveOrderDetail(MYSQL* conn, int orderID, int& exist) {
 				string s = ss.str();
 				const char* qC = s.c_str();
 				int q = mysql_query(conn, qC);
-				cout << "\tOrder has been rejected\n";
+				for (int i = 0; i < 80; ++i) std::cout << ' ';
+				cout << "Order has been rejected\n";
 				system("pause");
 				break;
 			}

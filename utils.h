@@ -397,17 +397,17 @@ void viewManageProduct() {
 }
 
 void viewActiveOrder() {
-    TableCart tb;
-
-    int totalActive = vendor.viewActiveOrder(conn, tb);
 
     TextTable td;
     int orderID;
-    int exist = 0;
 
     // view active order
     do {
         jump:;
+        int exist = 0;
+        TableCart tb;
+        mainHeader();
+        int totalActive = vendor.viewActiveOrder(conn, tb);
         mainHeader();
         gotoXY(10, 13);
         for (int i = 0; i < 80; ++i) std::cout << ' ';
@@ -855,7 +855,8 @@ void graphPlot(vector<vector<string>> data ) {
     v3.push_back(0);
 
     for (int i = 0; i < data.size(); i++) {
-        v3.push_back(stoi(data[i][0]));
+        if (data[i][2] == "1")
+            v3.push_back(stoi(data[i][0]));
     }
 
     for (int i = 0; i < 1000; i++) {
@@ -885,6 +886,65 @@ void graphPlot(vector<vector<string>> data ) {
     system("pause");
 }
 
+void reportByYear(vector<vector<string>> data, int year) {
+    Gnuplot gp("\"C:\\Program Files\\gnuplot\\bin\\gnuplot.exe\"");
+
+    std::vector<int> v1;
+
+    //v1.push_back(0);
+    //v1 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+    v1 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    //v1.push_back(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+
+            //v1.push_back(stoi(data[i][0]));
+
+    for (int i = 0; i < data.size(); i++) {
+        if (stoi(data[i][4]) == year) {
+            if (data[i][3] == "1")
+                v1[1] = stoi(data[i][0]);
+            if (data[i][3] == "2")
+                v1[2] = stoi(data[i][0]);
+            if (data[i][3] == "3")
+                v1[3] = stoi(data[i][0]);
+            if (data[i][3] == "4")
+                v1[4] = stoi(data[i][0]);
+            if (data[i][3] == "5")
+                v1[5] = stoi(data[i][0]);
+            if (data[i][3] == "6")
+                v1[6] = stoi(data[i][0]);
+            if (data[i][3] == "7")
+                v1[7] = stoi(data[i][0]);
+            if (data[i][3] == "8")
+                v1[8] = stoi(data[i][0]);
+            if (data[i][3] == "9")
+                v1[9] = stoi(data[i][0]);
+            if (data[i][3] == "10")
+                v1[10] = stoi(data[i][0]);
+            if (data[i][3] == "11")
+                v1[11] = stoi(data[i][0]);
+            if (data[i][3] == "12")
+                v1[12] = stoi(data[i][0]);
+        }
+    }
+
+   // gp << "set title 'Total Order Made per Month'\n";
+    gp << "set title 'Total Order Made Per Month In " << year << "' \n";
+    gp << "set xlabel 'Month'\n";
+    gp << "set ylabel 'Total Order'\n";
+    gp << "set xrange [0:12]\n";
+    gp << "set xtics ('1' 1, '2' 2, '3' 3, '4' 4, '5' 5, '6' 6, '7' 7, '8' 8, '9' 9, '10' 10, '11' 11, '12' 12)\n";
+    gp << "set yrange [0:10]\n";
+    gp << "set ytics ('1' 1, '2' 2, '3' 3, '4' 4, '5' 5, '6' 6, '7' 7, '8' 8, '9' 9, '10' 10, '11' 11, '12' 12)\n";
+    //gp << "plot '-' with lines title 'Total Order Made by Month'\n";
+    gp << "plot '-' with lines title 'Total Order Made by Month in " << year << "'\n";
+
+    gp.send(v1);
+
+    std::cin.get();
+
+    system("pause");
+}
+
 void viewCustomerExpenses() {
     //mainHeader();
 
@@ -904,7 +964,8 @@ void viewCustomerExpenses() {
     //ss << "SELECT COUNT(id) AS order_made, SUM(total_quantity) AS quantity, SUM(total_price) AS price FROM cust_order WHERE customer_id = GROUP BY customer_id";
     //ss << "SELECT COUNT(id) AS order_made, SUM(total_quantity) AS quantity, SUM(total_price) AS price FROM cust_order WHERE customer_id = 2 GROUP BY date";
     //ss << "SELECT COUNT(id) AS order_made , SUM(total_quantity) AS quantity, SUM(total_price) AS price, extract(month FROM date) AS month FROM cust_order WHERE customer_id = " << cust.getID() << " GROUP BY month";
-    ss << "SELECT COUNT(cust_order.id) AS order_made , SUM(cust_order.total_quantity) AS quantity, SUM(cust_order.total_price) AS price, extract(month FROM cust_order.date) AS month FROM cust_order JOIN delivery ON cust_order.id = delivery.payment_id WHERE cust_order.customer_id = " << cust.getID() << " AND delivery.status > 1 GROUP BY month";
+    //ss << "SELECT COUNT(cust_order.id) AS order_made , SUM(cust_order.total_quantity) AS quantity, SUM(cust_order.total_price) AS price, extract(month FROM cust_order.date) AS month FROM cust_order JOIN delivery ON cust_order.id = delivery.payment_id WHERE cust_order.customer_id = " << cust.getID() << " AND delivery.status > 1 GROUP BY month";
+    ss << "SELECT COUNT(cust_order.id) AS order_made , SUM(cust_order.total_quantity) AS quantity, SUM(cust_order.total_price) AS price, extract(month FROM cust_order.date) AS month, extract(year FROM cust_order.date) AS year FROM cust_order JOIN delivery ON cust_order.id = delivery.payment_id WHERE cust_order.customer_id = " << cust.getID() << " AND delivery.status > 1 GROUP BY month ORDER BY year";
 
     //cust.displayChart(conn);
 
@@ -916,8 +977,11 @@ void viewCustomerExpenses() {
 
     while (row = mysql_fetch_row(res)) {
         // order made, quantity, expenses, month
-        graph.push_back({ row[0], row[1], row[2], row[3] });
-        tt.add(row[3]);
+        graph.push_back({ row[0], row[1], row[2], row[3], row[4] });
+        stringstream date;
+        date << row[3] << "/" << row[4];
+        //tt.add(row[3]);
+        tt.add(date.str());
         tt.add(row[0]);
         tt.add(row[1]);
         tt.add(row[2]);
@@ -926,7 +990,27 @@ void viewCustomerExpenses() {
 
     cout << tt;
 
-    graphPlot(graph);
+    int year;
+    do {
+        cout << "View total order made by year.Choose 1. 2021, 2. 2022";
+        cout << ">> ";
+        cin >> year;
+        //if (year == 2021)
+        if (year != 2021 && year != 2022) {
+            cout << "\ninvalid\n";
+        }
+        else {
+            reportByYear(graph, year);
+            break;
+        }
+
+        //else if ()
+
+    } while (year != 0);
+
+   // graphPlot(graph);
+    // ar = 2021;
+   // reportByYear(graph,year);
 
     Table chart;
 

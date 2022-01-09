@@ -274,7 +274,6 @@ int main()
                                 system("pause");
                             }
                             else if (operation == 2) {
-                                mainHeader();
                                 viewActiveOrder();
                                 //system("pause");
                             }
