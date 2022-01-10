@@ -136,7 +136,7 @@ void userUI(int role) {
            "1-Manage products",
            "2-View active order",
            "3-View all order",
-           "4-View sales report",
+           "4-View report",
            "5-View profile",
            "0-Logout",
         };
@@ -162,7 +162,7 @@ void userUI(int role) {
           " ",
           "1-Start food delivery",
           "2-View past delivery",
-          "3-View total earning",
+          "3-View report",
           "4-View profile",
           "0-Logout",
         };
@@ -282,7 +282,7 @@ int main()
 
                             }
                             else if (operation == 4) {
-
+                                viewVendorReport();
                             }
                             else if (operation == 5) {
                                 vendor.viewProfile(mainHeader, conn);
@@ -363,6 +363,9 @@ int main()
                             }
                             else if (operation == 2) {
                                 viewPastDelivery();
+                            }
+                            else if (operation == 3) {
+                                viewRiderReport();
                             }
                             else if (operation == 4) {
                                 rider.viewProfile(mainHeader, conn);

@@ -477,6 +477,118 @@ void viewAllOrder() {
     } while (orderID != 0);
 }
 
+void orderGetByMonth(vector<vector<string>> data, int year) {
+    Gnuplot gp("\"C:\\Program Files\\gnuplot\\bin\\gnuplot.exe\"");
+
+    vector<int> v1;
+
+    v1 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+    for (int i = 0; i < data.size(); i++) {
+        if (stoi(data[i][4]) == year) {
+            if (data[i][3] == "1")
+                v1[1] = stoi(data[i][0]);
+            if (data[i][3] == "2")
+                v1[2] = stoi(data[i][0]);
+            if (data[i][3] == "3")
+                v1[3] = stoi(data[i][0]);
+            if (data[i][3] == "4")
+                v1[4] = stoi(data[i][0]);
+            if (data[i][3] == "5")
+                v1[5] = stoi(data[i][0]);
+            if (data[i][3] == "6")
+                v1[6] = stoi(data[i][0]);
+            if (data[i][3] == "7")
+                v1[7] = stoi(data[i][0]);
+            if (data[i][3] == "8")
+                v1[8] = stoi(data[i][0]);
+            if (data[i][3] == "9")
+                v1[9] = stoi(data[i][0]);
+            if (data[i][3] == "10")
+                v1[10] = stoi(data[i][0]);
+            if (data[i][3] == "11")
+                v1[11] = stoi(data[i][0]);
+            if (data[i][3] == "12")
+                v1[12] = stoi(data[i][0]);
+        }
+    }
+
+    gp << "set title 'Total Order Processed By Month In " << year << "' \n";
+    gp << "set xlabel 'Month'\n";
+    gp << "set ylabel 'Total Order Processed'\n";
+    gp << "set xrange [0:12]\n";
+    gp << "set xtics ('1' 1, '2' 2, '3' 3, '4' 4, '5' 5, '6' 6, '7' 7, '8' 8, '9' 9, '10' 10, '11' 11, '12' 12)\n";
+    gp << "set yrange [0:10]\n";
+    gp << "set ytics ('1' 1, '2' 2, '3' 3, '4' 4, '5' 5, '6' 6, '7' 7, '8' 8, '9' 9, '10' 10, '11' 11, '12' 12)\n";
+    //gp << "plot '-' with lines title 'Total Order Made by Month'\n";
+    gp << "plot '-' with lines\n";
+
+    gp.send(v1);
+
+    std::cin.get();
+
+    system("pause");
+}
+
+void viewVendorReport() {
+
+    mainHeader();
+
+    TableOrder tt;
+
+    tt.add("Month");
+    tt.add("Total Get Order");
+    tt.add("Total Quantity");
+    tt.add("Total Earning (RM)");
+    tt.endOfRow();
+
+    vector<vector<string>> graph;
+
+    stringstream ss;
+    ss << "SELECT COUNT(cust_order.id) AS order_get , SUM(cust_order.total_quantity) AS quantity, SUM(cust_order.total_price) AS price, extract(month FROM cust_order.date) AS month, extract(year FROM cust_order.date) AS year FROM cust_order JOIN delivery ON cust_order.id = delivery.payment_id JOIN payment ON payment.order_id = delivery.payment_id WHERE payment.vendor_id = " << vendor.getID() << " AND delivery.status > 1 GROUP BY month ORDER BY year";
+
+    string qs = ss.str();
+    const char* q = qs.c_str();
+    int qstate = mysql_query(conn, q);
+
+    res = mysql_store_result(conn);
+
+    while (row = mysql_fetch_row(res)) {
+        // order made, quantity, expenses, month
+        graph.push_back({ row[0], row[1], row[2], row[3], row[4] });
+        stringstream date;
+        date << row[3] << "/" << row[4];
+        //tt.add(row[3]);
+        tt.add(date.str());
+        tt.add(row[0]);
+        tt.add(row[1]);
+        tt.add(row[2]);
+        tt.endOfRow();
+    }
+
+    cout << tt;
+
+    int year;
+    do {
+        for (int i = 0; i < 75; ++i) std::cout << ' ';
+        cout << "View chart total order processed by month. Enter 2021 or 2022\n";
+        for (int i = 0; i < 75; ++i) std::cout << ' ';
+        cout << ">> ";
+        cin >> year;
+        //if (year == 2021)
+        if (year != 2021 && year != 2022) {
+            cout << "\nInvalid choice\n";
+        }
+        else if (year == 0)
+            break;
+        else {
+            orderGetByMonth(graph, year);
+            break;
+        }
+
+    } while (year != 0);
+}
+
 // Customer operation
 void startOrder(int, int);
 void getReceipt(double, int);
@@ -886,7 +998,7 @@ void graphPlot(vector<vector<string>> data ) {
     system("pause");
 }
 
-void orderMadeByYear(vector<vector<string>> data, int year) {
+void orderMadeByMonth(vector<vector<string>> data, int year) {
     Gnuplot gp("\"C:\\Program Files\\gnuplot\\bin\\gnuplot.exe\"");
 
     std::vector<int> v1;
@@ -928,7 +1040,7 @@ void orderMadeByYear(vector<vector<string>> data, int year) {
     }
 
    // gp << "set title 'Total Order Made per Month'\n";
-    gp << "set title 'Total Order Made Per Month In " << year << "' \n";
+    gp << "set title 'Total Order Made By Month In " << year << "' \n";
     gp << "set xlabel 'Month'\n";
     gp << "set ylabel 'Total Order'\n";
     gp << "set xrange [0:12]\n";
@@ -946,7 +1058,7 @@ void orderMadeByYear(vector<vector<string>> data, int year) {
 }
 
 void viewCustomerExpenses() {
-    //mainHeader();
+    mainHeader();
 
     //vendor.viewProduct(vendorID, totalProduct, totalVendor);
     TableOrder tt;
@@ -965,7 +1077,7 @@ void viewCustomerExpenses() {
     //ss << "SELECT COUNT(id) AS order_made, SUM(total_quantity) AS quantity, SUM(total_price) AS price FROM cust_order WHERE customer_id = 2 GROUP BY date";
     //ss << "SELECT COUNT(id) AS order_made , SUM(total_quantity) AS quantity, SUM(total_price) AS price, extract(month FROM date) AS month FROM cust_order WHERE customer_id = " << cust.getID() << " GROUP BY month";
     //ss << "SELECT COUNT(cust_order.id) AS order_made , SUM(cust_order.total_quantity) AS quantity, SUM(cust_order.total_price) AS price, extract(month FROM cust_order.date) AS month FROM cust_order JOIN delivery ON cust_order.id = delivery.payment_id WHERE cust_order.customer_id = " << cust.getID() << " AND delivery.status > 1 GROUP BY month";
-    ss << "SELECT COUNT(cust_order.id) AS order_made , SUM(cust_order.total_quantity) AS quantity, SUM(cust_order.total_price) AS price, extract(month FROM cust_order.date) AS month, extract(year FROM cust_order.date) AS year FROM cust_order JOIN delivery ON cust_order.id = delivery.payment_id WHERE cust_order.customer_id = " << cust.getID() << " AND delivery.status > 1 GROUP BY month ORDER BY year";
+    ss << "SELECT COUNT(cust_order.id) AS order_made , SUM(cust_order.total_quantity) AS quantity, SUM(payment.total_payment) AS price, extract(month FROM cust_order.date) AS month, extract(year FROM cust_order.date) AS year FROM cust_order JOIN delivery ON cust_order.id = delivery.payment_id JOIN payment ON cust_order.id = payment.order_id WHERE cust_order.customer_id = " << cust.getID() << " AND delivery.status > 1 GROUP BY month ORDER BY year";
 
     //cust.displayChart(conn);
 
@@ -992,7 +1104,9 @@ void viewCustomerExpenses() {
 
     int year;
     do {
-        cout << "View chart total order made by year.Enter 2021 or 2022\n";
+        for (int i = 0; i < 75; ++i) std::cout << ' ';
+        cout << "View chart total order made by month. Enter 2021 or 2022\n";
+        for (int i = 0; i < 75; ++i) std::cout << ' ';
         cout << ">> ";
         cin >> year;
         //if (year == 2021)
@@ -1002,7 +1116,7 @@ void viewCustomerExpenses() {
         else if (year == 0)
             break;
         else {
-            orderMadeByYear(graph, year);
+            orderMadeByMonth(graph, year);
             break;
         }
 
@@ -1327,8 +1441,117 @@ void viewPastDelivery() {
     } while (orderID != 0);
 }
 
-// Admin
+void orderDeliveredByMonth(vector<vector<string>> data, int year) {
+    Gnuplot gp("\"C:\\Program Files\\gnuplot\\bin\\gnuplot.exe\"");
 
+    vector<int> v1;
+
+    v1 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+    for (int i = 0; i < data.size(); i++) {
+        if (stoi(data[i][4]) == year) {
+            if (data[i][3] == "1")
+                v1[1] = stoi(data[i][0]);
+            if (data[i][3] == "2")
+                v1[2] = stoi(data[i][0]);
+            if (data[i][3] == "3")
+                v1[3] = stoi(data[i][0]);
+            if (data[i][3] == "4")
+                v1[4] = stoi(data[i][0]);
+            if (data[i][3] == "5")
+                v1[5] = stoi(data[i][0]);
+            if (data[i][3] == "6")
+                v1[6] = stoi(data[i][0]);
+            if (data[i][3] == "7")
+                v1[7] = stoi(data[i][0]);
+            if (data[i][3] == "8")
+                v1[8] = stoi(data[i][0]);
+            if (data[i][3] == "9")
+                v1[9] = stoi(data[i][0]);
+            if (data[i][3] == "10")
+                v1[10] = stoi(data[i][0]);
+            if (data[i][3] == "11")
+                v1[11] = stoi(data[i][0]);
+            if (data[i][3] == "12")
+                v1[12] = stoi(data[i][0]);
+        }
+    }
+
+    gp << "set title 'Total Order Delivered By Month In " << year << "' \n";
+    gp << "set xlabel 'Month'\n";
+    gp << "set ylabel 'Total Order Delivered'\n";
+    gp << "set xrange [0:12]\n";
+    gp << "set xtics ('1' 1, '2' 2, '3' 3, '4' 4, '5' 5, '6' 6, '7' 7, '8' 8, '9' 9, '10' 10, '11' 11, '12' 12)\n";
+    gp << "set yrange [0:10]\n";
+    gp << "set ytics ('1' 1, '2' 2, '3' 3, '4' 4, '5' 5, '6' 6, '7' 7, '8' 8, '9' 9, '10' 10, '11' 11, '12' 12)\n";
+    gp << "plot '-' with lines\n";
+
+    gp.send(v1);
+
+    std::cin.get();
+
+    system("pause");
+}
+
+void viewRiderReport() {
+
+    mainHeader();
+
+    TableCart tt;
+
+    tt.add("Month");
+    tt.add("Total Order Delivered");
+    tt.add("Total Earning (RM)");
+    tt.endOfRow();
+
+    vector<vector<string>> graph;
+
+    stringstream ss;
+    ss << "SELECT COUNT(cust_order.id) AS order_get, COUNT(cust_order.id) * 4, extract(month FROM cust_order.date) AS month, extract(year FROM cust_order.date) AS year FROM cust_order JOIN delivery ON cust_order.id = delivery.payment_id JOIN payment ON payment.order_id = delivery.payment_id WHERE delivery.rider_id = " << rider.getID() << " AND delivery.status = 3 GROUP BY month ORDER BY year; ";
+
+    string qs = ss.str();
+    const char* q = qs.c_str();
+    int qstate = mysql_query(conn, q);
+
+    res = mysql_store_result(conn);
+
+    while (row = mysql_fetch_row(res)) {
+        // order made, quantity, expenses, month
+        graph.push_back({ row[0], row[1], " ", row[2], row[3]});
+        stringstream date;
+        date << row[2] << "/" << row[3];
+        //tt.add(row[3]);
+        tt.add(date.str());
+        tt.add(row[0]);
+        tt.add(row[1]);
+       // tt.add(row[2]);
+        tt.endOfRow();
+    }
+
+    cout << tt;
+
+    int year;
+    do {
+        for (int i = 0; i < 75; ++i) std::cout << ' ';
+        cout << "View chart total order processed by month. Enter 2021 or 2022\n";
+        for (int i = 0; i < 75; ++i) std::cout << ' ';
+        cout << ">> ";
+        cin >> year;
+        //if (year == 2021)
+        if (year != 2021 && year != 2022) {
+            cout << "\nInvalid choice\n";
+        }
+        else if (year == 0)
+            break;
+        else {
+            orderDeliveredByMonth(graph, year);
+            break;
+        }
+
+    } while (year != 0);
+}
+
+// Admin
 void viewManage(int role) {
     // view in table
     // - name, phone num, address
