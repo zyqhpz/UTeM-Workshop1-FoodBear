@@ -702,6 +702,11 @@ void Customer::insertOrder(MYSQL* conn, int venID) {
 
 }
 
+void Customer::clearOrder()
+{
+	this->order.clear();
+}
+
 vector<vector<string>> Customer::getOrder() {
 	return this->order;
 }

@@ -89,6 +89,7 @@ public:
 
 	void insertOrder(MYSQL*, int);
 
+	void clearOrder();
 	vector<vector<string>> getOrder();
 	bool checkOrder();
 

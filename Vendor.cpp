@@ -895,7 +895,7 @@ int Vendor::viewPreviousOrder(MYSQL* conn, TableOrder& tb) {
 	tb.endOfRow();
 
 	stringstream sql;
-	sql << "SELECT * FROM order_detail JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE payment.vendor_id = " << to_string(this->vendorID) << " AND delivery.status >= 1 GROUP BY cust_order.id";
+	sql << "SELECT * FROM order_detail JOIN cust_order ON order_detail.cust_order_id = cust_order.id JOIN payment ON payment.order_id = cust_order.id JOIN delivery ON delivery.payment_id = payment.order_id WHERE payment.vendor_id = " << to_string(this->vendorID) << " AND delivery.status != 0 GROUP BY cust_order.id";
 	string s = sql.str();
 	const char* qC = s.c_str();
 	int q = mysql_query(conn, qC);

@@ -224,10 +224,11 @@ int main()
 
     int operation;
 
-
     do {
         fetchAllData();
         displayMainMenu();
+
+        autoRejectOrder();
 
     //viewBarChart();
         //select(); from menu.h

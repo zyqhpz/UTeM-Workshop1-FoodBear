@@ -592,6 +592,51 @@ void viewVendorReport() {
     } while (year != 0);
 }
 
+void autoRejectOrder() {
+    time_t t = time(0);
+    char* dt = ctime(&t);
+
+    tm* time = localtime(&t);
+
+    int year = 1900 + time->tm_year;
+    int month = 1 + time->tm_mon;
+    int day = time->tm_mday;
+    //string tm = to_string(5 + time->tm_hour) + ":" + to_string(30 + time->tm_min) + ":" + to_string(time->tm_sec);
+    string tm = to_string(time->tm_hour) + ":" + to_string(time->tm_min - 10) + ":" + to_string(time->tm_sec);
+
+    string date = to_string(year) + "-" + to_string(month) + "-" + to_string(day);
+
+    string timestamp = date + " " + tm;
+
+   // cout << date;
+
+    //cout << year << "-" << month << "-" << day << "\n";
+    
+   // cout << "time: " << time;
+    //cout << "date: " << dt;
+   // string str(dt);
+
+    //cout << endl << timestamp;
+
+    stringstream sql;
+   // sql << "SELECT * FROM cust_order WHERE date < '" << timestamp << "'";
+    sql << "SELECT cust_order.id FROM cust_order JOIN delivery ON cust_order.id = delivery.payment_id WHERE cust_order.date <= '" << timestamp << "' AND delivery.status = 0";
+
+    string qC = sql.str();
+    const char* q = qC.c_str();
+    int qstate = mysql_query(conn, q);
+
+    res = mysql_store_result(conn);
+    string address;
+
+    while (row = mysql_fetch_row(res)) {
+        int order_id = stoi(row[0]);
+        string upsql = "UPDATE delivery SET status = -1 WHERE payment_id = " + to_string(order_id);
+        const char* up = upsql.c_str();
+        int upstate = mysql_query(conn, up);
+    }
+}
+
 // Customer operation
 void startOrder(int, int);
 void getReceipt(double, int);
@@ -618,13 +663,16 @@ void orderBy() {
         cin >> operation;
 
         if (operation == '1') {
+            cust.clearOrder();
             viewVendorList();
             system("pause");
             break;
         }
         else if (operation == '2') {
+            cust.clearOrder();
             searchProduct();
             system("pause");
+            break;
         }
         else if (operation == '0') {
             break;
@@ -790,6 +838,7 @@ void startOrder(int venID, int exist) {
             cin >> foodID;
 
             if (foodID == 0) {
+                cust.clearOrder();
                 break;
             }
 
@@ -900,8 +949,29 @@ void getReceipt(double total, int vendorID) { // confirmed order?? //kat sini ju
     //    cout << "\t" << order[i][0] << "\t\t" << order[i][2] << endl;
     //}
 
-    cust.insertOrder(conn, vendorID);
-    order.clear();
+    char confirm;
+    cout << "\n\n";
+    do {
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << "Confirm order? (Y/N)\n";
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
+        cout << ">> ";
+        cin >> confirm;
+
+        if (confirm == 'y' || confirm == 'Y') {
+            cust.insertOrder(conn, vendorID);
+            order.clear();
+            break;
+        }
+        else if (confirm == 'n' || confirm == 'N') {
+            order.clear();
+            break;
+        }
+        else {
+            for (int i = 0; i < 80; ++i) std::cout << ' ';
+            cout << "Invalid input. Try again.\n\n";
+        }
+    } while (confirm != 'y' && confirm != 'Y');
 }
 
 void viewPreviousOrder() {

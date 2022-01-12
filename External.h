@@ -10,6 +10,7 @@
 
 #include <random>
 #include <numeric>
+#include <ctime>
 
 #include "gnuplot-iostream.h"
 
