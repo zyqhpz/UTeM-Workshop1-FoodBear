@@ -566,10 +566,11 @@ void viewVendorReport() {
         tt.endOfRow();
     }
 
-    cout << tt;
 
     int year;
     do {
+        mainHeader();
+        cout << tt;
         for (int i = 0; i < 75; ++i) std::cout << ' ';
         cout << "View chart total order processed by month. Enter 2021 or 2022\n";
         for (int i = 0; i < 75; ++i) std::cout << ' ';
@@ -577,7 +578,9 @@ void viewVendorReport() {
         cin >> year;
         //if (year == 2021)
         if (year != 2021 && year != 2022) {
-            cout << "\nInvalid choice\n";
+            for (int i = 0; i < 75; ++i) std::cout << ' ';
+            cout << "Invalid choice\n";
+            system("pause");
         }
         else if (year == 0)
             break;
@@ -715,12 +718,14 @@ void viewVendorList() {
         mainHeader();
         //for (int i = 0; i < 85; ++i) std::cout << ' ';
         gotoXY(90, 14);
-        cout << "------" << vendor.getVendorName(operation) << "------\n\n\n";
+        cout << "\n";
+        //cout << "------" << vendor.getVendorName(operation) << "------\n\n\n";
         vendor.viewProduct(operation, totalProduct, totalVendor, exist);
             if (exist == 1) {
                 startOrder(operation, exist);
                 goto exit;
             }
+        for (int i = 0; i < 80; ++i) std::cout << ' ';
         system("pause");
     } while (operation != 0);
 exit:;
@@ -792,26 +797,42 @@ void startOrder(int venID, int exist) {
             cout << "Enter quantity >> ";
             cin >> quantity;
 
-            cust.selectProduct(vendor, foodID, quantity, total);
-
-            do {
-                cout << "\n\n";
-                for (int i = 0; i < 80; ++i) std::cout << ' ';
-                cout << "Have additional order? (Y/N) >> ";
-                cin >> proceed;
-                if (proceed == 'y' || proceed == 'Y') {
-                    break;
-                }
-                else if (proceed == 'n' || proceed == 'N') {
-                    //cout << "\nthis is payment page\n";
-                    getReceipt(total, venID);
-                    goto jump;
-                    //break; // go to payment page
-                }
-                else
+            if (cust.selectProduct(vendor, foodID, quantity, total, venID)) {
+                do {
+                err:;
+                    cout << "\n\n";
                     for (int i = 0; i < 80; ++i) std::cout << ' ';
-                    cout << "Error input";
-            } while (proceed != 'n' || proceed != 'N' && proceed != 'Y' || proceed != 'Y');
+                    cout << "Have additional order? (Y/N) >> ";
+                    cin >> proceed;
+                    if (proceed == 'y' || proceed == 'Y') {
+                        break;
+                    }
+                    else if (proceed == 'n' || proceed == 'N') {
+                        if (cust.checkOrder()) {
+                            //cout << "\nthis is payment page\n";
+                            getReceipt(total, venID);
+                            goto jump;
+                            //break; // go to payment page
+                        }
+                        else {
+                            goto jump;
+                        }
+
+                    }
+                    else {
+                        for (int i = 0; i < 80; ++i) std::cout << ' ';
+                        cout << "Error input\n";
+                    }
+                } while (proceed != 'n' || proceed != 'N' && proceed != 'Y' || proceed != 'Y');
+            }
+            else {
+                //for (int i = 0; i < 80; ++i) std::cout << ' ';
+                //cout << "Invalid product id selection. Please try again.\n";
+                //cout << "hey\n";
+                //system("pause");
+                goto err;
+            }
+
         } while (foodID != 0); // check only food id >= 0 entered accepted, else -> product not found
     }
     jump:;
@@ -1099,11 +1120,12 @@ void viewCustomerExpenses() {
         tt.add(row[2]);
         tt.endOfRow();
     }
-
-    cout << tt;
-
     int year;
+
+
     do {
+        mainHeader();
+        cout << tt;
         for (int i = 0; i < 75; ++i) std::cout << ' ';
         cout << "View chart total order made by month. Enter 2021 or 2022\n";
         for (int i = 0; i < 75; ++i) std::cout << ' ';
@@ -1111,7 +1133,9 @@ void viewCustomerExpenses() {
         cin >> year;
         //if (year == 2021)
         if (year != 2021 && year != 2022) {
-            cout << "\nInvalid choice\n";
+            for (int i = 0; i < 75; ++i) std::cout << ' ';
+            cout << "Invalid choice\n";
+            system("pause");
         }
         else if (year == 0)
             break;
@@ -1528,10 +1552,11 @@ void viewRiderReport() {
         tt.endOfRow();
     }
 
-    cout << tt;
 
     int year;
     do {
+        mainHeader();
+        cout << tt;
         for (int i = 0; i < 75; ++i) std::cout << ' ';
         cout << "View chart total order processed by month. Enter 2021 or 2022\n";
         for (int i = 0; i < 75; ++i) std::cout << ' ';
@@ -1539,7 +1564,9 @@ void viewRiderReport() {
         cin >> year;
         //if (year == 2021)
         if (year != 2021 && year != 2022) {
-            cout << "\nInvalid choice\n";
+            for (int i = 0; i < 75; ++i) std::cout << ' ';
+            cout << "Invalid choice\n";
+            system("pause");
         }
         else if (year == 0)
             break;

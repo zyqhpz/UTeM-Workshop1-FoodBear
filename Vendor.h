@@ -85,6 +85,10 @@ public:
 
 	void searchProductByName(string, int, int, bool&);
 
+	//bool checkProductAndVendor();
+	bool getProductVendorId(int, int);
+	bool productExist(int);
+
 	void getCategory(int);
 	string getFoodName(int);
 	double getPrice(int id);

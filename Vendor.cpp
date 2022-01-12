@@ -30,14 +30,18 @@ bool Vendor::login(string user, string pass, int totalVendor)
 
 void Vendor::registerVendor(MYSQL* conn) {
 	string username, password, name, noPhone;
-	cout << "\n---Registration For Vendor---\n";
+	for (int i = 0; i < 75; ++i) std::cout << ' ';
+	cout << "---Registration For Vendor---\n";
+	for (int i = 0; i < 75; ++i) std::cout << ' ';
 	cout << "Enter Username: ";
 	cin >> username;
 	boost::to_lower(username);
+	for (int i = 0; i < 75; ++i) std::cout << ' ';
 	cout << "Enter Password: ";
 	cin >> password;
 	password = sha256(password);
 	noPhone = inputNoPhone();
+	for (int i = 0; i < 75; ++i) std::cout << ' ';
 	cout << "Enter Vendor Name: ";
 	cin.ignore();
 	getline(cin, name);
@@ -59,23 +63,28 @@ void Vendor::registerVendor(MYSQL* conn) {
 	row = mysql_fetch_row(res);
 
 	if (row > 0) {
+		cout << "\n";
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
-		cout << "\nUsername already taken. Please try again.\n";
+		for (int i = 0; i < 75; ++i) std::cout << ' ';
+		cout << "Username already taken. Please try again.\n";
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 		system("pause");
 	}
 
 	else {
+		cout << "\n";
 		string query = ss.str();
 		const char* q = query.c_str();
 		int qstate = mysql_query(conn, q);
 
 		if (!qstate) {
-			cout << "\nRegistration Successful!\n";
+			for (int i = 0; i < 75; ++i) std::cout << ' ';
+			cout << "Registration Successful!\n";
 			system("pause");
 		}
 		else {
-			cout << "\nRegistration Failed!\n";
+			for (int i = 0; i < 75; ++i) std::cout << ' ';
+			cout << "Registration Failed!\n";
 			system("pause");
 		}
 	}
@@ -86,6 +95,7 @@ string Vendor::inputNoPhone() {
 	string numResult;
 	bool loopCheck;
 	do {
+		for (int i = 0; i < 75; ++i) std::cout << ' ';
 		cout << "Enter No Phone: ";
 		cin >> num;
 		char check[10] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
@@ -101,6 +111,8 @@ string Vendor::inputNoPhone() {
 		}
 		if (verify != length) {
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+			cout << "\n";
+			for (int i = 0; i < 75; ++i) std::cout << ' ';
 			cout << "Error input. Only numeric value will be accepted.\n";
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 			loopCheck = false;
@@ -455,7 +467,9 @@ void Vendor::viewProduct(int vendorID, int totalProduct, int totalVendor, int& e
 		cout << tb;
 	}
 	else {
-		cout << "\n\tNo vendor selected. Try again.\n";
+		cout << endl;
+		for (int i = 0; i < 80; ++i) std::cout << ' ';
+		cout << "No vendor selected. Try again.\n";
 	}
 	cout << endl;
 }
@@ -1129,6 +1143,40 @@ void Vendor::searchProductByName(string target, int totalProduct, int totalVendo
 		cout << "\n\n";
 		cout << tt;
 	}
+}
+
+bool Vendor::getProductVendorId(int product_id, int vendor_id)
+{
+	//if (product[])
+	bool check = false;
+
+	if (productExist(product_id)) {
+		for (int i = 0; i < sizeof(product); i++) {
+			if (product[i].id == product_id) {
+				if (product[i].vendor_id == vendor_id) {
+					check = true;
+				}
+				break;
+			}
+		}
+	}
+	return check;
+}
+
+bool Vendor::productExist(int product_id)
+{
+	bool check = false;
+	for (int i = 0; i < sizeof(product); i++) {
+		//cout << i << " try\n";
+		if (product[i].id == product_id) {
+			check = true;
+			break;
+		}
+		if (i == 100)
+			break;
+	}
+	//cout << "after\n";
+	return check;
 }
 
 void Vendor::getCategory(int totalProduct) {

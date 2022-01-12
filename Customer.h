@@ -84,11 +84,13 @@ public:
 
 	void viewProfile(function<void()>, MYSQL*);
 
-	void selectProduct(Vendor, int, int, double&);
+	//void selectProduct(Vendor, int, int, double&);
+	bool selectProduct(Vendor, int, int, double&, int);
 
 	void insertOrder(MYSQL*, int);
 
 	vector<vector<string>> getOrder();
+	bool checkOrder();
 
 	void displayPreviousOrder(int, int, TextTable&);
 

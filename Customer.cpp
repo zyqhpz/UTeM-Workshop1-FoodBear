@@ -35,13 +35,17 @@ bool Customer::login(string user, string pass, int totalCustomer)
 
 void Customer::registerCustomer(MYSQL* conn) {
 	string username, password, name, noPhone;
-	cout << "\n---Registration For Customer---\n";
+	for (int i = 0; i < 75; ++i) std::cout << ' ';
+	cout << "---Registration For Customer---\n";
+	for (int i = 0; i < 75; ++i) std::cout << ' ';
 	cout << "Enter Username: ";
 	cin >> username;
 	boost::to_lower(username);
+	for (int i = 0; i < 75; ++i) std::cout << ' ';
 	cout << "Enter Password: ";
 	cin >> password;
 	password = sha256(password);
+	for (int i = 0; i < 75; ++i) std::cout << ' ';
 	cout << "Enter Your Name: ";
 	//cin >> name;
 	cin.ignore();
@@ -65,9 +69,12 @@ void Customer::registerCustomer(MYSQL* conn) {
 	res = mysql_store_result(conn);
 	row = mysql_fetch_row(res);
 
+	cout << "\n";
+
 	if (row > 0) {
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
-		cout << "\nUsername already taken. Please try again.\n";
+		for (int i = 0; i < 75; ++i) std::cout << ' ';
+		cout << "Username already taken. Please try again.\n";
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 		system("pause");
 	}
@@ -78,11 +85,13 @@ void Customer::registerCustomer(MYSQL* conn) {
 		int qstate = mysql_query(conn, q);
 
 		if (!qstate) {
-			cout << "\nRegistration Successful!\n";
+			for (int i = 0; i < 75; ++i) std::cout << ' ';
+			cout << "Registration Successful!\n";
 			system("pause");
 		}
 		else {
-			cout << "\nRegistration Failed!\n";
+			for (int i = 0; i < 75; ++i) std::cout << ' ';
+			cout << "Registration Failed!\n";
 			system("pause");
 		}
 	}
@@ -93,6 +102,7 @@ string Customer::inputNoPhone(){
 	string numResult;
 	bool loopCheck;
 	do {
+		for (int i = 0; i < 75; ++i) std::cout << ' ';
 		cout << "Enter No Phone: ";
 		cin >> num;
 		char check[10] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
@@ -108,6 +118,8 @@ string Customer::inputNoPhone(){
 		}
 		if (verify != length) {
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+			cout << "\n";
+			for (int i = 0; i < 75; ++i) std::cout << ' ';
 			cout << "Error input. Only numeric value will be accepted.\n";
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 			loopCheck = false;
@@ -523,64 +535,82 @@ void Customer::viewProfile(function<void()> mainHeader, MYSQL* conn) {
 	} while (operation != -1);
 }
 
-void Customer::selectProduct(Vendor vendor, int id, int quantity, double& total) {
-	string name;
-	//order.push_back({ id + 1, quantity + 1});
+bool Customer::selectProduct(Vendor vendor, int id, int quantity, double& total, int vendorID) {
 
-	double t;
-	name = vendor.getFoodName(id);
-	double price = vendor.getPrice(id);
-	price = price * quantity;
-	total = total + price;
-	total = floor((total * 100) + .5) / 100;
-	price = floor((price * 100) + .5) / 100;
+	bool check;
 
-	stringstream streamPrice;
-	streamPrice << fixed << setprecision(2) << price;
+	if (vendor.getProductVendorId(id, vendorID)) {
+		check = true;
+		string name;
+		//order.push_back({ id + 1, quantity + 1});
 
-	order.push_back({ name, streamPrice.str() , to_string(quantity), to_string(id) });
+		double t;
+		name = vendor.getFoodName(id);
+		double price = vendor.getPrice(id);
+		price = price * quantity;
+		total = total + price;
+		total = floor((total * 100) + .5) / 100;
+		price = floor((price * 100) + .5) / 100;
 
-	//TextTable tableOrder('-', '|', '+');
+		stringstream streamPrice;
+		streamPrice << fixed << setprecision(2) << price;
 
-	TableCart tableOrder;
+		order.push_back({ name, streamPrice.str() , to_string(quantity), to_string(id) });
 
-	tableOrder.add("No.");
-	tableOrder.add("Product Name");
-	tableOrder.add("Quantity");
-	tableOrder.add("Total Price (RM)");
-	tableOrder.endOfRow();
+		//TextTable tableOrder('-', '|', '+');
 
-	//for (int i = 0; i < order.size(); i++) {
-	//	//cout << "Name: " << order[i][0] << " Quantity: " << order[i][1] << endl;
-	//	cout << order[i][0] << " ---Quantity: " << order[i][2] << "\tPrice: RM " << order[i][1] << endl;
-	//}	
-	
-	for (int i = 0; i < order.size(); i++) {
-		tableOrder.add(to_string(i+1));
-		tableOrder.add(order[i][0]);
-		tableOrder.add(order[i][2]);
-		tableOrder.add(order[i][1]);
+		TableCart tableOrder;
+
+		tableOrder.add("No.");
+		tableOrder.add("Product Name");
+		tableOrder.add("Quantity");
+		tableOrder.add("Total Price (RM)");
 		tableOrder.endOfRow();
-		//cout << order[i][0] << " ---Quantity: " << order[i][2] << "\tPrice: RM " << order[i][1] << endl;
+
+		//for (int i = 0; i < order.size(); i++) {
+		//	//cout << "Name: " << order[i][0] << " Quantity: " << order[i][1] << endl;
+		//	cout << order[i][0] << " ---Quantity: " << order[i][2] << "\tPrice: RM " << order[i][1] << endl;
+		//}	
+
+		for (int i = 0; i < order.size(); i++) {
+			tableOrder.add(to_string(i + 1));
+			tableOrder.add(order[i][0]);
+			tableOrder.add(order[i][2]);
+			tableOrder.add(order[i][1]);
+			tableOrder.endOfRow();
+			//cout << order[i][0] << " ---Quantity: " << order[i][2] << "\tPrice: RM " << order[i][1] << endl;
+		}
+
+		/*tableOrder.add("Total amount: RM");
+		tableOrder.add(to_string(total));
+		tableOrder.endOfRow();*/
+
+		tableOrder.setAlignment(2, TableCart::Alignment::RIGHT);
+		tableOrder.setAlignment(3, TableCart::Alignment::RIGHT);
+
+		cout << "\n\n";
+		for (int i = 0; i < 80; ++i) std::cout << ' ';
+		cout << "---Cart---\n";
+		cout << tableOrder;
+
+		cout << "\n\n";
+		for (int i = 0; i < 80; ++i) std::cout << ' ';
+		cout << "Subtotal: RM " << fixed << setprecision(2) << total << endl;
+
+		//order.clear();
+		//return true;
 	}
 
-	/*tableOrder.add("Total amount: RM");
-	tableOrder.add(to_string(total));
-	tableOrder.endOfRow();*/
+	else {
+		for (int i = 0; i < 80; ++i) std::cout << ' ';
+		cout << "Invalid product selection. Please try again.\n";
+		check = false;
+		for (int i = 0; i < 80; ++i) std::cout << ' ';
+		system("pause");
+		//return false;
+	}
 
-	tableOrder.setAlignment(2, TableCart::Alignment::RIGHT);
-	tableOrder.setAlignment(3, TableCart::Alignment::RIGHT);
-
-	cout << "\n\n";
-	for (int i = 0; i < 80; ++i) std::cout << ' ';
-	cout << "---Cart---\n";
-	cout << tableOrder;
-
-	cout << "\n\n";
-	for (int i = 0; i < 80; ++i) std::cout << ' ';
-	cout << "Subtotal: RM " << fixed << setprecision(2) << total << endl;
-
-	//order.clear();
+	return check;
 }
 
 void Customer::insertOrder(MYSQL* conn, int venID) {
@@ -674,6 +704,14 @@ void Customer::insertOrder(MYSQL* conn, int venID) {
 
 vector<vector<string>> Customer::getOrder() {
 	return this->order;
+}
+bool Customer::checkOrder()
+{
+	bool check = true;
+	if (this->order.empty()) {
+		return false;
+	}
+	return check;
 }
 // display previous order that being made by the customer
 // get all data from table product, cust_order, payment, delivery.

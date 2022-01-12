@@ -28,13 +28,17 @@ bool Rider::login(string user, string pass, int totalRider)
 
 void Rider::registerRider(MYSQL* conn) {
 	string username, password, name, noPhone;
-	cout << "\n---Registration For Rider---\n";
+	for (int i = 0; i < 75; ++i) std::cout << ' ';
+	cout << "---Registration For Rider---\n";
+	for (int i = 0; i < 75; ++i) std::cout << ' ';
 	cout << "Enter Username: ";
 	cin >> username;
 	boost::to_lower(username);
+	for (int i = 0; i < 75; ++i) std::cout << ' ';
 	cout << "Enter Password: ";
 	cin >> password;
 	password = sha256(password);
+	for (int i = 0; i < 75; ++i) std::cout << ' ';
 	cout << "Enter Your Name: ";
 	cin.ignore();
 	getline(cin, name);
@@ -58,22 +62,27 @@ void Rider::registerRider(MYSQL* conn) {
 
 	if (row > 0) {
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
-		cout << "\nUsername already taken. Please try again.\n";
+		cout << "\n";
+		for (int i = 0; i < 75; ++i) std::cout << ' ';
+		cout << "Username already taken. Please try again.\n";
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 		system("pause");
 	}
 
 	else {
+		cout << "\n";
 		string query = ss.str();
 		const char* q = query.c_str();
 		int qstate = mysql_query(conn, q);
 
 		if (!qstate) {
-			cout << "\nRegistration Successful!\n";
+			for (int i = 0; i < 75; ++i) std::cout << ' ';
+			cout << "Registration Successful!\n";
 			system("pause");
 		}
 		else {
-			cout << "\nRegistration Failed!\n";
+			for (int i = 0; i < 75; ++i) std::cout << ' ';
+			cout << "Registration Failed!\n";
 			system("pause");
 		}
 	}
@@ -84,6 +93,7 @@ string Rider::inputNoPhone() {
 	string numResult;
 	bool loopCheck;
 	do {
+		for (int i = 0; i < 75; ++i) std::cout << ' ';
 		cout << "Enter No Phone: ";
 		cin >> num;
 		char check[10] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
@@ -99,6 +109,8 @@ string Rider::inputNoPhone() {
 		}
 		if (verify != length) {
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+			cout << "\n";
+			for (int i = 0; i < 75; ++i) std::cout << ' ';
 			cout << "Error input. Only numeric value will be accepted.\n";
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 			loopCheck = false;
