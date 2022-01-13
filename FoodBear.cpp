@@ -210,11 +210,11 @@ int main()
 
     db_connection::ConnectionFunction();
 
-    std::string str = "Hello";
-    std::wstring str2(str.length(), L' '); // Make room for characters
+   // std::string str = "Hello";
+    //std::wstring str2(str.length(), L' '); // Make room for characters
 
     // Copy string to wstring.
-    std::copy(str.begin(), str.end(), str2.begin());
+  //  std::copy(str.begin(), str.end(), str2.begin());
 
     //text(str2);
 
